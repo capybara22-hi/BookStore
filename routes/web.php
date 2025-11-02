@@ -1,0 +1,42 @@
+<?php
+
+use Illuminate\Support\Facades\Route;
+
+use App\Http\Controllers\DanhMucController;
+use App\Http\Controllers\TheLoaiController;
+use App\Http\Controllers\SanPhamController;
+use App\Http\Controllers\GioHangController;
+use App\Http\Controllers\ThanhToanController;
+/*
+|--------------------------------------------------------------------------
+| Web Routes
+|--------------------------------------------------------------------------
+|
+| Here is where you can register web routes for your application. These
+| routes are loaded by the RouteServiceProvider within a group which
+| contains the "web" middleware group. Now create something great!
+|
+*/
+
+Route::get('/', function () {
+    return view('welcome');
+});
+
+Route::view('/home', 'user.home') ->name('home'); // trang chủ người dùng
+// Route::view('/sanpham', 'user.sanpham') ->name('sanpham'); // trang sản phẩm người dùng
+
+// trang sản phẩm người dùng với danh mục và thể loại
+Route::get('/sanpham', [DanhMucController::class, 'index']) ->name('sanpham'); 
+
+// trang chi tiết sản phẩm người dùng
+Route::get('/chitietsanpham/{id}', [SanPhamController::class, 'index']) ->name('chitietsanpham');
+
+// gio hang nguoi dung
+Route::get('/giohang', [GioHangController::class, 'index']) ->name('giohang');
+
+//them san phẩm vào giỏ hàng
+Route::post('/themvaogiohang/{id}', [SanPhamController::class,'themVaoGioHang']) ->name('themgiohang');
+
+Route::get('/thanhtoan', [ThanhToanController::class, 'show'])->name('thanhtoan');
+
+Route::view('/dangnhap', 'user.dangnhap') ->name('dangnhap'); 
