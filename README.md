@@ -1,64 +1,110 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
+# ban-sach-app
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Ứng dụng web bán sách (Laravel) — README ngắn giải thích cấu trúc thư mục, cách chạy trên môi trường local (Laragon) và một vài lưu ý.
 
-## About Laravel
+---
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Mô tả nhanh
+Dự án là ứng dụng web xây bằng Laravel (PHP). Thư mục chứa mã nguồn chuẩn của Laravel với các view Blade ở `resources/views` và route định nghĩa trong `routes/web.php`.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+---
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## Cấu trúc thư mục chính (tóm tắt)
+- app/  
+  Chứa code ứng dụng (Controllers, Models, Policies, ...).
 
-## Learning Laravel
+- bootstrap/  
+  File khởi tạo framework (bootstrap/app.php).
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+- config/  
+  Cấu hình (app, database, mail,...).
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 1500 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+- database/  
+  Migration, seeders và factories.
 
-## Laravel Sponsors
+- public/  
+  Document root (index.php, assets public).
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+- resources/  
+  - views/ : Blade templates (ví dụ: `resources/views/user/home.blade.php`)  
+  - js, css, sass: tài nguyên front-end nếu dùng Laravel Mix.
 
-### Premium Partners
+- routes/  
+  - web.php : định nghĩa route web (ví dụ `Route::view('/dangnhap', 'user.dangnhap')->name('dangnhap');`)  
+  - api.php : routes API.
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
+- storage/  
+  Logs, cache, uploaded files (không commit).
 
-## Contributing
+- vendor/  
+  Thư viện composer (không commit).
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+- .env  
+  Cấu hình môi trường (DB, mail...). KHÔNG commit file này.
 
-## Code of Conduct
+- artisan  
+  CLI helper của Laravel.
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+---
 
-## Security Vulnerabilities
+## Cách chạy trên môi trường local (Laragon)
+1. Đặt project vào thư mục web server (ví dụ `d:\Download_file\laragon\www\ban-sach-app`).  
+2. Tạo file .env từ `.env.example` và chỉnh cấu hình database:
+   - DB_DATABASE, DB_USERNAME, DB_PASSWORD
+3. Cài phụ thuộc PHP:
+   - composer install
+4. Tạo app key:
+   - php artisan key:generate
+5. Chạy migration (nếu cần):
+   - php artisan migrate
+   - php artisan db:seed
+6. Chạy server:
+   - Với Laragon: truy cập http://localhost/ban-sach-app  
+   - Hoặc: php artisan serve (http://127.0.0.1:8000)
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+Nếu dùng front-end build:
+- npm install
+- npm run dev
 
-## License
+---
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+## Một số vị trí hay chỉnh sửa
+- View giao diện người dùng chính: `resources/views/user/home.blade.php`  
+  - Ví dụ: `{{ route('sanpham') }}` dùng để lấy URL của route đặt tên `sanpham`.
+- Định nghĩa route nhanh (ví dụ):
+```php
+// routes/web.php
+Route::view('/dangnhap', 'user.dangnhap')->name('dangnhap');
+Route::get('/san-pham', [App\Http\Controllers\ProductController::class, 'index'])->name('sanpham');
+```
+- Controller: `app/Http/Controllers/`
+
+---
+
+## Giữ nguyên dữ liệu khi chuyển trang / submit
+- Khi truyền nhiều trường qua query string, bạn có thể:
+  - Dùng hidden inputs để giữ dữ liệu khi submit form.
+  - Hoặc serialize dữ liệu bằng `json_encode()` + `urlencode()` rồi gửi 1 tham số `data`.
+  - Khi quay lại trang, decode bằng `json_decode(urldecode($_GET['data']), true)`.
+- Nên sử dụng Post/Redirect/Get (PRG) để tránh submit trùng khi reload.
+
+---
+
+## Bảo mật & vận hành
+- Không lưu passwords bằng MD5; dùng `password_hash()` / Laravel Auth. Nếu DB legacy dùng MD5, cân nhắc nâng cấp dần (rehash khi user login).  
+- Luôn dùng prepared statements / Eloquent để tránh SQL injection.  
+- Không commit `.env` và `vendor/`.  
+- Kiểm tra logs tại `storage/logs/laravel.log`.
+
+---
+
+## Debug nhanh
+- Liệt kê route: `php artisan route:list`  
+- Xem log: `storage/logs/laravel.log`  
+- Tạo cache config lại nếu thay `.env`: `php artisan config:cache`
+
+---
+
+Nếu bạn muốn, mình có thể:
+- Ghi thêm đoạn ví dụ cụ thể cho route `sanpham` và view mẫu.  
+- Hoặc cập nhật README này theo yêu cầu (ngôn ngữ/chi tiết). 
