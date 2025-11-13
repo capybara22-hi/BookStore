@@ -1,0 +1,8 @@
+<h1>Danh sách user:</h1>
+<ul>
+    @foreach($users as $user)
+    <li>{{$user -> name}}</li>
+    @endforeach
+</ul>
+
+@extends('home')

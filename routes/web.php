@@ -29,7 +29,7 @@ use App\Http\Controllers\ThanhToanController;
 // });
 
 // trang chủ người dùng
-Route::view('/home', 'user.home')->name('home');
+Route::view('/', 'user.home')->name('home');
 Route::view('/sanpham', 'user.sanpham')->name('sanpham');
 
 // trang sản phẩm người dùng với danh mục và thể loại
@@ -50,3 +50,12 @@ Route::view('/dangnhap', 'user.dangnhap')->name('dangnhap');
 
 Route::get('dangky', [AuthController::class, 'register'])->name('dangky');
 Route::post('dangky', [AuthController::class, 'postRegister'])->name('postRegister');
+
+Route::get('dangnhap', [AuthController::class, 'login'])->name('dangnhap');
+Route::post('dangnhap', [AuthController::class, 'postLogin'])->name('postLogin');
+
+// Route::get('hienthiuser', [AuthController::class, 'hienthiuser'])->name('hienthiuser');
+
+// nó phải kết nối được cơ sở dữ liệu thì nó mới có thể đẩy dữ liệu đó lên được
+// và nó mới có thể lấy dữ liệu từ trên cơ sở dư liệu để hiển thị lên trang web
+// chứng tỏ rằng nó đang kết nối cơ sở dữu liêu tốt

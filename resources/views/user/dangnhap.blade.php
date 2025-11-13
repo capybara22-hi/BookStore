@@ -130,23 +130,38 @@
                   <p>Đăng nhập tài khoản của bạn</p>
                 </div>
 
-                <form class="auth-form-content">
+                <!-- @if($errors->any())
+                <ul>
+                  @foreach($errors->all() as $error)
+                  <li>{{$error}}</li>
+                  @endforeach
+                </ul>
+                @endif -->
+
+                <form class="auth-form-content" method="post" action="{{route('postLogin')}}" novalidate>
+                  @csrf
                   <div class="input-group mb-3">
                     <span class="input-icon">
                       <i class="bi bi-envelope"></i>
                     </span>
-                    <input type="email" class="form-control" placeholder="Nhập email của bạn" required="" autocomplete="email">
+                    <input type="email" class="form-control" name="email" placeholder="Nhập email của bạn" autocomplete="email">
                   </div>
+                  @error('email')
+                  <div style="color: red; font-style: italic ; margin-bottom: 10px; opacity: 0.7;">*{{$message}}</div>
+                  @enderror
 
                   <div class="input-group mb-3">
                     <span class="input-icon">
                       <i class="bi bi-lock"></i>
                     </span>
-                    <input type="password" class="form-control" placeholder="Nhập mật khẩu" required="" autocomplete="current-password">
+                    <input type="password" class="form-control" name="password" placeholder="Nhập mật khẩu" autocomplete="current-password">
                     <span class="password-toggle">
                       <i class="bi bi-eye"></i>
                     </span>
                   </div>
+                  @error('password')
+                  <div style="color: red; font-style: italic ; margin-bottom: 10px; opacity: 0.7;">*{{$message}}</div>
+                  @enderror
 
                   <div class="form-options mb-4">
                     <a href="#" class="forgot-password">Quên mật khẩu?</a>
