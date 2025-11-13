@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\DanhMucController;
@@ -18,25 +19,34 @@ use App\Http\Controllers\ThanhToanController;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// Route::get('/', function () {
+//     return view('welcome');
+// });
 
-Route::view('/home', 'user.home') ->name('home'); // trang chủ người dùng
-// Route::view('/sanpham', 'user.sanpham') ->name('sanpham'); // trang sản phẩm người dùng
+// test router
+// Route::get('/about', function () {
+//     return view('user.dangnhap');
+// });
+
+// trang chủ người dùng
+Route::view('/home', 'user.home')->name('home');
+Route::view('/sanpham', 'user.sanpham')->name('sanpham');
 
 // trang sản phẩm người dùng với danh mục và thể loại
-Route::get('/sanpham', [DanhMucController::class, 'index']) ->name('sanpham'); 
+Route::get('/sanpham', [DanhMucController::class, 'index'])->name('sanpham');
 
 // trang chi tiết sản phẩm người dùng
-Route::get('/chitietsanpham/{id}', [SanPhamController::class, 'index']) ->name('chitietsanpham');
+Route::get('/chitietsanpham/{id}', [SanPhamController::class, 'index'])->name('chitietsanpham');
 
 // gio hang nguoi dung
-Route::get('/giohang', [GioHangController::class, 'index']) ->name('giohang');
+Route::get('/giohang', [GioHangController::class, 'index'])->name('giohang');
 
 //them san phẩm vào giỏ hàng
-Route::post('/themvaogiohang/{id}', [SanPhamController::class,'themVaoGioHang']) ->name('themgiohang');
+Route::post('/themvaogiohang/{id}', [SanPhamController::class, 'themVaoGioHang'])->name('themgiohang');
 
 Route::get('/thanhtoan', [ThanhToanController::class, 'show'])->name('thanhtoan');
 
-Route::view('/dangnhap', 'user.dangnhap') ->name('dangnhap'); 
+Route::view('/dangnhap', 'user.dangnhap')->name('dangnhap');
+
+Route::get('dangky', [AuthController::class, 'register'])->name('dangky');
+Route::post('dangky', [AuthController::class, 'postRegister'])->name('postRegister');

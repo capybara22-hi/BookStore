@@ -161,9 +161,10 @@
                     <span>or</span>
                   </div>
 
-                  <div class="switch-form">
-                    <span>Bạn không có tài khoản?</span>
-                    <button type="button" class="switch-btn" data-target="register">Đăng ký tài khoản</button>
+                  <div class="login-link switch-form">
+                    <p>Bạn không có tài khoản? <a href="{{route('dangky')}}">Đăng ký tài khoản</a></p>
+
+                    <!-- <button type="button" class="switch-btn" data-target="register"></button> -->
                   </div>
                 </form>
               </div>

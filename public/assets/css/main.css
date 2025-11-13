@@ -8833,7 +8833,7 @@ section,
   background-color: var(--surface-color);
   border-radius: 20px;
   padding: 3rem 2rem;
-  margin: 60px 0;
+  /* margin: 60px 0; */
   overflow: hidden;
   box-shadow: 0 15px 35px rgba(0, 0, 0, 0.05);
 }
@@ -9066,12 +9066,16 @@ section,
   color: color-mix(in srgb, var(--default-color), transparent 30%);
 }
 
+
+.login-link p a,
 .register .login-link p a {
   color: var(--accent-color);
   font-weight: 600;
   text-decoration: none;
 }
 
+.login-link p a:hover,
+.register-link p a:hover,
 .register .login-link p a:hover {
   text-decoration: underline;
 }
@@ -9108,7 +9112,7 @@ section,
 
 .register .social-login .social-buttons {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   gap: 1rem;
 }
 
@@ -9132,7 +9136,10 @@ section,
 }
 
 .register .social-login .social-buttons .btn-social i.bi-google {
-  color: #DB4437;
+  background: linear-gradient(135deg, #4285F4 0%, #EA4335 25%, #FBBC05 50%, #34A853 75%, #4285F4 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 .register .social-login .social-buttons .btn-social i.bi-facebook {

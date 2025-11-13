@@ -100,8 +100,8 @@
                   </a>
                 </div>
                 <div class="dropdown-footer">
-                  <a href="register.html" class="btn btn-primary w-100 mb-2">Đăng Nhập</a>
-                  <a href="login.html" class="btn btn-outline-primary w-100">Đăng Ký</a>
+                  <a href="{{ route('dangnhap') }}" class="btn btn-primary w-100 mb-2">Đăng Nhập</a>
+                  <a href="{{ route('dangky') }}" class="btn btn-outline-primary w-100">Đăng Ký</a>
                 </div>
               </div>
             </div>

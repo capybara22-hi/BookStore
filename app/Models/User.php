@@ -4,20 +4,45 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Notifications\Notifiable;
 
 class User extends Model
 {
-    use HasFactory;
+    /** @use HasFactory<\Database\Factories\UserFactory> */
+    use HasFactory, Notifiable;
 
-    protected $table = 'users';
-    protected $primaryKey = 'ma_nguoi_dung';
-    public $timestamps = false;
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var list<string>
+     */
+    protected $fillable = [
+        'name',
+        'email',
+        'password',
+        'phone',
+    ];
 
-    // protected $fillable = ['ma_danh_muc', 'ten_the_loai'];
+    /**
+     * The attributes that should be hidden for serialization.
+     *
+     * @var list<string>
+     */
+    protected $hidden = [
+        'password',
+        'remember_token',
+    ];
 
-    // // Quan hệ ngược: nhiều thể loại thuộc 1 danh mục
-    // public function danhmuc()
-    // {
-    //     return $this->belongsTo(DanhMuc::class, 'ma_danh_muc', 'ma_danh_muc');
-    // }
+    /**
+     * Get the attributes that should be cast.
+     *
+     * @return array<string, string>
+     */
+    protected function casts(): array
+    {
+        return [
+            'email_verified_at' => 'datetime',
+            'password' => 'hashed',
+        ];
+    }
 }
