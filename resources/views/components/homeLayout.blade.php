@@ -179,6 +179,7 @@
   @yield('giohang')
   @yield('lienhe')
   @yield('taikhoan')
+  @yield('sanpham')
 
   <!-- <footer id="footer" class="footer dark-background">
     <div class="footer-bottom">
