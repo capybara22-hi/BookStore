@@ -29,11 +29,20 @@ use App\Http\Controllers\ThanhToanController;
 // });
 
 // trang chủ người dùng
-Route::view('/', 'user.home')->name('home');
+Route::view('/trangchu', 'user.trangchu')->name('home');
 Route::view('/sanpham', 'user.sanpham')->name('sanpham');
+Route::view('/gioithieu', 'user.gioithieu')->name('gioithieu');
+Route::view('/lienhe', 'user.lienhe')->name('lienhe');
+Route::view('/taikhoan', 'user.taikhoan')->name('taikhoan');
+
+
 
 // trang sản phẩm người dùng với danh mục và thể loại
 Route::get('/sanpham', [DanhMucController::class, 'index'])->name('sanpham');
+
+
+
+
 
 // trang chi tiết sản phẩm người dùng
 Route::get('/chitietsanpham/{id}', [SanPhamController::class, 'index'])->name('chitietsanpham');
