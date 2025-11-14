@@ -22,8 +22,7 @@ class GioHang extends Model
     ];
 
     // Quan hệ 1 sản phẩm thuộc 1 giỏ hàng
-    public function sanpham()
-    {
+    public function sanpham(){
         return $this->belongsTo(SanPham::class, 'ma_san_pham', 'ma_san_pham');
     }
 }

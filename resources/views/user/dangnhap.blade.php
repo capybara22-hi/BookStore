@@ -64,18 +64,18 @@
             <li><a href="gioithieu.blade.php" class="active">Giới Thiệu</a></li>
 
             <!-- Products Mega Menu 1 -->
+            
+              <!-- Products Mega Menu 1 Desktop View -->
+              <div class="desktop-megamenu">
 
-            <!-- Products Mega Menu 1 Desktop View -->
-            <div class="desktop-megamenu">
-
-              <div class="megamenu-tabs">
-                <ul class="nav nav-tabs" id="productMegaMenuTabs" role="tablist">
-                  <li class="nav-item" role="presentation">
-
-                  </li>
-                </ul>
-              </div>
-            </div><!-- End Products Mega Menu 1 Desktop View -->
+                <div class="megamenu-tabs">
+                  <ul class="nav nav-tabs" id="productMegaMenuTabs" role="tablist">
+                    <li class="nav-item" role="presentation">
+                      
+                    </li>
+                  </ul>
+                </div>
+              </div><!-- End Products Mega Menu 1 Desktop View -->
 
             </li><!-- End Products Mega Menu 1 -->
 
@@ -105,14 +105,13 @@
   <main class="main">
 
     <!-- Page Title -->
-    <!-- <div class="page-title light-background">
+    <div class="page-title light-background">
       <div class="container d-lg-flex justify-content-between align-items-center">
         <h1 class="mb-2 mb-lg-0">Đăng nhập</h1>
         <nav class="breadcrumbs">
         </nav>
       </div>
-    </div> -->
-    <!-- End Page Title -->
+    </div><!-- End Page Title -->
 
     <!-- Login Section -->
     <section id="login" class="login section">
@@ -130,38 +129,23 @@
                   <p>Đăng nhập tài khoản của bạn</p>
                 </div>
 
-                <!-- @if($errors->any())
-                <ul>
-                  @foreach($errors->all() as $error)
-                  <li>{{$error}}</li>
-                  @endforeach
-                </ul>
-                @endif -->
-
-                <form class="auth-form-content" method="post" action="{{route('postLogin')}}" novalidate>
-                  @csrf
+                <form class="auth-form-content">
                   <div class="input-group mb-3">
                     <span class="input-icon">
                       <i class="bi bi-envelope"></i>
                     </span>
-                    <input type="email" class="form-control" name="email" placeholder="Nhập email của bạn" autocomplete="email">
+                    <input type="email" class="form-control" placeholder="Nhập email của bạn" required="" autocomplete="email">
                   </div>
-                  @error('email')
-                  <div style="color: red; font-style: italic ; margin-bottom: 10px; opacity: 0.7;">*{{$message}}</div>
-                  @enderror
 
                   <div class="input-group mb-3">
                     <span class="input-icon">
                       <i class="bi bi-lock"></i>
                     </span>
-                    <input type="password" class="form-control" name="password" placeholder="Nhập mật khẩu" autocomplete="current-password">
+                    <input type="password" class="form-control" placeholder="Nhập mật khẩu" required="" autocomplete="current-password">
                     <span class="password-toggle">
                       <i class="bi bi-eye"></i>
                     </span>
                   </div>
-                  @error('password')
-                  <div style="color: red; font-style: italic ; margin-bottom: 10px; opacity: 0.7;">*{{$message}}</div>
-                  @enderror
 
                   <div class="form-options mb-4">
                     <a href="#" class="forgot-password">Quên mật khẩu?</a>
@@ -171,15 +155,14 @@
                     Đăng nhập
                     <i class="bi bi-arrow-right"></i>
                   </button>
-
+          
                   <div class="divider">
                     <span>or</span>
                   </div>
 
-                  <div class="login-link switch-form">
-                    <p>Bạn không có tài khoản? <a href="{{route('dangky')}}">Đăng ký tài khoản</a></p>
-
-                    <!-- <button type="button" class="switch-btn" data-target="register"></button> -->
+                  <div class="switch-form">
+                    <span>Bạn không có tài khoản?</span>
+                    <button type="button" class="switch-btn" data-target="register">Đăng ký tài khoản</button>
                   </div>
                 </form>
               </div>

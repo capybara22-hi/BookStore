@@ -4,6 +4,7 @@
 <head>
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <meta name="csrf-token" content="{{ csrf_token() }}">
   <title>Checkout - NiceShop Bootstrap Template</title>
   <meta name="description" content="">
   <meta name="keywords" content="">
@@ -198,33 +199,38 @@
                 <!-- Customer Information -->
                 <div class="checkout-section" id="customer-info">
                   <br><br>
-                 <p>  &emsp;&emsp;&emsp;&emsp;&emsp;&emsp; &emsp;&emsp;&emsp;&emsp;&emsp;&emsp; &emsp;&emsp;{{ $qrcode }}</p>
-                 <p style='color: red;'> &emsp;&emsp;&emsp;&emsp; &emsp;&emsp;&emsp;&emsp; &emsp;&nbsp; &emsp;&emsp;&emsp;&emsp; &emsp;&emsp;&emsp;&nbsp;&nbsp;Đang chờ thanh toán</p>
+                 <p style="text-align:center;"> <img src="<?php echo $qrcode; ?>"style="width: 300px; height: 350px;" alt=""></p>
+                 <p style='color: red; text-align:center;' id = "cho_thanh_toan"> Đang chờ thanh toán <br> Vui lòng quét mã thanh toán <br> và nhấn nút xác nhận sau khi thanh toán thành công</p>
                   <div class="section-header">
-                    <h3> &emsp;&emsp;&emsp;&emsp; &emsp;&emsp;&emsp;&emsp; &emsp;&emsp;&emsp;&nbsp;Thanh toán đơn hàng</h3>
+                    <h3> &emsp;&emsp;&emsp;&emsp; &emsp;&emsp;&emsp;&emsp; &emsp;&emsp;&nbsp;&nbsp;Thanh toán đơn hàng</h3>
                   </div>
-                  <div class="section-content">
-                    <div class="form-group">
-                      <label for="">Số tài khoản: </label>
-                      <input type="text" class="form-control" name="stk" id="" placeholder="" readonly>
+                    <div class="section-content">
+                      <div class="form-group">
+                        <label for="">Số tài khoản: </label>
+                        <input type="text" class="form-control" name="stk" id="" placeholder="" readonly value = "{{$thanhtoan->so_tk}}">
+                      </div>
+                      <div class="form-group">
+                        <label for="">Tên chủ tài khoản:</label>
+                        <input type="text" class="form-control" name="ten_tk" id="" placeholder="" readonly value = "{{$thanhtoan->ten_chu_tk}}">
+                      </div>
+                      <div class="form-group">
+                        <label for="">Số tiền chuyển:</label>
+                        <input type="text" class="form-control" name="tien_chuyen" id="so_tien_chuyen" placeholder="" readonly value = "{{ number_format(session('thanh_tien')) }} VND">
+                      </div>
+                      <div class="form-group">
+                        <label for="">Nội dung chuyển khoản:</label>
+                        <input type="text" class="form-control" name="nd_chuyen" id="" placeholder="" readonly value="{{ $nguoidung->name}} - Thanh toán tiền sách - {{ $nguoidung->ma_nguoi_dung}}">
+                      </div>
+                      <div class="form-group">
+                        <label for="">Ngân hàng người nhận:</label>
+                        <input type="text" class="form-control" name="ngan_hang" id="" placeholder="" readonly value = "{{$thanhtoan->ngan_hang}}">
+                      </div>
+                      <div class="form-group">
+                        <button type="submit" class="form-control" style="background-color:green; color:white;" id="da_xac_nhan">
+                          Xác nhận đã thanh toán
+                        </button>
+                      </div>
                     </div>
-                    <div class="form-group">
-                      <label for="">Tên chủ tài khoản:</label>
-                      <input type="text" class="form-control" name="ten_tk" id="" placeholder="" readonly>
-                    </div>
-                    <div class="form-group">
-                      <label for="">Số tiền chuyển:</label>
-                      <input type="text" class="form-control" name="tien_chuyen" id="" placeholder="" readonly>
-                    </div>
-                    <div class="form-group">
-                      <label for="">Nội dung chuyển khoản:</label>
-                      <input type="text" class="form-control" name="nd_chuyen" id="" placeholder="" readonly>
-                    </div>
-                    <div class="form-group">
-                      <label for="">Ngân hàng người nhận:</label>
-                      <input type="text" class="form-control" name="ngan_hang" id="" placeholder="" readonly>
-                    </div>
-                  </div>
                 </div>
               </form>
             </div>
@@ -235,56 +241,46 @@
             <div class="order-summary" data-aos="fade-left" data-aos-delay="200">
               <div class="order-summary-header">
                 <h3>Đơn hàng</h3>
-                <span class="item-count">2 sản phẩm</span>
+                <span class="item-count">{{ count($giohang)}} sản phẩm</span>
               </div>
 
               <div class="order-summary-content">
                 <div class="order-items">
-                  <div class="order-item">
-                    <div class="order-item-image">
-                      <img src="{{ asset('assets/img/product/product-1.webp')}}" alt="Product" class="img-fluid">
-                    </div>
-                    <div class="order-item-details">
-                      <h4>Lorem Ipsum Dolor</h4>
-                      <p class="order-item-variant">Color: Black | Size: M</p>
-                      <div class="order-item-price">
-                        <span class="quantity">1 ×</span>
-                        <span class="price">$89.99</span>
+                  @foreach($giohang as $gh)
+                    @php
+                        // Lấy file ảnh bìa của sản phẩm (bia_san_pham = 1)
+                        $anhBia = $gh->sanpham->file->where('bia_san_pham', 1)->first();
+                    @endphp
+                    @if($gh->trang_thai_mua == 0)
+                      <div class="order-item">
+                        <div class="order-item-image">
+                          <img src="{{ asset($anhBia->duong_dan_luu )}}" alt="Product" class="img-fluid">
+                        </div>
+                        <div class="order-item-details">
+                          <h4>{{ $gh->ten_sp }}</h4>
+                          <p class="order-item-variant">Tác giả: {{ $gh->sanpham->tac_gia }}</p>
+                          <div class="order-item-price">
+                            <span class="quantity">{{ $gh->so_luong_sp }} ×</span>
+                            <span class="price">{{ number_format($gh->gia_sp) }} VND</span>
+                          </div>
+                        </div>
                       </div>
-                    </div>
-                  </div>
-
-                  <div class="order-item">
-                    <div class="order-item-image">
-                      <img src="{{ asset('assets/img/product/product-2.webp')}}" alt="Product" class="img-fluid">
-                    </div>
-                    <div class="order-item-details">
-                      <h4>Sit Amet Consectetur</h4>
-                      <p class="order-item-variant">Color: White | Size: L</p>
-                      <div class="order-item-price">
-                        <span class="quantity">2 ×</span>
-                        <span class="price">$59.99</span>
-                      </div>
-                    </div>
-                  </div>
+                    @endif
+                  @endforeach
                 </div>
 
                 <div class="order-totals">
                   <div class="order-subtotal d-flex justify-content-between">
-                    <span>Subtotal</span>
-                    <span>$209.97</span>
+                    <span>Tổng tiền hàng</span>
+                    <span class = "tong_tien_hang">{{ number_format(session('tien_hang'))}} VND</span>
                   </div>
                   <div class="order-shipping d-flex justify-content-between">
-                    <span>Shipping</span>
-                    <span>$9.99</span>
-                  </div>
-                  <div class="order-tax d-flex justify-content-between">
-                    <span>Tax</span>
-                    <span>$21.00</span>
+                    <span>Vận chuyển</span>
+                    <span class = "van_chuyen">{{ number_format(session('phi_vc'))}} VND</span>
                   </div>
                   <div class="order-total d-flex justify-content-between">
-                    <span>Total</span>
-                    <span>$240.96</span>
+                    <span>Thành tiền</span>
+                    <span class = "thanh_tien">{{ number_format(session('thanh_tien'))}} VND</span>
                   </div>
                 </div>
               </div>
@@ -487,7 +483,47 @@
 
   <!-- Main JS File -->
   <script src="{{ asset('assets/js/main.js')}}"></script>
+  
 
+  <script>
+    document.getElementById("da_xac_nhan").addEventListener("click", function(){
+      const tt = document.getElementById("cho_thanh_toan");
+      tt.innerHTML = "Bạn đã xác nhận thanh toán";
+      tt.style.color = "green";
+      this.style.backgroundColor = "orange";
+      this.disabled = false; // cho phép nhấn nút
+      this.innerHTML = "Xem đơn hàng của bạn";
+
+      fetch("/luu-session1", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').getAttribute("content")
+        },
+        body: JSON.stringify({
+          trang_thai: 1
+        })
+      })
+      .then(response => response.json())
+      .then(data => {
+        console.log("Cập nhật thành công:", data);
+
+        // gán lại sự kiện click để chuyển trang
+        this.onclick = function() {
+          window.location.href = "/taikhoan"; // đường dẫn đến trang xem đơn hàng
+        };
+
+        // chặn quay lại trang trước
+        history.pushState(null, null, location.href);
+        window.onpopstate = function () {
+          history.go(1);
+        };
+      })
+      .catch(error => {
+        console.error("Lỗi cập nhật:", error);
+      });
+    }, { once: true });;
+  </script>
 </body>
 
 </html>
