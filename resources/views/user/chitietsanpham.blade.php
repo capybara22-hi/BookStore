@@ -2,7 +2,11 @@
     <script>
         alert("{{ session('success') }}");
     </script>
+    @php
+        session()->forget('success');
+    @endphp
 @endif
+
 
 
 <!DOCTYPE html>
@@ -290,7 +294,7 @@
                         <i class="bi bi-bag-plus"></i>
                         Thêm vào giỏ hàng
                       </button>
-                      <button class="btn secondary-action">
+                      <button class="btn secondary-action" name="action" value="buy" type="submit">
                         <i class="bi bi-lightning"></i>
                         Mua ngay
                       </button>
