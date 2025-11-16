@@ -11,8 +11,8 @@
                     <h1 class="hero-title">Khám phá các tác phẩm tuyệt vời</h1>
                     <p class="hero-description">Chào mừng bạn đến với không gian của những câu chuyện và ý tưởng bất tận! Từ tiểu thuyết hấp dẫn đến sách kỹ năng thực tiễn — tất cả đều đang chờ bạn khám phá với ưu đãi độc quyền và giao hàng nhanh chóng.</p>
                     <div class="hero-actions" data-aos="fade-up" data-aos-delay="200">
-                        <a href="#products" class="btn-primary">Mua Ngay</a>
-                        <a href="#categories" class="btn-secondary">Duyệt Danh Mục</a>
+                        <a href="{{ route('sanpham') }}" class="btn-primary">Mua Ngay</a>
+                        <a href="{{ route('sanpham') }}" class="btn-secondary">Xem sản phẩm</a>
                     </div>
                     <div class="features-list" data-aos="fade-up" data-aos-delay="300">
                         <div class="feature-item">
@@ -34,10 +34,10 @@
             <div class="hero-visuals">
                 <div class="product-showcase" data-aos="fade-left" data-aos-delay="200">
                     <div class="product-card featured">
-                        <img src="{{ asset('assets/img/product/product-2.webp') }}" alt="Featured Product" class="img-fluid">
+                        <img src="{{ asset('assets/img/product/toithayhoavang.jpg') }}" alt="Featured Product" class="img-fluid">
                         <div class="product-badge">Bán chạy nhất</div>
                         <div class="product-info">
-                            <h4>Tiểu thuyết trinh thám</h4>
+                            <h4>Tôi thấy hoa vàng trên cỏ xanh</h4>
                             <div class="price">
                                 <span class="sale-price">299.000 VND</span>
                                 <span class="original-price">399.000 VND</span>
@@ -45,7 +45,7 @@
                         </div>
                     </div>
 
-                    <div class="product-grid">
+                    <!-- <div class="product-grid">
                         <div class="product-mini" data-aos="zoom-in" data-aos-delay="400">
                             <img src="{{ asset('assets/img/product/product-3.webp') }}" alt="Product" class="img-fluid">
                             <span class="mini-price">89.000 VND</span>
@@ -54,7 +54,7 @@
                             <img src="{{ asset('assets/img/product/product-5.webp') }}" alt="Product" class="img-fluid">
                             <span class="mini-price">149.000 VND</span>
                         </div>
-                    </div>
+                    </div> -->
                 </div>
 
                 <div class="floating-elements">
@@ -81,8 +81,8 @@
 
                 <div class="col-lg-6">
                     <div class="category-featured" data-aos="fade-right" data-aos-delay="200">
-                        <div class="category-image">
-                            <img src="{{ asset('assets/img/product/product-f-2.webp') }}" alt="Women's Collection" class="img-fluid">
+                        <div class="category-image" style="display: flex; justify-content: center; align-items: center;">
+                            <img src="{{ asset('assets/img/product/nhagiakim.jpg') }}" alt="Women's Collection" class="img-fluid" style="max-width: 300px; height: auto;">
                         </div>
                         <div class="category-content">
                             <span class="category-tag">Đang thịnh hành</span>
@@ -101,7 +101,7 @@
                         <div class="col-xl-6">
                             <div class="category-card cat-men" data-aos="fade-up" data-aos-delay="300">
                                 <div class="category-image">
-                                    <img src="{{ asset('assets/img/product/product-m-5.webp') }}" alt="Men's Fashion" class="img-fluid">
+                                    <img src="{{ asset('assets/img/product/vanhoc.jpg') }}" alt="Men's Fashion" class="img-fluid">
                                 </div>
                                 <div class="category-content">
                                     <h4>Văn học Việt Nam</h4>
@@ -114,7 +114,7 @@
                         <div class="col-xl-6">
                             <div class="category-card cat-kids" data-aos="fade-up" data-aos-delay="400">
                                 <div class="category-image">
-                                    <img src="{{ asset('assets/img/product/product-8.webp') }}" alt="Kid's Fashion" class="img-fluid">
+                                    <img src="{{ asset('assets/img/product/caycamngot.jpg') }}" alt="Kid's Fashion" class="img-fluid">
                                 </div>
                                 <div class="category-content">
                                     <h4>Văn học nước ngoài</h4>
@@ -127,7 +127,7 @@
                         <div class="col-xl-6">
                             <div class="category-card cat-cosmetics" data-aos="fade-up" data-aos-delay="500">
                                 <div class="category-image">
-                                    <img src="{{ asset('assets/img/product/product-3.webp') }}" alt="Cosmetics" class="img-fluid">
+                                    <img src="{{ asset('assets/img/product/dacnhantam.jpg') }}" alt="Cosmetics" class="img-fluid">
                                 </div>
                                 <div class="category-content">
                                     <h4>Kinh tế và kỹ năng sống</h4>
@@ -140,7 +140,7 @@
                         <div class="col-xl-6">
                             <div class="category-card cat-accessories" data-aos="fade-up" data-aos-delay="600">
                                 <div class="category-image">
-                                    <img src="{{ asset('assets/img/product/product-12.webp') }}" alt="Accessories" class="img-fluid">
+                                    <img src="{{ asset('assets/img/product/khoahoccongnghe.jpg') }}" alt="Accessories" class="img-fluid">
                                 </div>
                                 <div class="category-content">
                                     <h4>Khoa học và công nghệ</h4>
@@ -163,8 +163,8 @@
 
         <!-- Section Title -->
         <div class="container section-title" data-aos="fade-up">
-            <h2>Chán chạy</h2>
-            <p>NKhám phá những cuốn sách được yêu thích nhất — nơi hàng ngàn độc giả cùng tìm thấy nguồn cảm hứng mỗi ngày.</p>
+            <h2>Bán chạy</h2>
+            <p>Khám phá những cuốn sách được yêu thích nhất — nơi hàng ngàn độc giả cùng tìm thấy nguồn cảm hứng mỗi ngày.</p>
         </div><!-- End Section Title -->
 
         <div class="container" data-aos="fade-up" data-aos-delay="100">
@@ -176,7 +176,7 @@
                     <div class="product-item">
                         <div class="product-image">
                             <div class="product-badge">Giới hạn</div>
-                            <img src="{{ asset('assets/img/product/product-1.webp') }}" alt="Product Image" class="img-fluid" loading="lazy">
+                            <img src="{{ asset('assets/img/product/caycamngot.jpg') }}" alt="Product Image" class="img-fluid" loading="lazy">
                             <div class="product-actions">
                                 <button class="action-btn wishlist-btn">
                                     <i class="bi bi-heart"></i>
@@ -186,7 +186,7 @@
                         </div>
                         <div class="product-info">
                             <div class="product-category">Được yêu thích</div>
-                            <h4 class="product-name"><a href="product-details.html">Doraemon</a></h4>
+                            <h4 class="product-name"><a href="product-details.html">Cây cam ngọt của tôi</a></h4>
                             <div class="product-rating">
                                 <div class="stars">
                                     <i class="bi bi-star-fill"></i>
@@ -208,7 +208,7 @@
                     <div class="product-item">
                         <div class="product-image">
                             <div class="product-badge sale-badge">Giảm 25%</div>
-                            <img src="{{ asset('assets/img/product/product-4.webp') }}" alt="Product Image" class="img-fluid" loading="lazy">
+                            <img src="{{ asset('assets/img/product/dacnhantam.jpg') }}" alt="Product Image" class="img-fluid" loading="lazy">
                             <div class="product-actions">
                                 <button class="action-btn wishlist-btn">
                                     <i class="bi bi-heart"></i>
@@ -218,7 +218,7 @@
                         </div>
                         <div class="product-info">
                             <div class="product-category">Bán chạy</div>
-                            <h4 class="product-name"><a href="product-details.html">Conan</a></h4>
+                            <h4 class="product-name"><a href="product-details.html">Đắc nhân tâm</a></h4>
                             <div class="product-rating">
                                 <div class="stars">
                                     <i class="bi bi-star-fill"></i>
@@ -242,7 +242,7 @@
                 <div class="col-lg-3 col-md-6">
                     <div class="product-item">
                         <div class="product-image">
-                            <img src="{{ asset('assets/img/product/product-7.webp') }}" alt="Product Image" class="img-fluid" loading="lazy">
+                            <img src="{{ asset('assets/img/product/nhagiakim.jpg') }}" alt="Product Image" class="img-fluid" loading="lazy">
                             <div class="product-actions">
                                 <button class="action-btn wishlist-btn">
                                     <i class="bi bi-heart"></i>
@@ -252,7 +252,7 @@
                         </div>
                         <div class="product-info">
                             <div class="product-category">Sản phẩm mới</div>
-                            <h4 class="product-name"><a href="product-details.html">Lọ lem</a></h4>
+                            <h4 class="product-name"><a href="product-details.html">Nhà giả kim</a></h4>
                             <div class="product-rating">
                                 <div class="stars">
                                     <i class="bi bi-star-fill"></i>
@@ -274,7 +274,7 @@
                     <div class="product-item">
                         <div class="product-image">
                             <div class="product-badge trending-badge">Xu hướng</div>
-                            <img src="{{ asset('assets/img/product/product-10.webp') }}" alt="Product Image" class="img-fluid" loading="lazy">
+                            <img src="{{ asset('assets/img/product/khoahoccongnghe.jpg') }}" alt="Product Image" class="img-fluid" loading="lazy">
                             <div class="product-actions">
                                 <button class="action-btn wishlist-btn active">
                                     <i class="bi bi-heart-fill"></i>
@@ -284,7 +284,7 @@
                         </div>
                         <div class="product-info">
                             <div class="product-category">Nổi bật trong tuần</div>
-                            <h4 class="product-name"><a href="product-details.html">Sách giáo khoa toán lớp 1</a></h4>
+                            <h4 class="product-name"><a href="product-details.html">AI - Trí tuệ nhân tạo</a></h4>
                             <div class="product-rating">
                                 <div class="stars">
                                     <i class="bi bi-star-fill"></i>
@@ -321,13 +321,13 @@
                         <div class="product-list">
                             <div class="product-card">
                                 <div class="product-image">
-                                    <img src="{{ asset('assets/img/product/product-1.webp') }}" alt="Premium Leather Tote" class="img-fluid">
+                                    <img src="{{ asset('assets/img/product/demen.jpg') }}" alt="Premium Leather Tote" class="img-fluid">
                                     <div class="product-badges">
                                         <span class="badge-new">New</span>
                                     </div>
                                 </div>
                                 <div class="product-info">
-                                    <h4 class="product-name">Cây xanh</h4>
+                                    <h4 class="product-name">Dế mèn phiêu lưu ký</h4>
                                     <div class="product-rating">
                                         <i class="bi bi-star-fill"></i>
                                         <i class="bi bi-star-fill"></i>
@@ -344,10 +344,10 @@
 
                             <div class="product-card">
                                 <div class="product-image">
-                                    <img src="{{ asset('assets/img/product/product-3.webp') }}" alt="Statement Earrings" class="img-fluid">
+                                    <img src="{{ asset('assets/img/product/toithayhoavang.jpg') }}" alt="Statement Earrings" class="img-fluid">
                                 </div>
                                 <div class="product-info">
-                                    <h4 class="product-name">Cây nấm nhỏ</h4>
+                                    <h4 class="product-name">Tôi thấy hoa vàng trên cỏ xanh</h4>
                                     <div class="product-rating">
                                         <i class="bi bi-star-fill"></i>
                                         <i class="bi bi-star-fill"></i>
@@ -364,10 +364,10 @@
 
                             <div class="product-card">
                                 <div class="product-image">
-                                    <img src="{{ asset('assets/img/product/product-5.webp') }}" alt="Organic Cotton Shirt" class="img-fluid">
+                                    <img src="{{ asset('assets/img/product/caukhongnhobe.jpg') }}" alt="Organic Cotton Shirt" class="img-fluid">
                                 </div>
                                 <div class="product-info">
-                                    <h4 class="product-name">Triết học</h4>
+                                    <h4 class="product-name">Cậu không hề nhỏ bé</h4>
                                     <div class="product-rating">
                                         <i class="bi bi-star-fill"></i>
                                         <i class="bi bi-star-fill"></i>
@@ -393,13 +393,13 @@
                         <div class="product-list">
                             <div class="product-card">
                                 <div class="product-image">
-                                    <img src="{{ asset('assets/img/product/product-2.webp') }}" alt="Slim Fit Denim" class="img-fluid">
+                                    <img src="{{ asset('assets/img/product/thoigiantuoidep.jpg') }}" alt="Slim Fit Denim" class="img-fluid">
                                     <div class="product-badges">
                                         <span class="badge-sale">-15%</span>
                                     </div>
                                 </div>
                                 <div class="product-info">
-                                    <h4 class="product-name">Tôi thấy hoa vàng trên cỏ xanh</h4>
+                                    <h4 class="product-name">Thời gian tươi đẹp</h4>
                                     <div class="product-rating">
                                         <i class="bi bi-star-fill"></i>
                                         <i class="bi bi-star-fill"></i>
@@ -417,10 +417,10 @@
 
                             <div class="product-card">
                                 <div class="product-image">
-                                    <img src="{{ asset('assets/img/product/product-6.webp') }}" alt="Designer Handbag" class="img-fluid">
+                                    <img src="{{ asset('assets/img/product/troixanh.jpg') }}" alt="Designer Handbag" class="img-fluid">
                                 </div>
                                 <div class="product-info">
-                                    <h4 class="product-name">Cho tôi 1 vé đi về tuổi thơ</h4>
+                                    <h4 class="product-name">Trời xanh</h4>
                                     <div class="product-rating">
                                         <i class="bi bi-star-fill"></i>
                                         <i class="bi bi-star-fill"></i>
@@ -437,13 +437,13 @@
 
                             <div class="product-card">
                                 <div class="product-image">
-                                    <img src="{{ asset('assets/img/product/product-8.webp') }}" alt="Leather Crossbody" class="img-fluid">
+                                    <img src="{{ asset('assets/img/product/tuoitre.jpg') }}" alt="Leather Crossbody" class="img-fluid">
                                     <div class="product-badges">
                                         <span class="badge-hot">Hot</span>
                                     </div>
                                 </div>
                                 <div class="product-info">
-                                    <h4 class="product-name">Đắc nhân tâm</h4>
+                                    <h4 class="product-name">Tuổi trẻ đáng giá bao nhiêu</h4>
                                     <div class="product-rating">
                                         <i class="bi bi-star-fill"></i>
                                         <i class="bi bi-star-fill"></i>
@@ -469,10 +469,10 @@
                         <div class="product-list">
                             <div class="product-card">
                                 <div class="product-image">
-                                    <img src="{{ asset('assets/img/product/product-7.webp') }}" alt="Pleated Midi Skirt" class="img-fluid">
+                                    <img src="{{ asset('assets/img/product/harryporter.jpg') }}" alt="Pleated Midi Skirt" class="img-fluid">
                                 </div>
                                 <div class="product-info">
-                                    <h4 class="product-name">Người truyền ký ức</h4>
+                                    <h4 class="product-name">Harry portter</h4>
                                     <div class="product-rating">
                                         <i class="bi bi-star-fill"></i>
                                         <i class="bi bi-star-fill"></i>
@@ -489,33 +489,33 @@
 
                             <div class="product-card">
                                 <div class="product-image">
-                                    <img src="{{ asset('assets/img/product/product-4.webp') }}" alt="Geometric Earrings" class="img-fluid">
+                                    <img src="{{ asset('assets/img/product/dacnhantam.jpg') }}" alt="Geometric Earrings" class="img-fluid">
                                     <div class="product-badges">
                                         <span class="badge-limited">Giới hạn</span>
                                     </div>
                                 </div>
                                 <div class="product-info">
-                                    <h4 class="product-name">Học ít hiểu nhiều</h4>
-                                    <div class="product-rating">
-                                        <i class="bi bi-star-fill"></i>
-                                        <i class="bi bi-star-fill"></i>
-                                        <i class="bi bi-star-fill"></i>
-                                        <i class="bi bi-star-fill"></i>
-                                        <i class="bi bi-star-half"></i>
-                                        <span>(47)</span>
-                                    </div>
-                                    <div class="product-price">
-                                        <span class="current-price">42.99 VND</span>
-                                    </div>
+                                    <h4 class="product-name">Đắc nhân tâm/h4>
+                                        <div class="product-rating">
+                                            <i class="bi bi-star-fill"></i>
+                                            <i class="bi bi-star-fill"></i>
+                                            <i class="bi bi-star-fill"></i>
+                                            <i class="bi bi-star-fill"></i>
+                                            <i class="bi bi-star-half"></i>
+                                            <span>(47)</span>
+                                        </div>
+                                        <div class="product-price">
+                                            <span class="current-price">42.99 VND</span>
+                                        </div>
                                 </div>
                             </div>
 
                             <div class="product-card">
                                 <div class="product-image">
-                                    <img src="{{ asset('assets/img/product/product-9.webp') }}" alt="Structured Satchel" class="img-fluid">
+                                    <img src="{{ asset('assets/img/product/nhagiakim.jpg') }}" alt="Structured Satchel" class="img-fluid">
                                 </div>
                                 <div class="product-info">
-                                    <h4 class="product-name">Siêu trí nhớ</h4>
+                                    <h4 class="product-name">Nhà giả kim</h4>
                                     <div class="product-rating">
                                         <i class="bi bi-star-fill"></i>
                                         <i class="bi bi-star-fill"></i>
@@ -588,11 +588,11 @@
                 <div class="col-lg-3 col-md-6" data-aos="zoom-in" data-aos-delay="100">
                     <div class="product-showcase">
                         <div class="product-image">
-                            <img src="{{ asset('assets/img/product/product-5.webp') }}" alt="Featured Product" class="img-fluid">
+                            <img src="{{ asset('assets/img/product/dacnhantam.jpg') }}" alt="Featured Product" class="img-fluid">
                             <div class="discount-badge">-45%</div>
                         </div>
                         <div class="product-details">
-                            <h6>Tiểu thuyết trinh thám</h6>
+                            <h6>Đắc nhân tâm</h6>
                             <div class="price-section">
                                 <span class="original-price">129.000 VND</span>
                                 <span class="sale-price">71.000 VND</span>
@@ -612,11 +612,11 @@
                 <div class="col-lg-3 col-md-6" data-aos="zoom-in" data-aos-delay="150">
                     <div class="product-showcase">
                         <div class="product-image">
-                            <img src="{{ asset('assets/img/product/product-7.webp') }}" alt="Featured Product" class="img-fluid">
+                            <img src="{{ asset('assets/img/product/caycamngot.jpg') }}" alt="Featured Product" class="img-fluid">
                             <div class="discount-badge">-60%</div>
                         </div>
                         <div class="product-details">
-                            <h6>Tiền không ngủ</h6>
+                            <h6>Cây cam ngọt của tôi</h6>
                             <div class="price-section">
                                 <span class="original-price">89.000 VND</span>
                                 <span class="sale-price">36.000 VND</span>
@@ -636,11 +636,11 @@
                 <div class="col-lg-3 col-md-6" data-aos="zoom-in" data-aos-delay="200">
                     <div class="product-showcase">
                         <div class="product-image">
-                            <img src="{{ asset('assets/img/product/product-11.webp') }}" alt="Featured Product" class="img-fluid">
+                            <img src="{{ asset('assets/img/product/harryporter.jpg') }}" alt="Featured Product" class="img-fluid">
                             <div class="discount-badge">-35%</div>
                         </div>
                         <div class="product-details">
-                            <h6>Hạnh phúc tại tâm</h6>
+                            <h6>Harry Portter</h6>
                             <div class="price-section">
                                 <span class="original-price">159.000 VND</span>
                                 <span class="sale-price">103.000 VND</span>
@@ -660,11 +660,11 @@
                 <div class="col-lg-3 col-md-6" data-aos="zoom-in" data-aos-delay="250">
                     <div class="product-showcase">
                         <div class="product-image">
-                            <img src="{{ asset('assets/img/product/product-1.webp') }}" alt="Featured Product" class="img-fluid">
+                            <img src="{{ asset('assets/img/product/khoahoccongnghe.jpg') }}" alt="Featured Product" class="img-fluid">
                             <div class="discount-badge">-55%</div>
                         </div>
                         <div class="product-details">
-                            <h6>Trên đường băng</h6>
+                            <h6>AI - Trí tuệ nhân tạo</h6>
                             <div class="price-section">
                                 <span class="original-price">75.000 VND</span>
                                 <span class="sale-price">34.000 VND</span>
