@@ -4,26 +4,29 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class User extends Model
+class User extends Authenticatable
 {
     use HasFactory;
 
-    protected $table = 'users';
-    protected $primaryKey = 'ma_nguoi_dung';
-    public $timestamps = false;
+    protected $fillable = [
+        'name',
+        'phone',
+        'email',
+        'password',
+    ];
 
-    // protected $fillable = ['ma_danh_muc', 'ten_the_loai'];
+    protected $hidden = [
+        'password',
+        'remember_token',
+    ];
 
-    // // Quan hệ ngược: nhiều thể loại thuộc 1 danh mục
-    // public function danhmuc()
-    // {
-    //     return $this->belongsTo(DanhMuc::class, 'ma_danh_muc', 'ma_danh_muc');
-    // }
-
-     // Một user có nhiều đơn hàng
-    public function donhang()
+    protected function casts(): array
     {
-        return $this->hasMany(DonHang::class, 'ma_nguoi_dung', 'ma_nguoi_dung');
+        return [
+            'email_verified_at' => 'datetime',
+            'password' => 'hashed',
+        ];
     }
 }

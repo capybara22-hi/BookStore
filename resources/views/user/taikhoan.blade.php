@@ -36,7 +36,7 @@
             <!-- User Info -->
             <div class="user-info" data-aos="fade-right">
               <div class="user-avatar">
-                <img src="../../../public/assets/img/person/person-f-1.webp" alt="Profile" loading="lazy">
+                <img src="{{ asset('assets/img/person/person-f-1.webp') }}" alt="Profile" loading="lazy">
                 <span class="status-badge"><i class="bi bi-shield-check"></i></span>
               </div>
               <h4>Sarah Anderson</h4>
@@ -144,9 +144,9 @@
                     </div>
                     <div class="order-content">
                       <div class="product-grid">
-                        <img src="../../../public/assets/img/product/product-1.webp" alt="Product" loading="lazy">
-                        <img src="../../../public/assets/img/product/product-2.webp" alt="Product" loading="lazy">
-                        <img src="../../../public/assets/img/product/product-3.webp" alt="Product" loading="lazy">
+                        <img src="{{ asset('assets/img/product/product-1.webp') }}" alt="Product" loading="lazy">
+                        <img src="{{ asset('assets/img/product/product-2.webp') }}" alt="Product" loading="lazy">
+                        <img src="{{ asset('assets/img/product/product-3.webp') }}" alt="Product" loading="lazy">
                       </div>
                       <div class="order-info">
                         <div class="info-row">
@@ -259,7 +259,7 @@
                             </div>
 
                             <div class="item">
-                              <img src="../../../public/assets/img/product/product-2.webp" alt="Product" loading="lazy">
+                              <img src="{{ asset('assets/img/product/product-2.webp') }}" alt="Product" loading="lazy">
                               <div class="item-info">
                                 <h6>Consectetur adipiscing elit</h6>
                                 <div class="item-meta">
@@ -271,7 +271,7 @@
                             </div>
 
                             <div class="item">
-                              <img src="../../../public/assets/img/product/product-3.webp" alt="Product" loading="lazy">
+                              <img src="{{ asset('assets/img/product/product-3.webp') }}" alt="Product" loading="lazy">
                               <div class="item-info">
                                 <h6>Sed do eiusmod tempor</h6>
                                 <div class="item-meta">
@@ -328,8 +328,8 @@
                     </div>
                     <div class="order-content">
                       <div class="product-grid">
-                        <img src="../../../public/assets/img/product/product-4.webp" alt="Product" loading="lazy">
-                        <img src="../../../public/assets/img/product/product-5.webp" alt="Product" loading="lazy">
+                        <img src="{{ asset('assets/img/product/product-4.webp') }}" alt="Product" loading="lazy">
+                        <img src="{{ asset('assets/img/product/product-5.webp') }}" alt="Product" loading="lazy">
                       </div>
                       <div class="order-info">
                         <div class="info-row">
@@ -435,7 +435,7 @@
                           <h5>Items (2)</h5>
                           <div class="order-items">
                             <div class="item">
-                              <img src="../../../public/assets/img/product/product-4.webp" alt="Product" loading="lazy">
+                              <img src="{{ asset('assets/img/product/product-4.webp') }}" alt="Product" loading="lazy">
                               <div class="item-info">
                                 <h6>Ut enim ad minim veniam</h6>
                                 <div class="item-meta">
@@ -447,7 +447,7 @@
                             </div>
 
                             <div class="item">
-                              <img src="../../../public/assets/img/product/product-5.webp" alt="Product" loading="lazy">
+                              <img src="{{ asset('assets/img/product/product-5.webp') }}" alt="Product" loading="lazy">
                               <div class="item-info">
                                 <h6>Quis nostrud exercitation</h6>
                                 <div class="item-meta">
@@ -504,7 +504,7 @@
                     </div>
                     <div class="order-content">
                       <div class="product-grid">
-                        <img src="../../../public/assets/img/product/product-6.webp" alt="Product" loading="lazy">
+                        <img src="{{ asset('assets/img/product/product-6.webp') }}" alt="Product" loading="lazy">
                       </div>
                       <div class="order-info">
                         <div class="info-row">
@@ -538,9 +538,9 @@
                     </div>
                     <div class="order-content">
                       <div class="product-grid">
-                        <img src="../../../public/assets/img/product/product-7.webp" alt="Product" loading="lazy">
-                        <img src="../../../public/assets/img/product/product-8.webp" alt="Product" loading="lazy">
-                        <img src="../../../public/assets/img/product/product-9.webp" alt="Product" loading="lazy">
+                        <img src="{{ asset('assets/img/product/product-7.webp') }}" alt="Product" loading="lazy">
+                        <img src="{{ asset('assets/img/product/product-8.webp') }}" alt="Product" loading="lazy">
+                        <img src="{{ asset('assets/img/product/product-9.webp') }}" alt="Product" loading="lazy">
                         <span class="more-items">+2</span>
                       </div>
                       <div class="order-info">
@@ -596,7 +596,7 @@
                   <!-- Wishlist Item 1 -->
                   <div class="wishlist-card" data-aos="fade-up" data-aos-delay="100">
                     <div class="wishlist-image">
-                      <img src="../../../public/assets/img/product/product-1.webp" alt="Product" loading="lazy">
+                      <img src="{{ asset('assets/img/product/product-1.webp') }}" alt="Product" loading="lazy">
                       <button class="btn-remove" type="button" aria-label="Remove from wishlist">
                         <i class="bi bi-trash"></i>
                       </button>
@@ -625,7 +625,7 @@
                   <!-- Wishlist Item 2 -->
                   <div class="wishlist-card" data-aos="fade-up" data-aos-delay="200">
                     <div class="wishlist-image">
-                      <img src="../../../public/assets/img/product/product-2.webp" alt="Product" loading="lazy">
+                      <img src="{{ asset('assets/img/product/product-2.webp') }}" alt="Product" loading="lazy">
                       <button class="btn-remove" type="button" aria-label="Remove from wishlist">
                         <i class="bi bi-trash"></i>
                       </button>
@@ -652,7 +652,7 @@
                   <!-- Wishlist Item 3 -->
                   <div class="wishlist-card" data-aos="fade-up" data-aos-delay="300">
                     <div class="wishlist-image">
-                      <img src="../../../public/assets/img/product/product-3.webp" alt="Product" loading="lazy">
+                      <img src="{{ asset('assets/img/product/product-3.webp') }}" alt="Product" loading="lazy">
                       <button class="btn-remove" type="button" aria-label="Remove from wishlist">
                         <i class="bi bi-trash"></i>
                       </button>
@@ -771,7 +771,7 @@
                   <!-- Review Card 1 -->
                   <div class="review-card" data-aos="fade-up" data-aos-delay="100">
                     <div class="review-header">
-                      <img src="../../../public/assets/img/product/product-1.webp" alt="Product" class="product-image" loading="lazy">
+                      <img src="{{ asset('assets/img/product/product-1.webp') }}" alt="Product" class="product-image" loading="lazy">
                       <div class="review-meta">
                         <h4>Lorem ipsum dolor sit amet</h4>
                         <div class="rating">
@@ -797,7 +797,7 @@
                   <!-- Review Card 2 -->
                   <div class="review-card" data-aos="fade-up" data-aos-delay="200">
                     <div class="review-header">
-                      <img src="../../../public/assets/img/product/product-2.webp" alt="Product" class="product-image" loading="lazy">
+                      <img src="{{ asset('assets/img/product/product-2.webp') }}" alt="Product" class="product-image" loading="lazy">
                       <div class="review-meta">
                         <h4>Consectetur adipiscing elit</h4>
                         <div class="rating">

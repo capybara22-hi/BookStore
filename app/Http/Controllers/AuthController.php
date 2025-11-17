@@ -53,7 +53,7 @@ class AuthController extends Controller
         }
 
         return back()->withErrors([
-            'email' => 'Đăng nhập không thành công',
-        ]);
+            'password' => 'Mật khẩu không chính xác',
+        ])->withInput($request->only('email'));
     }
 }

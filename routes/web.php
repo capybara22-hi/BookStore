@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\DanhMucController;
@@ -27,9 +28,12 @@ Route::get('/', function () {
 });
 
 Route::view('/trangchu', 'user.trangchu')->name('home');
-Route::view('/sanpham', 'user.sanpham')->name('sanpham');
+Route::get('/sanpham', [DanhMucController::class, 'index'])->name('sanpham');
 Route::view('/gioithieu', 'user.gioithieu')->name('gioithieu');
 Route::view('/lienhe', 'user.lienhe')->name('lienhe');
+Route::post('register', [AuthController::class, 'postRegister'])->name('postRegister');
+Route::post('dangnhap', [AuthController::class, 'postLogin'])->name('postLogin');
+
 // Route::view('/taikhoan', 'user.taikhoan')->name('taikhoan');
 
 // Route::view('/home', 'user.home') ->name('home'); 
@@ -49,7 +53,8 @@ Route::post('/themvaogiohang/{id}', [SanPhamController::class, 'themVaoGioHang']
 
 Route::get('/thanhtoan', [ThanhToanController::class, 'show'])->name('thanhtoan');
 
-Route::view('/dangnhap', 'user.dangnhap')->name('dangnhap');
+Route::get('/dangnhap', [AuthController::class, 'login'])->name('dangnhap');
+Route::get('/dangky', [AuthController::class, 'register'])->name('dangky');
 
 Route::post('/giohang/update', [GioHangController::class, 'updateQuantity'])->name('giohang.update');
 
