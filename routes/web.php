@@ -23,16 +23,20 @@ use App\Http\Controllers\SanPhamAdminController;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// Route::get('/', function () {
+//     return view('welcome');
+// });
 
 Route::view('/trangchu', 'user.trangchu')->name('home');
 Route::get('/sanpham', [DanhMucController::class, 'index'])->name('sanpham');
 Route::view('/gioithieu', 'user.gioithieu')->name('gioithieu');
 Route::view('/lienhe', 'user.lienhe')->name('lienhe');
+Route::get('/dangnhap', [AuthController::class, 'login'])->name('dangnhap');
+Route::get('/dangky', [AuthController::class, 'register'])->name('dangky');
 Route::post('register', [AuthController::class, 'postRegister'])->name('postRegister');
 Route::post('dangnhap', [AuthController::class, 'postLogin'])->name('postLogin');
+Route::get('dangxuat', [AuthController::class, 'Logout'])->name('dangxuat');
+
 
 // Route::view('/taikhoan', 'user.taikhoan')->name('taikhoan');
 
@@ -53,8 +57,7 @@ Route::post('/themvaogiohang/{id}', [SanPhamController::class, 'themVaoGioHang']
 
 Route::get('/thanhtoan', [ThanhToanController::class, 'show'])->name('thanhtoan');
 
-Route::get('/dangnhap', [AuthController::class, 'login'])->name('dangnhap');
-Route::get('/dangky', [AuthController::class, 'register'])->name('dangky');
+
 
 Route::post('/giohang/update', [GioHangController::class, 'updateQuantity'])->name('giohang.update');
 

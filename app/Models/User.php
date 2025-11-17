@@ -10,6 +10,11 @@ class User extends Authenticatable
 {
     use HasFactory;
 
+    protected $table = 'users';
+    protected $primaryKey = 'ma_nguoi_dung';
+    public $incrementing = true;
+    protected $keyType = 'int';
+
     protected $fillable = [
         'name',
         'phone',
