@@ -28,7 +28,6 @@ use App\Http\Controllers\SanPhamAdminController;
 // });
 
 Route::view('/trangchu', 'user.trangchu')->name('home');
-Route::get('/sanpham', [DanhMucController::class, 'index'])->name('sanpham');
 Route::view('/gioithieu', 'user.gioithieu')->name('gioithieu');
 Route::view('/lienhe', 'user.lienhe')->name('lienhe');
 Route::get('/dangnhap', [AuthController::class, 'login'])->name('dangnhap');
@@ -36,6 +35,21 @@ Route::get('/dangky', [AuthController::class, 'register'])->name('dangky');
 Route::post('register', [AuthController::class, 'postRegister'])->name('postRegister');
 Route::post('dangnhap', [AuthController::class, 'postLogin'])->name('postLogin');
 Route::get('dangxuat', [AuthController::class, 'Logout'])->name('dangxuat');
+
+
+Route::prefix('/user')->middleware('auth')->group(function () {
+    Route::middleware('auth')->get('/sanpham', [DanhMucController::class, 'index'])->name('sanpham');
+    // trang chi tiết sản phẩm người dùng
+    Route::get('/chitietsanpham/{id}', [SanPhamController::class, 'index'])->name('chitietsanpham');
+
+    // gio hang nguoi dung
+    Route::get('/giohang', [GioHangController::class, 'index'])->name('giohang');
+
+    //them san phẩm vào giỏ hàng
+    Route::post('/themvaogiohang/{id}', [SanPhamController::class, 'themVaoGioHang'])->name('themgiohang');
+
+    Route::get('/thanhtoan', [ThanhToanController::class, 'show'])->name('thanhtoan');
+});
 
 
 // Route::view('/taikhoan', 'user.taikhoan')->name('taikhoan');
@@ -46,16 +60,9 @@ Route::get('dangxuat', [AuthController::class, 'Logout'])->name('dangxuat');
 // trang sản phẩm người dùng với danh mục và thể loại
 // Route::get('/sanpham', [DanhMucController::class, 'index']) ->name('sanpham'); 
 
-// trang chi tiết sản phẩm người dùng
-Route::get('/chitietsanpham/{id}', [SanPhamController::class, 'index'])->name('chitietsanpham');
 
-// gio hang nguoi dung
-Route::get('/giohang', [GioHangController::class, 'index'])->name('giohang');
 
-//them san phẩm vào giỏ hàng
-Route::post('/themvaogiohang/{id}', [SanPhamController::class, 'themVaoGioHang'])->name('themgiohang');
 
-Route::get('/thanhtoan', [ThanhToanController::class, 'show'])->name('thanhtoan');
 
 
 
