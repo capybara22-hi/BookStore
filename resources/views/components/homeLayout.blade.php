@@ -79,7 +79,15 @@
               <div class="dropdown-menu">
                 <div class="dropdown-header">
                   <h6>Chào mừng tới <span class="sitename">MiuBook</span></h6>
+                  @guest
                   <p class="mb-0">Truy cập tài khoản &amp; quản lý đơn hàng</p>
+                  @endguest
+                  @auth
+                  <div class="user-info mb-2 p-2 bg-light rounded text-center">
+                    <small class="text-muted d-block">Xin chào,</small>
+                    <span class="fw-bold fs-3">{{ auth()->user()->name }}</span>
+                  </div>
+                  @endauth
                 </div>
                 <div class="dropdown-body">
                   <a class="dropdown-item d-flex align-items-center" href="{{route('taikhoan')}}">
@@ -100,8 +108,16 @@
                   </a>
                 </div>
                 <div class="dropdown-footer">
+                  @guest
                   <a href="{{ route('dangnhap') }}" class="btn btn-primary w-100 mb-2">Đăng Nhập</a>
-                  <a href="{{ route('dangky') }}" class="btn btn-outline-primary w-100">Đăng Ký</a>
+                  <a href="{{ route('dangky') }}" class="btn btn-outline-primary w-100 mb-2">Đăng Ký</a>
+                  @endguest
+
+                  @auth
+                  <a href="{{ route('dangxuat') }}" class="btn btn-outline-danger w-100">
+                    <i class="bi bi-box-arrow-right me-1"></i>Đăng xuất
+                  </a>
+                  @endauth
                 </div>
               </div>
             </div>

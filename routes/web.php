@@ -28,33 +28,36 @@ Route::get('/', function () {
 });
 
 Route::view('/trangchu', 'user.trangchu')->name('home');
-Route::get('/sanpham', [DanhMucController::class, 'index'])->name('sanpham');
 Route::view('/gioithieu', 'user.gioithieu')->name('gioithieu');
 Route::view('/lienhe', 'user.lienhe')->name('lienhe');
+
+
+
+Route::get('/dangnhap', [AuthController::class, 'login'])->name('dangnhap');
+Route::get('/dangky', [AuthController::class, 'register'])->name('dangky');
 Route::post('register', [AuthController::class, 'postRegister'])->name('postRegister');
 Route::post('dangnhap', [AuthController::class, 'postLogin'])->name('postLogin');
+Route::get('dangxuat', [AuthController::class, 'Logout'])->name('dangxuat');
+
+
+
+
 
 // Route::view('/taikhoan', 'user.taikhoan')->name('taikhoan');
 
-// Route::view('/home', 'user.home') ->name('home'); 
+// Route::view('/home', 'user.home')->name('home');
+
+
 // Route::view('/sanpham', 'user.sanpham') ->name('sanpham'); // trang sản phẩm người dùng
 
 // trang sản phẩm người dùng với danh mục và thể loại
 // Route::get('/sanpham', [DanhMucController::class, 'index']) ->name('sanpham'); 
 
-// trang chi tiết sản phẩm người dùng
-Route::get('/chitietsanpham/{id}', [SanPhamController::class, 'index'])->name('chitietsanpham');
 
-// gio hang nguoi dung
-Route::get('/giohang', [GioHangController::class, 'index'])->name('giohang');
 
-//them san phẩm vào giỏ hàng
-Route::post('/themvaogiohang/{id}', [SanPhamController::class, 'themVaoGioHang'])->name('themgiohang');
 
-Route::get('/thanhtoan', [ThanhToanController::class, 'show'])->name('thanhtoan');
 
-Route::get('/dangnhap', [AuthController::class, 'login'])->name('dangnhap');
-Route::get('/dangky', [AuthController::class, 'register'])->name('dangky');
+
 
 Route::post('/giohang/update', [GioHangController::class, 'updateQuantity'])->name('giohang.update');
 
@@ -69,8 +72,30 @@ Route::post('/luu-session1', [ThanhToanController::class, 'updateTrangThai'])->n
 
 Route::get('/taikhoan', [TaiKhoanController::class, 'index'])->name('taikhoan');
 
-Route::get('/indexadmin', [IndexAdminController::class, 'index'])->name('indexadmin');
 
-Route::get('/donhangadmin', [DonHangAdminController::class, 'index'])->name('donhangadmin');
+// Phần quyền admin 
+Route::middleware(['auth', 'admin'])->group(function () {
+    Route::get('/indexadmin', [IndexAdminController::class, 'index'])->name('indexadmin');
 
-Route::get('/sanphamadmin', [SanPhamAdminController::class, 'index'])->name('sanphamadmin');
+    Route::get('/donhangadmin', [DonHangAdminController::class, 'index'])->name('donhangadmin');
+
+    Route::get('/sanphamadmin', [SanPhamAdminController::class, 'index'])->name('sanphamadmin');
+});
+
+
+// Phân quyền customer
+Route::middleware(['auth', 'customer'])->group(function () {
+    Route::prefix('/user')->group(function () {
+        Route::get('/sanpham', [DanhMucController::class, 'index'])->name('sanpham');
+
+
+        Route::get('/giohang', [GioHangController::class, 'index'])->name('giohang');
+
+
+        Route::post('/themvaogiohang/{id}', [SanPhamController::class, 'themVaoGioHang'])->name('themgiohang');
+        Route::get('/chitietsanpham/{id}', [SanPhamController::class, 'index'])->name('chitietsanpham');
+
+
+        Route::get('/thanhtoan', [ThanhToanController::class, 'show'])->name('thanhtoan');
+    });
+});

@@ -10,11 +10,17 @@ class User extends Authenticatable
 {
     use HasFactory;
 
+    protected $table = 'users';
+    protected $primaryKey = 'ma_nguoi_dung';
+    public $incrementing = true;
+    protected $keyType = 'int';
+
     protected $fillable = [
         'name',
         'phone',
         'email',
         'password',
+        'role_id'
     ];
 
     protected $hidden = [
@@ -28,5 +34,10 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function isAdmin()
+    {
+        return $this->role_id === '1';
     }
 }
