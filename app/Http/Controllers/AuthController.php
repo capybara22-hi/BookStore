@@ -31,10 +31,11 @@ class AuthController extends Controller
             'phone' => $request->get('phone'),
             'email' => $request->get('email'),
             'password' => Hash::make($request->get('password')),
+            'role_id' => 3, // mặc định khi tạo tài khoản là khách hàng
         ]);
 
         // return back()->with('message', 'Đăng ký thành công!');
-        return redirect()->route('home');
+        return redirect()->route('dangnhap')->with('message', 'Đăng ký thành công! Vui lòng đăng nhập tài khoản!');
     }
 
     public function login()
@@ -53,8 +54,14 @@ class AuthController extends Controller
             Log::info('Login successful', [
                 'user_id' => Auth::id(),
                 'user_name' => Auth::user()->name,
+                'role_id' => Auth::user()->role_id,
                 'session_id' => session()->getId()
             ]);
+
+            // Chuyển hướng dựa trên role_id
+            if (Auth::user()->role_id == 1) {
+                return redirect()->route('indexadmin');
+            }
 
             return redirect()->intended(route('home'));
         }
