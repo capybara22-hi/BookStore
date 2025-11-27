@@ -12,6 +12,8 @@ use App\Http\Controllers\TaiKhoanController;
 use App\Http\Controllers\IndexAdminController;
 use App\Http\Controllers\DonHangAdminController;
 use App\Http\Controllers\SanPhamAdminController;
+use App\Http\Controllers\BaoCaoNhapHangController;
+use App\Http\Controllers\KhuyenMaiController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -80,6 +82,12 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/donhangadmin', [DonHangAdminController::class, 'index'])->name('donhangadmin');
 
     Route::get('/sanphamadmin', [SanPhamAdminController::class, 'index'])->name('sanphamadmin');
+
+    Route::get('/nhaphang', [BaoCaoNhapHangController::class, 'index']) ->name('nhaphang');
+
+    Route::get('/khuyenmai', [KhuyenMaiController::class, 'index']) ->name('khuyenmai');
+
+    Route::post('/khuyenmai/themkm', [KhuyenMaiController::class, 'themKM'])->name('khuyenmai.themkm');
 });
 
 

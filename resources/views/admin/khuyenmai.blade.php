@@ -731,7 +731,7 @@
               <div class="w-full overflow-x-auto">
                 <table class="w-full whitespace-no-wrap">
                   <thead>
-                    <tr
+                    <tr style = "background:#999900; color:white; text-align:center;"
                       class="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800"
                     >
                       <th class="px-4 py-3">Nội dung khuyến mãi</th>
@@ -743,18 +743,18 @@
                   </thead>
                   @foreach($dskm as $km)
                   <tbody
-                    class="bg-white divide-y dark:divide-gray-700 dark:bg-gray-800"
+                    class="bg-white divide-y dark:divide-gray-700 dark:bg-gray-800" 
                   >                 
-                            <tr class="text-gray-700 dark:text-gray-400">
-                            <td class="px-4 py-3">
+                            <tr class="text-gray-700 dark:text-gray-400" >
+                            <td class="px-4 py-3" style="border: 1px solid gray; background:#FF9966;">
                                 <div class="flex items-center text-sm">
                                 
                                 <div>
-                                    <p class="font-semibold" style="color:green;">{{$km->nd_khuyen_mai}}</p>
+                                    <p class="font-semibold" style="color:black; word-wrap: break-word; white-space: normal;">{{$km->nd_khuyen_mai}}</p>
                                 </div>
                                 </div>
                             </td>
-                            <td class="px-4 py-3 text-sm">
+                            <td class="px-4 py-3 text-sm" style="border: 1px solid gray;">
                                 <div class="flex items-center text-sm">
                                 
                                 <div>
@@ -762,7 +762,7 @@
                                 </div>
                                 </div>
                             </td>
-                            <td class="px-4 py-3">
+                            <td class="px-4 py-3" style="border: 1px solid gray;">
                                 <div class="flex items-center text-sm">
                                 
                                 <div>
@@ -770,9 +770,10 @@
                                 </div>
                                 </div>
                             </td>
-                            <td class="px-4 py-3 text-sm">
+                            <td class="px-4 py-3 text-sm" style="border: 1px solid gray;">
                                 <Button style="background:green; color: white; width: 100px ; height: 30px; border-radius: 10px; border: 1px;
                                 " data-id="{{$km->ma_khuyen_mai}}" class="moBtnSua">Sửa</Button>
+                                
                                 <!-- Hộp thoại khi nhấn nút sửa -->
                                 <div class="anHienBtnSua" data-id="{{$km->ma_khuyen_mai}}"
                                   style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; 
@@ -836,7 +837,7 @@
                                   </div>
                                 </div>
                             </td>
-                            <td class="px-4 py-3 text-sm">
+                            <td class="px-4 py-3 text-sm" style="border: 1px solid gray;">
                                 <Button style="background:blue; color: white; width: 100px ; height: 30px; border-radius: 10px; border: 1px;
                                 ">Xóa</Button>
                             </td>

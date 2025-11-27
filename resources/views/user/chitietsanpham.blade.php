@@ -1,11 +1,9 @@
-@if(session('success'))
+@if(session()->has('success'))
     <script>
         alert("{{ session('success') }}");
     </script>
-    @php
-        session()->forget('success');
-    @endphp
 @endif
+
 
 
 
