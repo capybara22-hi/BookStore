@@ -2,13 +2,18 @@
 
 namespace App\Models;
 
+use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Auth\Passwords\CanResetPassword;
+use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
+use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use App\Notifications\ResetPasswordNotification;
 
-class User extends Authenticatable
+class User extends Authenticatable implements CanResetPasswordContract
 {
-    use HasFactory;
+    use HasFactory, Notifiable, CanResetPassword;
 
     protected $table = 'users';
     protected $primaryKey = 'ma_nguoi_dung';
