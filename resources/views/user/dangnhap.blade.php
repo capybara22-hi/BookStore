@@ -166,12 +166,12 @@
                       <i class="bi bi-eye"></i>
                     </span>
                   </div>
-                  @error('password')
+                  @error('password').
                   <div style="color: red; font-style: italic ; margin-bottom: 10px; opacity: 0.7;">*{{$message}}</div>
                   @enderror
 
                   <div class="form-options mb-4">
-                    <a href="#" class="forgot-password">Quên mật khẩu?</a>
+                    <a href="{{ route('forgotPass') }}" class="forgot-password fw-bold">Quên mật khẩu?</a>
                   </div>
 
                   <button type="submit" class="auth-btn primary-btn mb-3">
@@ -184,7 +184,7 @@
                   </div>
 
                   <div class="login-link switch-form">
-                    <p>Bạn không có tài khoản? <a href="{{route('dangky')}}">Đăng ký tài khoản</a></p>
+                    <p>Bạn không có tài khoản? <a href="{{route('dangky')}}" class="fw-bold">Đăng ký tài khoản</a></p>
 
                   </div>
                 </form>

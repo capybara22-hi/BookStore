@@ -11,7 +11,15 @@ class SanPhamController extends Controller
     //
     public function index($id){
         $sanpham = SanPham::with('file')->findOrFail($id);
-        return view('user.chitietsanpham', compact('sanpham'));
+            // tạo response cho view
+        $response = response()->view('user.chitietsanpham', compact('sanpham'));
+
+        // thêm header chống cache
+        $response->headers->set('Cache-Control','no-store, no-cache, must-revalidate, max-age=0');
+        $response->headers->set('Pragma','no-cache');
+        $response->headers->set('Expires','Sat, 01 Jan 2000 00:00:00 GMT');
+
+        return $response;
     }
 
     public function themVaoGioHang(Request $request , $id){
