@@ -7,6 +7,7 @@
   <title>Index - NiceShop Bootstrap Template</title>
   <meta name="description" content="">
   <meta name="keywords" content="">
+  <meta name="csrf-token" content="{{ csrf_token() }}">
 
   <!-- Favicons -->
   <link href="{{ asset('assets/img/favicon.png') }}" rel="icon">

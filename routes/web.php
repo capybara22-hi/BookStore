@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\BaoCaoNhapHangController;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\DanhMucController;
@@ -11,6 +12,7 @@ use App\Http\Controllers\ThanhToanController;
 use App\Http\Controllers\TaiKhoanController;
 use App\Http\Controllers\IndexAdminController;
 use App\Http\Controllers\DonHangAdminController;
+use App\Http\Controllers\KhuyenMaiController;
 use App\Http\Controllers\NhapHangController;
 use App\Http\Controllers\SanPhamAdminController;
 use App\Models\DonHang;
@@ -101,18 +103,13 @@ Route::middleware(['auth', 'admin'])->group(function () {
 
     Route::get('/sanphamadmin', [SanPhamAdminController::class, 'index'])->name('sanphamadmin');
 
-    Route::get('/baocaonhaphang', function () {
-        $don_hang = DonHang::all();
-        $nguoi_dung = User::all();
-        return view('admin.baocaonhaphang', compact('don_hang', 'nguoi_dung'));
-    })->name('baocaonhaphang');
+    Route::get('/nhaphang', [BaoCaoNhapHangController::class, 'index'])->name('nhaphang');
 
-    Route::get('/khuyenmai', function () {
-        $dskm = KhuyenMai::all();
-        return view('admin.khuyenmai', compact('dskm'));
-    })->name('khuyenmai');
+    Route::get('/khuyenmai', [KhuyenMaiController::class, 'index'])->name('khuyenmai');
 
-    Route::post('/nhap-hang/import', [NhapHangController::class, 'import'])->name('nhaphang.import');
+    Route::post('/khuyenmai/themkm', [KhuyenMaiController::class, 'themKM'])->name('khuyenmai.themkm');
+
+    Route::post('nhaphang/import', [NhapHangController::class, 'import'])->name('nhaphang.import');
 });
 
 
