@@ -31,7 +31,7 @@
                   <div class="flex items-center text-sm">
 
                     <div>
-                      <p class="font-semibold">{{ $sp->ma_san_pham}}</p>
+                      <p class="font-semibold">{{ $sp->code}}</p>
                       <p class="text-xs text-gray-600 dark:text-gray-400">
 
                       </p>
