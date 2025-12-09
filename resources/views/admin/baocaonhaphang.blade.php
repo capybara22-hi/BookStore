@@ -47,7 +47,7 @@
                               hover:file:bg-purple-100">
                       <button style="background:blue; color: white; width: 100px ; height: 30px; border-radius: 10px; border: 1px; margin-left: 50px;" type="submit">Nhập</button>
                     </form>
-                    <p class="mt-4 text-xs text-gray-500 dark:text-gray-400" style="font-style: italic;">*Chỉ tải được file .xlsx, .xls, .csv <a href="{{ asset('assets/file/mau_nhap_hang.xlsx') }}" download style="color: blue; text-decoration: underline; font-style: italic;">Tải file mẫu nhập hàng</a></p>
+                    <p class="mt-4 text-xs text-gray-500 dark:text-gray-400" style="font-style: italic;">*Chỉ tải được file .xlsx, .xls <a href="{{ asset('assets/file/mau_nhap_hang.xlsx') }}" download style="color: blue; text-decoration: underline; font-style: italic;">Tải file mẫu nhập hàng</a></p>
                   </div>
                 </div>
               </td>
@@ -100,8 +100,7 @@
                 {{$phieu->created_at->format('d/m/Y')}}
               </td>
               <td class="px-4 py-3 text-sm text-center">
-                <Button style="background:blue; color: white; width: 100px ; height: 30px; border-radius: 10px; border: 1px;
-                                  ">Xem chi tiết</Button>
+                <a href="{{ route('chitietnhaphang', ['id' => $phieu->id]) }}"><Button style="background:blue; color: white; width: 100px ; height: 30px; border-radius: 10px; border: 1px;">Xem chi tiết</Button></a>
               </td>
             </tr>
             @endforeach

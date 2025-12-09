@@ -110,6 +110,8 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::post('/khuyenmai/themkm', [KhuyenMaiController::class, 'themKM'])->name('khuyenmai.themkm');
 
     Route::post('nhaphang/import', [NhapHangController::class, 'import'])->name('nhaphang.import');
+
+    Route::get('/chitietnhaphang/{id}', [BaoCaoNhapHangController::class, 'chitietnhaphang'])->name('chitietnhaphang');
 });
 
 

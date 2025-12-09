@@ -595,6 +595,7 @@
             @yield('sanphamadmin')
             @yield('baocaonhaphang')
             @yield('khuyenmai')
+            @yield('chitietnhaphang')
         </div>
     </div>
 

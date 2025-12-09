@@ -40,7 +40,7 @@ class NhapHangImport implements ToModel, WithHeadingRow
                 'phieu_nhap_id' => $this->phieu_nhap_id,
                 'ma_san_pham' => $sanpham->code,
                 'ten_san_pham' => $sanpham->ten_san_pham,
-                'so_luong' => $sanpham->so_luong_sp,
+                'so_luong' => (int)$row['so_luong_sp'],
                 'don_gia' => $sanpham->gia_tien_sp,
             ]);
         } else {
