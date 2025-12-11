@@ -28,5 +28,17 @@ class KhuyenMaiController extends Controller
             'data' => $khuyen_mai
         ]);
     }
+
+    public function xoaKM(Request $request){
+        //xoa khuyen mai
+        $data = $request->json()->all();
+        $maKmXoa = KhuyenMai::findOrFail($data['id_xoa']);
+        
+        $maKmXoa->delete();
+        return response()->json([
+            'success' => true,
+            'message' => 'Khuyến mãi đã được xóa!'
+        ]);
+    }
     
 }

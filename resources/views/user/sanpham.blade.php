@@ -9,8 +9,8 @@
       <h1 class="mb-2 mb-lg-0">Sản phẩm</h1>
     </div>
   </div><!-- End Page Title -->
-
-  <div class="container">
+  <form action="{{ route('sanpham') }}" method="GET" id="filterForm" class="container">
+  <!-- <div class="container"> -->
     <div class="row">
 
       <div class="col-lg-4 sidebar">
@@ -40,7 +40,7 @@
                 @if ($dm->theloai-> isNotEmpty())
                 <ul id="{{ $collapseid }}" class="subcategory-list list-unstyled collapse ps-3 mt-2">
                   @foreach ($dm->theloai as $tl)
-                  <li><a href="#" class="subcategory-link">{{ $tl->ten_the_loai }}</a></li>
+                  <li><a href="{{ route('sanpham', ['ma_the_loai' => $tl->ma_the_loai])}}" class="subcategory-link" >{{ $tl->ten_the_loai }}</a></li>
                   @endforeach
                 </ul>
                 @endif
@@ -63,65 +63,116 @@
           <div class="container" data-aos="fade-up">
 
             <!-- Filter and Sort Options -->
+            <!-- <form action="{{ route('sanpham') }}" method="GET" id="filterForm" class="filter-container mb-4" data-aos="fade-up" data-aos-delay="100"> -->
             <div class="filter-container mb-4" data-aos="fade-up" data-aos-delay="100">
-              <div class="row g-3">
-                <div class="col-12 col-md-6 col-lg-4">
-                  <div class="filter-item search-form">
-                    <label for="productSearch" class="form-label">Tìm kiếm sản phẩm</label>
-                    <div class="input-group">
-                      <input type="text" class="form-control" id="productSearch" placeholder="Tìm kiếm sản phẩm..." aria-label="Tìm kiếm sản phẩm">
-                      <button class="btn search-btn" type="button">
-                        <i class="bi bi-search"></i>
-                      </button>
+              <!-- <form action="{{ route('sanpham') }}" method="GET" id="filterForm" class="row g-3"> -->
+                <div class="row g-3">
+                  <div class="col-12 col-md-6 col-lg-4">
+                    <div class="filter-item search-form">
+                      <label for="productSearch" class="form-label">Tìm kiếm sản phẩm</label>                   
+                        <!-- <form action="{{ route('sanpham') }}" method="GET" class="input-group"> -->
+                        <div class="input-group">
+                          <input type="text" name="keySearch" class="form-control" id="productSearch"
+                                placeholder="Tìm kiếm sản phẩm..." value="{{ $keyword ?? '' }}">
+                          <button class="btn search-btn" type="submit">
+                            <i class="bi bi-search"></i>
+                          </button>
+                        </div>
+                          
+                        <!-- </form>          -->
+                    </div>
+                  </div>
+                  <!-- Bắt đầu bộ lọc giá -->
+                  <!-- <form action="{{ route('sanpham') }}" method="GET" id="filterForm" class="col-12 col-md-6 col-lg-2"> -->
+                    <div class="col-12 col-md-6 col-lg-2" style = "width:250px">
+                      <div class="filter-item">
+                        <label for="priceRange" class="form-label">Khoảng giá</label>
+                        <select name="priceRange" class="form-select" onchange="document.getElementById('filterForm').submit();">
+                          <option value="">Tất cả</option>
+                          <option value="5" {{ (isset($priceRange) && $priceRange=='5') ? 'selected' : '' }}>Dưới 5.000 VND</option>
+                          <option value="5to10" {{ (isset($priceRange) && $priceRange=='5to10') ? 'selected' : '' }}>5.000 VND đến 10.000 VND</option>
+                          <option value="10to20" {{ (isset($priceRange) && $priceRange=='10to20') ? 'selected' : '' }}>10.000 VND đến 20.000 VND</option>
+                          <option value="20to50" {{ (isset($priceRange) && $priceRange=='20to50') ? 'selected' : '' }}>20.000 VND đến 50.000 VND</option>
+                          <option value="50" {{ (isset($priceRange) && $priceRange=='50') ? 'selected' : '' }}>50.000 VND trở lên</option>
+                        </select>
+                      </div>
+                    </div>
+                  <!-- </form> -->
+                  <!-- kết thúc bộ lọc giá -->
+                  <div class="col-12 col-md-6 col-lg-2" style = "width:250px">
+                    <div class="filter-item">
+                      <label for="sortBy" class="form-label">Sắp xếp theo</label>
+                      <select class="form-select" id="sortBy" name="sapXep" onchange="document.getElementById('filterForm').submit();">
+                        <option>Nổi bật</option>
+                        <option value="tang" {{(isset($sapXep) && $sapXep=='tang') ? 'selected' : '' }}>Giá: Thấp đến Cao</option>
+                        <option value="giam" {{(isset($sapXep) && $sapXep == "giam") ? 'selected' : '' }}>Giá: Cao đến Thấp</option>
+                      </select>
                     </div>
                   </div>
                 </div>
-
-                <div class="col-12 col-md-6 col-lg-2">
-                  <div class="filter-item">
-                    <label for="priceRange" class="form-label">Khoảng giá</label>
-                    <select class="form-select" id="priceRange">
-                      <option selected="">Tất cả giá</option>
-                      <option>Dưới 25.000 VND</option>
-                      <option>25.000 VND đến 50.000 VND</option>
-                      <option>50.000 VND đến 100.000 VND</option>
-                      <option>100.000 VND đến 200.000 VND</option>
-                      <option>200.000 VND trở lên</option>
-                    </select>
-                  </div>
-                </div>
-
-                <div class="col-12 col-md-6 col-lg-2">
-                  <div class="filter-item">
-                    <label for="sortBy" class="form-label">Sắp xếp theo</label>
-                    <select class="form-select" id="sortBy">
-                      <option selected="">Nổi bật</option>
-                      <option>Giá: Thấp đến Cao</option>
-                      <option>Giá: Cao đến Thấp</option>
-                    </select>
-                  </div>
-                </div>
-              </div>
-
+              <!-- </form> -->
               <div class="row mt-3">
                 <div class="col-12" data-aos="fade-up" data-aos-delay="200">
                   <div class="active-filters">
                     <span class="active-filter-label">Active Filters:</span>
                     <div class="filter-tags">
-                      <span class="filter-tag">
-                        Electronics <button class="filter-remove"><i class="bi bi-x"></i></button>
-                      </span>
-                      <span class="filter-tag">
-                        $50 to $100 <button class="filter-remove"><i class="bi bi-x"></i></button>
-                      </span>
-                      <button class="clear-all-btn">Clear All</button>
+                      {{-- Hiển thị bộ lọc giá nếu có --}}
+                      @if(!empty($priceRange))
+                          <span class="filter-tag">
+                              @switch($priceRange)
+                                  @case('5')
+                                      Dưới 5.000 VND
+                                      @break
+                                  @case('5to10')
+                                      5.000 VND đến 10.000 VND
+                                      @break
+                                  @case('10to20')
+                                      10.000 VND đến 20.000 VND
+                                      @break
+                                  @case('20to50')
+                                      20.000 VND đến 50.000 VND
+                                      @break
+                                  @case('50')
+                                      50.000 VND trở lên
+                                      @break
+                              @endswitch
+                              <button class="filter-remove" value="xoaBoLoc" name="xoaBoLoc" onchange="document.getElementById('filterForm').submit();"><i class="bi bi-x"></i></button>
+                          </span>
+                      @endif
+
+                      {{-- Hiển thị sắp xếp nếu có --}}
+                      @if(!empty($sapXep))
+                          <span class="filter-tag">
+                              @switch($sapXep)
+                                  @case('tang')
+                                      Giá: Thấp đến Cao
+                                      @break
+                                  @case('giam')
+                                      Giá: Cao đến Thấp
+                                      @break
+                              @endswitch
+                              <button class="filter-remove"
+                                      value="xoaSapXep" name="xoaSapXep" onchange="document.getElementById('filterForm').submit();"
+                              ><i class="bi bi-x"></i></button>
+                          </span>
+                      @endif
+                      {{-- Hiển thị thể loại nếu có --}}
+                      @if(!empty($ma_the_loai))
+                          <span class="filter-tag">
+                            {{$tentl->ten_the_loai}}
+                              <button class="filter-remove"
+                                      value="xoaTheLoai" name="xoaTheLoai" onchange="document.getElementById('filterForm').submit();"
+                              ><i class="bi bi-x"></i></button>
+                          </span>
+                      @endif
+
+                      <button class="clear-all-btn" value="xoaAll" name="xoaAllBoLoc" onchange="document.getElementById('filterForm').submit();">Xóa tất cả bộ lọc và tìm kiếm</button>
                     </div>
                   </div>
                 </div>
               </div>
-
             </div>
-
+            <!-- </form> -->
           </div>
 
         </section><!-- /Category Header Section -->
@@ -132,37 +183,40 @@
           <div class="container" data-aos="fade-up" data-aos-delay="100">
 
             <div class="row g-4">
+
+                  
               <!-- Hiển thị danh sách sản phẩm -->
-              @foreach ($sanphams as $sp)
-              <div class="col-6 col-xl-4">
-                <div class="product-card" data-aos="zoom-in">
-                  <div class="product-image">
-                    @foreach ($sp->file as $file)
-                    @if ($loop->first) {{-- chỉ lấy ảnh đầu tiên --}}
-                    <img src="{{ asset($file->duong_dan_luu) }}" class="main-image img-fluid" alt="Product">
-                    <img src="{{ asset($file->duong_dan_luu) }}" class="hover-image img-fluid" alt="Product Variant">
-                    @endif
-                    @endforeach
+                    @foreach ($sanphams as $sp)
+                    <div class="col-6 col-xl-4">
+                      <div class="product-card" data-aos="zoom-in">
+                        <div class="product-image">
+                          @foreach ($sp->file as $file)
+                          @if ($loop->first) {{-- chỉ lấy ảnh đầu tiên --}}
+                          <img src="{{ asset($file->duong_dan_luu) }}" class="main-image img-fluid" alt="Product">
+                          <img src="{{ asset($file->duong_dan_luu) }}" class="hover-image img-fluid" alt="Product Variant">
+                          @endif
+                          @endforeach
 
 
-                  </div>
+                        </div>
 
-                  <div class="product-details">
-                    <div class="product-category">Women's Fashion</div>
-                    <h4 class="product-title">
-                      <a href="{{ route('chitietsanpham', ['id' => $sp->ma_san_pham]) }}">{{ $sp->ten_san_pham }}</a>
-                    </h4>
-                    <div class="product-meta">
-                      <div class="product-price">{{ number_format($sp->gia_tien_sp) }} VND</div>
-                      <div class="product-rating">
-                        <i class="bi bi-star-fill"></i>
-                        4.8 <span>(42)</span>
+                        <div class="product-details">
+                          <div class="product-category">Women's Fashion</div>
+                          <h4 class="product-title">
+                            <a href="{{ route('chitietsanpham', ['id' => $sp->ma_san_pham]) }}">{{ $sp->ten_san_pham }}</a>
+                          </h4>
+                          <div class="product-meta">
+                            <div class="product-price">{{ number_format($sp->gia_tien_sp) }} VND</div>
+                            <div class="product-rating">
+                              <i class="bi bi-star-fill"></i>
+                              4.8 <span>(42)</span>
+                            </div>
+                          </div>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                </div>
-              </div>
-              @endforeach
+
+                    @endforeach
 
             </div>
 
@@ -206,7 +260,21 @@
       </div>
 
     </div>
-  </div>
-
+  <!-- </div> -->
+  </form>
 </main>
+
+<!-- <script>
+  document.addEventListener("DOMContentLoaded", function (){
+    const Loc = document.querySelectorAll('.boLoc');
+
+    Loc.forEach(item=>{
+      item.addEventListener('click', function(){
+        const valLoc = item.getAttribute("data-id");
+
+        fetch(`/sanpham?keyLoc=${valLoc}`, { method: "GET" })
+      });
+    });
+  });
+</script> -->
 @endsection

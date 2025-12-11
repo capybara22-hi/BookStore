@@ -836,10 +836,12 @@
                                     </button>
                                   </div>
                                 </div>
+                                <!-- end hộp thoại -->
                             </td>
                             <td class="px-4 py-3 text-sm" style="border: 1px solid gray;">
                                 <Button style="background:blue; color: white; width: 100px ; height: 30px; border-radius: 10px; border: 1px;
-                                ">Xóa</Button>
+                                " data-id="{{$km->ma_khuyen_mai}}" class="btnXoaKM"
+                                >Xóa</Button>
                             </td>
                             </tr>
                   </tbody>
@@ -875,6 +877,9 @@
       // khai bao bien sua khuyen mai
       const dongBtnSua = document.querySelectorAll('.dongBtnSua');
       const moBtnSua = document.querySelectorAll('.moBtnSua');
+
+      // khai báo biến xóa khuyến mãi
+      const btnXoaKM = document.querySelectorAll('.btnXoaKM');
 
 
       // đóng form thêm khuyến mãi
@@ -948,6 +953,35 @@
         alert("Bạn đã thêm khuyến mãi thành công");
       });
 
+
+      // xu ly su kien xoa khuyen mai theo ma_khuyen_mai
+      btnXoaKM.forEach(btn =>{
+        btn.addEventListener('click', function(){
+          const id = btn.getAttribute("data-id");
+          
+          fetch("/khuyenmai/xoakm", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').getAttribute("content")
+            },
+            body: JSON.stringify({
+              id_xoa: id
+            })
+          })
+          .then(response => response.json())
+          .then(data => {
+            console.log("Gửi đi thành công:", data);
+          })
+          .catch(error => {
+            console.error("Gửi đi thất bại:", error);
+            
+          });
+
+          window.location.href = window.location.href;
+          alert("Bạn đã xóa khuyến mãi thành công");
+        });
+      });
     });
 
     

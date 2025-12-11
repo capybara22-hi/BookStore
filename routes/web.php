@@ -88,6 +88,8 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/khuyenmai', [KhuyenMaiController::class, 'index']) ->name('khuyenmai');
 
     Route::post('/khuyenmai/themkm', [KhuyenMaiController::class, 'themKM'])->name('khuyenmai.themkm');
+
+    Route::post('/khuyenmai/xoakm', [KhuyenMaiController::class, 'xoaKM'])->name('khuyenmai.xoakm');
 });
 
 
@@ -95,8 +97,6 @@ Route::middleware(['auth', 'admin'])->group(function () {
 Route::middleware(['auth', 'customer'])->group(function () {
     Route::prefix('/user')->group(function () {
         Route::get('/sanpham', [DanhMucController::class, 'index'])->name('sanpham');
-
-
         Route::get('/giohang', [GioHangController::class, 'index'])->name('giohang');
 
 

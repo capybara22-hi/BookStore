@@ -21,4 +21,9 @@ class SanPham extends Model
         return $this->hasMany(GioHang::class, 'ma_san_pham', 'ma_san_pham');
     }
 
+    public function theloaisp()
+    {
+        return $this->belongsTo(TheLoai::class, 'ma_the_loai', 'ma_the_loai');
+    }
+
 }
