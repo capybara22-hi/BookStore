@@ -13,11 +13,23 @@ class SanPham extends Model
     protected $primaryKey = 'ma_san_pham';
     public $timestamps = false;
 
-    public function file(){
+    protected $fillable = [
+        'code',
+        'ten_san_pham',
+        'tac_gia',
+        'gia_tien_sp',
+        'so_luong_sp',
+        'mo_ta_san_pham',
+        'ma_the_loai',
+    ];
+
+    public function file()
+    {
         return $this->hasMany(File::class, 'ma_san_pham', 'ma_san_pham');
     }
 
-    public function giohang(){
+    public function giohang()
+    {
         return $this->hasMany(GioHang::class, 'ma_san_pham', 'ma_san_pham');
     }
 
@@ -25,5 +37,6 @@ class SanPham extends Model
     {
         return $this->belongsTo(TheLoai::class, 'ma_the_loai', 'ma_the_loai');
     }
+
 
 }

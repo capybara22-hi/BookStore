@@ -796,7 +796,7 @@
                                     <label>Phần trăm giảm:</label><br>
                                     <input type="number" 
                                           style="width:90%; padding:8px; margin-top:5px; border-radius:6px; border:1px solid #ccc;" placeholder = "Nhập trong khoảng từ 1% đến 100%"
-                                          class="themPhanTramKM" required
+                                          class="suaPhanTramKM" required
                                           value = "{{$km->phan_tram_giam}}"
                                           > %<br><br>
                                     <label>Cho đơn: </label><br>
@@ -877,6 +877,7 @@
       // khai bao bien sua khuyen mai
       const dongBtnSua = document.querySelectorAll('.dongBtnSua');
       const moBtnSua = document.querySelectorAll('.moBtnSua');
+      const luuBtnSua = document.querySelectorAll('.luuBtnSua');
 
       // khai báo biến xóa khuyến mãi
       const btnXoaKM = document.querySelectorAll('.btnXoaKM');
@@ -953,6 +954,57 @@
         alert("Bạn đã thêm khuyến mãi thành công");
       });
 
+      // --- LƯU SAU KHI SỬA ---
+      luuBtnSua.forEach(btn => {
+          btn.addEventListener("click", function () {
+              const id = btn.getAttribute("data-id");
+              const modal = document.querySelector(`.anHienBtnSua[data-id="${id}"]`);
+
+              if (!modal) return;
+
+              // Lấy dữ liệu từ form sửa
+              const valTenKM      = modal.querySelector('.suaTenKM').value.trim();
+              const valPhanTramKM = modal.querySelector('.suaPhanTramKM').value.trim();
+              const valGiaDonKM   = modal.querySelector('.suaGiaDonKM').value.trim();
+              const valTimeBD     = modal.querySelector('.suatimeBD').value.trim();
+              const valTimeKT     = modal.querySelector('.suatimeKT').value.trim();
+
+              const thongBaoErr = modal.querySelector('#tt_an_sua');
+
+              // Kiểm tra rỗng
+              if (!valTenKM || !valPhanTramKM || !valGiaDonKM || !valTimeBD || !valTimeKT) {
+                  thongBaoErr.innerHTML = "Vui lòng nhập đầy đủ thông tin!";
+                  return;
+              }
+
+              // Gửi API sửa
+              fetch("/khuyenmai/suakm", {
+                  method: "POST",
+                  headers: {
+                      "Content-Type": "application/json",
+                      "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').getAttribute("content")
+                  },
+                  body: JSON.stringify({
+                      id_sua: id,
+                      nd_km: valTenKM,
+                      phan_tram: valPhanTramKM,
+                      gia_don: valGiaDonKM,
+                      tg_bd: valTimeBD,
+                      tg_kt: valTimeKT
+                  })
+              })
+              .then(response => response.json())
+              .then(data => {
+                  console.log("Sửa thành công:", data);
+              })
+              .catch(error => {
+                  console.error("Lỗi sửa KM:", error);
+              });
+
+              alert("Cập nhật khuyến mãi thành công!");
+              window.location.reload();
+          });
+      });
 
       // xu ly su kien xoa khuyen mai theo ma_khuyen_mai
       btnXoaKM.forEach(btn =>{
