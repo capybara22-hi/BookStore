@@ -95,15 +95,15 @@
                     <i class="bi bi-person-circle me-2"></i>
                     <span>Hồ Sơ Của Tôi</span>
                   </a>
-                  <a class="dropdown-item d-flex align-items-center" href="taikhoan.blade.php">
+                  <a class="dropdown-item d-flex align-items-center" href="{{route('taikhoan')}}">
                     <i class="bi bi-bag-check me-2"></i>
                     <span>Đơn Hàng Của Tôi</span>
                   </a>
-                  <a class="dropdown-item d-flex align-items-center" href="taikhoan.blade.php">
+                  <a class="dropdown-item d-flex align-items-center" href="{{route('taikhoan')}}">
                     <i class="bi bi-heart me-2"></i>
                     <span>Danh Sách Yêu Thích</span>
                   </a>
-                  <a class="dropdown-item d-flex align-items-center" href="taikhoan.blade.php">
+                  <a class="dropdown-item d-flex align-items-center" href="{{route('taikhoan')}}">
                     <i class="bi bi-gear me-2"></i>
                     <span>Cài Đặt</span>
                   </a>

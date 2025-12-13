@@ -191,7 +191,7 @@
                               <input class="form-check-input shipping-option"
                                 type="radio"
                                 name="shipping"
-                                id="vc_{{ $vc->ma_van_chuyen }}"
+                                id="{{ $vc->ma_van_chuyen }}"
                                 data-fee="{{ $vc->so_tien}}"
                                 data-cond="{{ $vc->dieu_kien ?? 0 }}"
                                 value="{{ $vc->ma_van_chuyen }}">
@@ -454,34 +454,35 @@
       // ======================= XÓA SẢN PHẨM TRONG GIỎ HÀNG =======================
 
       document.addEventListener("click", function (event) {
-          const btnRemove = event.target.closest(".remove-item");
+        const btnRemove = event.target.closest(".remove-item");
 
-          if (btnRemove) {
-              const cartItem = btnRemove.closest(".cart-item");
-              const cartId = cartItem.dataset.id;
+        if (btnRemove) {
+            const cartItem = btnRemove.closest(".cart-item");
+            const cartId = cartItem.dataset.id;
 
-              if (!confirm("Bạn có chắc muốn xóa sản phẩm này?")) return;
+            if (!confirm("Bạn có chắc muốn xóa sản phẩm này?")) return;
 
-              fetch("{{ route('giohang.xoa') }}", {
-                  method: "POST",
-                  headers: {
-                      "Content-Type": "application/json",
-                      "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').content
-                  },
-                  body: JSON.stringify({ ma_gio_hang: cartId })
-              })
-              .then(res => res.json())
-              .then(data => {
-                  if (data.status === "success") {
-                      cartItem.remove();
-                      updateCartSummary();
-                  } else {
-                      alert("Lỗi: " + data.message);
-                  }
-              })
-              .catch(err => console.error("Lỗi khi xóa:", err));
-          }
+            fetch("{{ route('giohang.xoa') }}", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').content
+                },
+                body: JSON.stringify({ ma_gio_hang: cartId })
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.status === "success") {
+                    // Thay vì remove DOM, load lại trang
+                    location.reload();
+                } else {
+                    alert("Lỗi: " + data.message);
+                }
+            })
+            .catch(err => console.error("Lỗi khi xóa:", err));
+        }
       });
+
 
       // === KHI CHỌN RADIO KHUYẾN MÃI → UPDATE NGAY GIẢM GIÁ ===
       document.querySelectorAll(".promo-option").forEach(radio => {

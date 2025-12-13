@@ -6,6 +6,14 @@
 <script>
   alert("{{ session('success') }}");
 </script>
+@elseif(session()->has('successDG'))
+<script>
+  alert("{{ session('successDG') }}");
+</script>
+@elseif(session()->has('successXDG'))
+<script>
+  alert("{{ session('successXDG') }}");
+</script>
 @endif
 @extends('components.homeLayout')
 
@@ -196,9 +204,71 @@
                         </div>
                       </div>
                       <div class="order-footer">
-                        <button type="button" class="btn-track" data-bs-toggle="collapse" data-bs-target="#tracking{{ $dh->ma_don_hang}}" aria-expanded="false">Theo dõi đơn hàng</button>
-                        <button type="button" class="btn-details" data-bs-toggle="collapse" data-bs-target="#details{{ $dh->ma_don_hang}}" aria-expanded="false">Xem chi tiết đơn hàng</button>
+                        <button type="button" 
+                                class="btn-order-action" 
+                                data-dh="{{ $dh->ma_don_hang }}" 
+                                data-status="{{ $dh->trang_thai_dh }}"
+                                {{ $dh->trang_thai_dh == 6 ? 'disabled' : '' }}
+                                style="
+                                    {{ $dh->trang_thai_dh >= 4 ? 'background-color: orange; color: white;' : '' }}
+                                    {{ $dh->trang_thai_dh == 6 ? 'background-color: gray; cursor: not-allowed;' : '' }}
+                                ">
+                            @if($dh->trang_thai_dh == 6)
+                                Đã đánh giá
+                            @elseif($dh->trang_thai_dh >= 4)
+                                Đánh giá đơn hàng
+                            @elseif($dh->trang_thai_dh == 3)
+                                Xác nhận đã nhận
+                            @else
+                                Hủy đơn hàng
+                            @endif
+                        </button>
+                        <button type="button" 
+                                class="btn-details" 
+                                data-bs-toggle="collapse" 
+                                data-bs-target="#details{{ $dh->ma_don_hang }}" 
+                                aria-expanded="false">
+                            Xem chi tiết
+                        </button>
                       </div>
+
+                      <!-- Modal đánh giá -->
+                      @if($dh->trang_thai_dh >= 4)
+                      <div class="modal fade" id="evaluateModal{{ $dh->ma_don_hang }}" tabindex="-1" aria-labelledby="evaluateModalLabel{{ $dh->ma_don_hang }}" aria-hidden="true">
+                          <div class="modal-dialog modal-dialog-centered">
+                              <div class="modal-content">
+                                  <div class="modal-header">
+                                      <h5 class="modal-title" id="evaluateModalLabel{{ $dh->ma_don_hang }}">Đánh giá đơn hàng {{ $dh->ma_don_hang }}</h5>
+                                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                  </div>
+                                  <form action="{{ route('review.store') }}" method="POST">
+                                      @csrf
+                                      <div class="modal-body">
+                                          <input type="hidden" name="ma_don_hang" value="{{ $dh->ma_don_hang }}">
+                                          <div class="mb-3">
+                                              <label for="rating{{ $dh->ma_don_hang }}" class="form-label">Đánh giá sao:</label>
+                                              <select class="form-select" id="rating{{ $dh->ma_don_hang }}" name="rating">
+                                                  <option value="5">5 - Tuyệt vời</option>
+                                                  <option value="4">4 - Tốt</option>
+                                                  <option value="3">3 - Trung bình</option>
+                                                  <option value="2">2 - Kém</option>
+                                                  <option value="1">1 - Rất kém</option>
+                                              </select>
+                                          </div>
+                                          <div class="mb-3">
+                                              <label for="comment{{ $dh->ma_don_hang }}" class="form-label">Bình luận:</label>
+                                              <textarea class="form-control" id="comment{{ $dh->ma_don_hang }}" name="comment" rows="3"></textarea>
+                                          </div>
+                                      </div>
+                                      <div class="modal-footer">
+                                          <button type="submit" class="btn btn-primary">Gửi đánh giá</button>
+                                          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                                      </div>
+                                  </form>
+                              </div>
+                          </div>
+                      </div>
+                      @endif
 
                       <!-- Order Tracking -->
                       <div class="collapse tracking-info" id="tracking{{ $dh->ma_don_hang}}">
@@ -316,22 +386,6 @@
                     @endforeach
                   </div>
 
-                  <!-- Pagination -->
-                  <div class="pagination-wrapper" data-aos="fade-up">
-                    <button type="button" class="btn-prev" disabled="">
-                      <i class="bi bi-chevron-left"></i>
-                    </button>
-                    <div class="page-numbers">
-                      <button type="button" class="active">1</button>
-                      <button type="button">2</button>
-                      <button type="button">3</button>
-                      <span>...</span>
-                      <button type="button">12</button>
-                    </div>
-                    <button type="button" class="btn-next">
-                      <i class="bi bi-chevron-right"></i>
-                    </button>
-                  </div>
                 </div>
 
                 <!-- Wishlist Tab -->
@@ -403,75 +457,104 @@
                 <!-- Reviews Tab -->
                 <div class="tab-pane fade" id="reviews">
                   <div class="section-header" data-aos="fade-up">
-                    <h2>My Reviews</h2>
+                    <h2>Đánh giá đơn hàng</h2>
                     <div class="header-actions">
                       <div class="dropdown">
                         <button class="filter-btn" data-bs-toggle="dropdown">
                           <i class="bi bi-funnel"></i>
-                          <span>Sort by: Recent</span>
+                          <span>Sắp xếp</span>
                         </button>
                         <ul class="dropdown-menu">
-                          <li><a class="dropdown-item" href="#">Recent</a></li>
-                          <li><a class="dropdown-item" href="#">Highest Rating</a></li>
-                          <li><a class="dropdown-item" href="#">Lowest Rating</a></li>
+                          <li><a class="dropdown-item" href="#">Gần đây</a></li>
+                          <li><a class="dropdown-item" href="#">Đánh giá cao - thấp</a></li>
+                          <li><a class="dropdown-item" href="#">Đánh giá thấp - cao</a></li>
                         </ul>
                       </div>
                     </div>
                   </div>
 
                   <div class="reviews-grid">
-                    <!-- Review Card 1 -->
-                    <div class="review-card" data-aos="fade-up" data-aos-delay="100">
-                      <div class="review-header">
-                        <img src="{{ asset('assets/img/product/product-1.webp') }}" alt="Product" class="product-image" loading="lazy">
-                        <div class="review-meta">
-                          <h4>Lorem ipsum dolor sit amet</h4>
-                          <div class="rating">
-                            <i class="bi bi-star-fill"></i>
-                            <i class="bi bi-star-fill"></i>
-                            <i class="bi bi-star-fill"></i>
-                            <i class="bi bi-star-fill"></i>
-                            <i class="bi bi-star-fill"></i>
-                            <span>(5.0)</span>
-                          </div>
-                          <div class="review-date">Reviewed on Feb 15, 2025</div>
-                        </div>
-                      </div>
-                      <div class="review-content">
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-                      </div>
-                      <div class="review-footer">
-                        <button type="button" class="btn-edit">Edit Review</button>
-                        <button type="button" class="btn-delete">Delete</button>
-                      </div>
-                    </div>
+                      @foreach($reviews as $review)
+                          <div class="review-card" data-aos="fade-up">
+                              <div class="review-header">
+                                  <img src="{{ asset('assets/img/product/product-1.webp') }}" alt="Product" class="product-image" loading="lazy">
+                                  <div class="review-meta">
+                                      <h4>{{ $review->sanpham->ten_san_pham }}</h4>
+                                      <div class="rating">
+                                          @for($i=1; $i<=5; $i++)
+                                              <i class="bi {{ $i <= $review->rating ? 'bi-star-fill' : 'bi-star' }}"></i>
+                                          @endfor
+                                          <span>({{ $review->rating }})</span>
+                                      </div>
+                                      <div class="review-date">Đánh giá vào: {{ $review->created_at->format('d M, Y') }}</div>
+                                  </div>
+                              </div>
 
-                    <!-- Review Card 2 -->
-                    <div class="review-card" data-aos="fade-up" data-aos-delay="200">
-                      <div class="review-header">
-                        <img src="{{ asset('assets/img/product/product-2.webp') }}" alt="Product" class="product-image" loading="lazy">
-                        <div class="review-meta">
-                          <h4>Consectetur adipiscing elit</h4>
-                          <div class="rating">
-                            <i class="bi bi-star-fill"></i>
-                            <i class="bi bi-star-fill"></i>
-                            <i class="bi bi-star-fill"></i>
-                            <i class="bi bi-star-fill"></i>
-                            <i class="bi bi-star"></i>
-                            <span>(4.0)</span>
+                              <div class="review-content">
+                                  <p>Nội dung đánh giá: {{ $review->comment }}</p>
+                              </div>
+
+                              <div class="review-footer" style="display:flex; gap:8px;">
+                                  <button class="btn-edit-review"
+                                          data-id="modal-{{ $review->ma_danh_gia }}"
+                                          {{ $review->edit_count >= 2 ? 'disabled' : '' }}>
+                                      Sửa
+                                  </button>
+
+                                  <form action="{{ route('review.destroy', $review->ma_danh_gia) }}" method="POST" style="display:inline">
+                                      @csrf
+                                      @method('DELETE')
+                                      <button type="submit" class="btn-delete" onclick="return confirm('Bạn có chắc muốn xóa review này?')">
+                                          Xóa
+                                      </button>
+                                  </form>
+                              </div>
                           </div>
-                          <div class="review-date">Reviewed on Feb 10, 2025</div>
-                        </div>
-                      </div>
-                      <div class="review-content">
-                        <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-                      </div>
-                      <div class="review-footer">
-                        <button type="button" class="btn-edit">Edit Review</button>
-                        <button type="button" class="btn-delete">Delete</button>
-                      </div>
-                    </div>
+
+                          <!-- Modal sửa review -->
+                          <div class="modal" id="modal-{{ $review->ma_danh_gia }}"
+                              style="display:none; position: fixed; z-index: 9999; inset: 0; background: rgba(0,0,0,0.4); align-items: center; justify-content: center;">
+                              
+                              <div class="modal-content"
+                                  style="background: #fff; width: 420px; border-radius: 14px; padding: 22px 24px; box-shadow: 0 20px 50px rgba(0,0,0,0.25); position: relative;">
+                                  
+                                  <span class="close-modal"
+                                        style="position: absolute; top: 12px; right: 14px; font-size: 26px; cursor: pointer; color: #888;">
+                                      &times;
+                                  </span>
+
+                                  <h4 style="text-align: center; margin-bottom: 18px; font-size: 20px; font-weight: 600;">
+                                      Sửa đánh giá
+                                  </h4>
+
+                                  <form method="POST" action="{{ route('review.update', $review->ma_danh_gia) }}">
+                                      @csrf
+
+                                      <label style="font-weight: 500; margin-bottom: 6px; display:block;">Đánh giá:</label>
+                                      <select name="rating" style="width: 100%; padding: 8px 10px; border-radius: 8px; border: 1px solid #ccc; margin-bottom: 14px;">
+                                          @for($i=1;$i<=5;$i++)
+                                              <option value="{{ $i }}" {{ $review->rating == $i ? 'selected' : '' }}>
+                                                  {{ $i }} sao
+                                              </option>
+                                          @endfor
+                                      </select>
+
+                                      <label style="font-weight: 500; margin-bottom: 6px; display:block;">Nội dung:</label>
+                                      <textarea name="comment" rows="4"
+                                                style="width: 100%; padding: 8px 10px; border-radius: 8px; border: 1px solid #ccc; margin-bottom: 18px; resize: none;">{{ $review->comment }}
+                                      </textarea>
+
+                                      <button type="submit"
+                                              style="width: 100%; background: orange; border: none; color: white; padding: 10px; border-radius: 8px; font-weight: 600; cursor: pointer;">
+                                          Cập nhật
+                                      </button>
+                                  </form>
+                              </div>
+                          </div>
+
+                      @endforeach
                   </div>
+
                 </div>
 
                 <!-- Addresses Tab -->
@@ -602,4 +685,98 @@
     </section><!-- /Account Section -->
 
   </main>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+
+    // Mở modal
+    document.querySelectorAll(".btn-edit-review").forEach(btn => {
+        btn.addEventListener("click", function () {
+            let modalId = this.getAttribute("data-id");
+            let modal = document.getElementById(modalId);
+            if (modal) modal.style.display = "flex";
+        });
+    });
+
+    // Đóng modal khi bấm nút X
+    document.querySelectorAll(".close-modal").forEach(closeBtn => {
+        closeBtn.addEventListener("click", function () {
+            this.closest(".modal").style.display = "none";
+        });
+    });
+
+    // Đóng modal khi click ra ngoài
+    document.querySelectorAll(".modal").forEach(modal => {
+        modal.addEventListener("click", function (e) {
+            if (e.target === modal) modal.style.display = "none";
+        });
+    });
+
+  });
+  document.querySelectorAll('.btn-order-action').forEach(btn => {
+      btn.addEventListener('click', function () {
+
+          let status = parseInt(this.dataset.status);
+          const maDH = this.dataset.dh;
+
+          // ⛔ ĐÃ ĐÁNH GIÁ → KHÔNG LÀM GÌ
+          if (status === 6) {
+              return;
+          }
+
+          // ✅ XÁC NHẬN ĐÃ NHẬN HÀNG
+          if (status === 3) {
+              if (!confirm("Bạn đã nhận được hàng?")) return;
+
+              fetch(`/user/don-hang/${maDH}/xac-nhan`, {
+                  method: 'POST',
+                  headers: {
+                      'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                  }
+              })
+              .then(res => res.json())
+              .then(data => {
+                  if (data.status === 'success') {
+                      alert("Xác nhận nhận hàng thành công");
+
+                      // 🔁 cập nhật nút ngay
+                      this.dataset.status = 4;
+                      this.textContent = "Đánh giá đơn hàng";
+                      this.style.background = "orange";
+                      this.style.color = "white";
+                  }
+              });
+          }
+
+          // ⭐ MỞ MODAL ĐÁNH GIÁ
+          else if (status === 4) {
+              const modalEl = document.getElementById(`evaluateModal${maDH}`);
+              if (modalEl) {
+                  const modal = new bootstrap.Modal(modalEl);
+                  modal.show();
+              }
+          }
+
+          // ❌ HỦY ĐƠN
+          else if (status < 3) {
+              if (!confirm("Bạn có chắc muốn hủy đơn hàng?")) return;
+
+              fetch(`/user/don-hang/${maDH}/huy`, {
+                  method: 'POST',
+                  headers: {
+                      'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                  }
+              })
+              .then(res => res.json())
+              .then(data => {
+                  if (data.status === 'success') {
+                      alert("Đơn hàng đã bị hủy");
+                      location.reload();
+                  }
+              });
+          }
+
+      });
+  });
+</script>
+
 @endsection

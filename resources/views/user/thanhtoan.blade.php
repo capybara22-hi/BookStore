@@ -1,3 +1,8 @@
+@if(session()->has('successTDH'))
+<script>
+  alert("{{ session('successTDH') }}");
+</script>
+@endif
 <!DOCTYPE html>
 <html lang="en">
 

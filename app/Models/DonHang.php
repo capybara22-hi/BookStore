@@ -11,7 +11,7 @@ class DonHang extends Model
     protected $table = 'don_hang';
     protected $primaryKey = 'ma_don_hang';
     public $timestamps = false;
-    protected $fillable = ['ma_nguoi_dung', 'tien_hang', 'loai_van_chuyen', 'phi_van_chuyen', 'thanh_tien'];
+    protected $fillable = ['ma_nguoi_dung', 'tien_hang', 'loai_van_chuyen', 'phi_van_chuyen', 'thanh_tien', 'trang_thai_dh'];
 
     public function user()
     {

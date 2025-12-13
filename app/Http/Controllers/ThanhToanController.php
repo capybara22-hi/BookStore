@@ -9,13 +9,14 @@ use App\Models\User;
 use App\Models\VanChuyen;
 use App\Models\DonHang;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
+use Illuminate\Support\Facades\Auth;
 
 class ThanhToanController extends Controller
 {
     public function show()
     {
         // dd(session()->all());
-        $ma_nguoi_dung = 1;
+        $ma_nguoi_dung = Auth::id(); // lấy user đang đăng nhập
         $ma_vc = session('ma_vc');
         $phi_vc = session('phi_vc');
         $thanh_tien = session('thanh_tien');
@@ -53,7 +54,7 @@ class ThanhToanController extends Controller
     public function updateTrangThai(Request $request)
     {
         
-        $ma_nguoi_dung = 1;
+        $ma_nguoi_dung = Auth::id(); // lấy user đang đăng nhập
         $gioHang = GioHang::where('ma_nguoi_dung', $ma_nguoi_dung)->get();
 
         if (!$gioHang) {
@@ -77,13 +78,13 @@ class ThanhToanController extends Controller
         $tien_giam = session('tien_giam');
         $ma_khuyen_mai = session('ma_khuyen_mai');
 
-        if (!$ma_vc || !$phi_vc || !$thanh_tien || !$tien_hang || !$tien_giam || !$ma_khuyen_mai) {
+        if (!$ma_vc || !$phi_vc || !$thanh_tien || !$tien_hang) {
             return response()->json(['error' => 'Thiếu dữ liệu session'], 400);
         }
 
         $van_chuyen = VanChuyen::where("ma_van_chuyen", $ma_vc)->first();
         if (!$van_chuyen) {
-            return response()->json(['error' => 'Không tìm thấy vận chuyển'], 404);
+            return response()->json(['error' => 'Không tìm thấy vận chuyển', 'ma_vc' => session('ma_vc')], 404);
         }
 
         // Insert đơn hàng
@@ -108,7 +109,7 @@ class ThanhToanController extends Controller
             }
         }
         return response()->json([
-            'success' => true,
+            'successTDH' => true,
             'trang_thai_mua' => $request->trang_thai,
             'don_hang' => 'Đã tạo đơn hàng thành công'
         ]);
