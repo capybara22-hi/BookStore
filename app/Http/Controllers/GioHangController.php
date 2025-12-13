@@ -6,23 +6,27 @@ use App\Models\SanPham;
 use App\Models\GioHang;
 use App\Models\File;
 use App\Models\VanChuyen;
+use App\Models\KhuyenMai;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class GioHangController extends Controller
 {
     public function index(){
         //lấy tất cả ds giỏ hàng 
-        $ma_nguoi_dung = 1;
+        $ma_nguoi_dung = Auth::id(); // lấy user đang đăng nhập
         $sanphamgiohang = GioHang::with('sanpham')
         ->where('ma_nguoi_dung', $ma_nguoi_dung)
         ->get();
 
         $sanpham = SanPham::with('file')->get();
 
+        $ds_khuyen_mai = KhuyenMai::all();
+
         $ds_van_chuyen = VanChuyen::all();
 
         // truyền dữ liệu sang view
-        return view('user.giohang',compact('sanphamgiohang','sanpham','ds_van_chuyen'));
+        return view('user.giohang',compact('sanphamgiohang','sanpham','ds_van_chuyen', 'ds_khuyen_mai'));
     }
 
     public function updateQuantity(Request $request)
@@ -46,16 +50,23 @@ class GioHangController extends Controller
         ]);
     }
 
-    public function luuSession(Request $request) {
+    public function luuSession(Request $request)
+    {
         session([
-            'ma_vc' => $request->ma_vc,
-            'phi_vc' => $request->phi_vc,
-            'thanh_tien' => $request->thanh_tien,
-            'tien_hang' => $request->tien_hang
+            'ma_vc'         => $request->ma_vc,
+            'phi_vc'        => $request->phi_vc,
+            'tien_hang'     => $request->tien_hang,
+            'tien_giam'     => $request->tien_giam,
+            'thanh_tien'    => $request->thanh_tien,
+            'ma_khuyen_mai' => $request->ma_khuyen_mai,
         ]);
 
-        return response()->json(['status' => 'ok']);
+        return response()->json([
+            'status' => 'success',
+            'session' => session()->all()
+        ]);
     }
+
 
     public function xoaSanPham(Request $req)
 {

@@ -20,7 +20,12 @@ class DanhMucController extends Controller
         $xoaSapXep = $request->input('xoaSapXep');
         $ma_the_loai = $request->input('ma_the_loai');
         $tentl = TheLoai::where('ma_the_loai', $ma_the_loai)->first();
-        $query = SanPham::with('file','theloaisp');
+        $query = SanPham::with([
+            'file',
+            'theloaisp',
+            'reviews'
+        ]);
+
 
 
         if($xoaAllBoLoc == "xoaAll"){

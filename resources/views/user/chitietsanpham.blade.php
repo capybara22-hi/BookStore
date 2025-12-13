@@ -2,6 +2,10 @@
 <script>
   alert("{{ session('success') }}");
 </script>
+@elseif(session()->has('successYT'))
+<script>
+  alert("{{ session('successYT') }}");
+</script>
 @endif
 
 
@@ -58,28 +62,26 @@
         <div class="col-lg-5" data-aos="fade-left" data-aos-delay="200">
           <div class="product-details">
             <div class="product-badge-container">
-              <span class="badge-category">Audio Equipment</span>
-              <div class="rating-group">
-                <div class="stars">
-                  <i class="bi bi-star-fill"></i>
-                  <i class="bi bi-star-fill"></i>
-                  <i class="bi bi-star-fill"></i>
-                  <i class="bi bi-star-fill"></i>
-                  <i class="bi bi-star-half"></i>
+              <span class="badge-category">Sách</span>
+                <div class="rating-group">
+                  <div class="stars">
+                      @for($i = 1; $i <= 5; $i++)
+                          <i class="bi {{ $i <= round($avgRating) ? 'bi-star-fill' : 'bi-star' }}"></i>
+                      @endfor
+                  </div>
+                  <span class="review-text">
+                      ({{ $totalReviews }} đánh giá)
+                  </span>
                 </div>
-                <span class="review-text">(127 reviews)</span>
-              </div>
             </div>
 
             <h1 class="product-name"> {{ $sanpham->ten_san_pham }} </h1>
             <div class="pricing-section">
               <div class="price-display">
-                <span class="sale-price">$189.99</span>
-                <span class="regular-price">{{ number_format($sanpham->gia_tien_sp)}} VND</span>
+                <span class="sale-price">Giá tiền: {{ number_format($sanpham->gia_tien_sp)}} VND</span>
               </div>
               <div class="savings-info">
-                <span class="save-amount">Save $50.00</span>
-                <span class="discount-percent">(21% off)</span>
+                <span class="save-amount">Tác giả : {{ $sanpham->tac_gia }}</span>
               </div>
             </div>
 
@@ -95,395 +97,133 @@
               <div class="quantity-left">{{ $sanpham->so_luong_sp }}</div>
             </div>
 
-            <!-- Purchase Options -->
-            <form action="{{ route('themgiohang',['id' => $sanpham->ma_san_pham]) }}" method="post">
-              @csrf
-              <div class="purchase-section">
-                <div class="quantity-control">
-                  <label class="control-label">Số lượng:</label>
-                  <div class="quantity-input-group">
-                    <div class="quantity-selector">
-                      <button class="quantity-btn decrease" type="button">
-                        <i class="bi bi-dash"></i>
-                      </button>
-                      <input type="number" class="quantity-input" name="so_luong_sp" value="1" min="1" max="{{ $sanpham->so_luong_sp }}">
-                      <button class="quantity-btn increase" type="button">
-                        <i class="bi bi-plus"></i>
-                      </button>
-                    </div>
-                  </div>
-                </div>
+            <div class="action-buttons" style="display:flex; gap:12px; margin-top:15px;">
+              <!-- Form thêm vào giỏ hàng -->
+               <div>
+                  <form action="{{ route('themgiohang',['id' => $sanpham->ma_san_pham]) }}" method="post">
+                    @csrf
+                    <div class="purchase-section">
+                        <div class="quantity-control">
+                            <label class="control-label">Số lượng:</label>
+                            <div class="quantity-input-group">
+                                <div class="quantity-selector">
+                                    <button class="quantity-btn decrease" type="button">
+                                        <i class="bi bi-dash"></i>
+                                    </button>
+                                    <input type="number" class="quantity-input" name="so_luong_sp" value="1" min="1" max="{{ $sanpham->so_luong_sp }}">
+                                    <button class="quantity-btn increase" type="button">
+                                        <i class="bi bi-plus"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
 
-                <div class="action-buttons">
-                  <button class="btn primary-action" name="action" value="add" type="submit">
-                    <i class="bi bi-bag-plus"></i>
-                    Thêm vào giỏ hàng
-                  </button>
-                  <button class="btn secondary-action" name="action" value="buy" type="submit">
-                    <i class="bi bi-lightning"></i>
-                    Mua ngay
-                  </button>
-                  <button class="btn icon-action" title="Add to Wishlist">
-                    <i class="bi bi-heart"></i>
-                  </button>
-                </div>
-              </div>
-            </form>
-            <!-- Benefits List -->
-            <div class="benefits-list">
-              <div class="benefit-item">
-                <i class="bi bi-truck"></i>
-                <span>Free delivery on orders over $75</span>
-              </div>
-              <div class="benefit-item">
-                <i class="bi bi-arrow-clockwise"></i>
-                <span>45-day hassle-free returns</span>
-              </div>
-              <div class="benefit-item">
-                <i class="bi bi-shield-check"></i>
-                <span>3-year manufacturer warranty</span>
-              </div>
-              <div class="benefit-item">
-                <i class="bi bi-headset"></i>
-                <span>24/7 customer support available</span>
-              </div>
+                        <div class="action-buttons">
+                            @if($daCoTrongGio)
+                                <button type="button" class="btn" style="background: orange; color: white; cursor: default" disabled>
+                                    <i class="bi bi-check-circle"></i>
+                                    Đã có trong giỏ
+                                </button>
+                            @else
+                                <button class="btn primary-action" name="action" value="add" type="submit">
+                                    <i class="bi bi-bag-plus"></i>
+                                    Thêm vào giỏ hàng
+                                </button>
+                            @endif
+                        </div>
+                    </div>
+                </form>
+               </div>
+              
+              <!-- Form Yêu thích -->
+               <div>
+                  <form id="yeuthich-form-{{ $sanpham->ma_san_pham }}" action="{{ route('yeuthich.toggle', $sanpham->ma_san_pham) }}" method="POST">
+                    @csrf
+                    <button type="submit" class="btn icon-action" title="Yêu thích"
+                            style="
+                                background: {{ $daYeuThich ? '#dc3545' : 'white' }};
+                                color: {{ $daYeuThich ? 'white' : '#dc3545' }};
+                                border: 2px solid #dc3545;
+                                width:50px; height:38px; border-radius:10px;
+                                margin-left:auto;
+                                display:flex; align-items:center; justify-content:center;
+                            ">
+                        <i class="bi bi-heart"></i>
+                    </button>
+                </form>
+               </div>
+              
             </div>
           </div>
         </div>
       </div>
 
-      <!-- Information Tabs -->
-      <div class="row mt-5" data-aos="fade-up" data-aos-delay="300">
+    <!-- REVIEWS SECTION -->
+    <div class="row mt-5">
         <div class="col-12">
-          <div class="info-tabs-container">
-            <nav class="tabs-navigation nav">
-              <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#ecommerce-product-details-5-overview" type="button">Overview</button>
-              <button class="nav-link" data-bs-toggle="tab" data-bs-target="#ecommerce-product-details-5-technical" type="button">Technical Details</button>
-              <button class="nav-link" data-bs-toggle="tab" data-bs-target="#ecommerce-product-details-5-customer-reviews" type="button">Reviews (127)</button>
-            </nav>
 
-            <div class="tab-content">
-              <!-- Overview Tab -->
-              <div class="tab-pane fade show active" id="ecommerce-product-details-5-overview">
-                <div class="overview-content">
-                  <div class="row g-4">
-                    <div class="col-lg-8">
-                      <div class="content-section">
-                        <h3>Product Overview</h3>
-                        <p>Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit.</p>
+            <h3 class="mb-3">
+                Đánh giá sản phẩm ({{ $totalReviews }})
+            </h3>
 
-                        <h4>Key Highlights</h4>
-                        <div class="highlights-grid">
-                          <div class="highlight-card">
-                            <i class="bi bi-volume-up"></i>
-                            <h5>Superior Audio</h5>
-                            <p>Ut enim ad minima veniam quis nostrum exercitationem</p>
-                          </div>
-                          <div class="highlight-card">
-                            <i class="bi bi-battery-charging"></i>
-                            <h5>Long Battery</h5>
-                            <p>Excepteur sint occaecat cupidatat non proident</p>
-                          </div>
-                          <div class="highlight-card">
-                            <i class="bi bi-wifi"></i>
-                            <h5>Wireless Tech</h5>
-                            <p>Duis aute irure dolor in reprehenderit in voluptate</p>
-                          </div>
-                          <div class="highlight-card">
-                            <i class="bi bi-person-check"></i>
-                            <h5>Comfort Fit</h5>
-                            <p>Lorem ipsum dolor sit amet consectetur adipiscing</p>
-                          </div>
-                        </div>
-                      </div>
+            <!-- OVERVIEW -->
+            <div class="reviews-header d-flex gap-5 mb-4">
+                <div>
+                    <div style="font-size:32px;font-weight:bold">
+                        {{ $avgRating }}
                     </div>
-
-                    <div class="col-lg-4">
-                      <div class="package-contents">
-                        <h4>Package Contents</h4>
-                        <ul class="contents-list">
-                          <li><i class="bi bi-check-circle"></i>Premium Audio Device</li>
-                          <li><i class="bi bi-check-circle"></i>Premium Carrying Case</li>
-                          <li><i class="bi bi-check-circle"></i>USB-C Fast Charging Cable</li>
-                          <li><i class="bi bi-check-circle"></i>3.5mm Audio Connector</li>
-                          <li><i class="bi bi-check-circle"></i>Quick Start Guide</li>
-                          <li><i class="bi bi-check-circle"></i>Warranty Documentation</li>
-                        </ul>
-                      </div>
+                    <div>
+                        @for($i = 1; $i <= 5; $i++)
+                            <i class="bi {{ $i <= round($avgRating) ? 'bi-star-fill' : 'bi-star' }}"></i>
+                        @endfor
                     </div>
-                  </div>
+                    <small>{{ $totalReviews }} đánh giá</small>
                 </div>
-              </div>
-
-              <!-- Technical Details Tab -->
-              <div class="tab-pane fade" id="ecommerce-product-details-5-technical">
-                <div class="technical-content">
-                  <div class="row g-4">
-                    <div class="col-md-6">
-                      <div class="tech-group">
-                        <h4>Audio Specifications</h4>
-                        <div class="spec-table">
-                          <div class="spec-row">
-                            <span class="spec-name">Frequency Range</span>
-                            <span class="spec-value">15Hz - 25kHz</span>
-                          </div>
-                          <div class="spec-row">
-                            <span class="spec-name">Driver Diameter</span>
-                            <span class="spec-value">50mm Dynamic</span>
-                          </div>
-                          <div class="spec-row">
-                            <span class="spec-name">Sensitivity</span>
-                            <span class="spec-value">98dB SPL</span>
-                          </div>
-                          <div class="spec-row">
-                            <span class="spec-name">Impedance</span>
-                            <span class="spec-value">24 Ohm</span>
-                          </div>
-                          <div class="spec-row">
-                            <span class="spec-name">THD</span>
-                            <span class="spec-value">&lt; 0.5%</span>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div class="col-md-6">
-                      <div class="tech-group">
-                        <h4>Connectivity &amp; Power</h4>
-                        <div class="spec-table">
-                          <div class="spec-row">
-                            <span class="spec-name">Wireless Protocol</span>
-                            <span class="spec-value">Bluetooth 5.3</span>
-                          </div>
-                          <div class="spec-row">
-                            <span class="spec-name">Range</span>
-                            <span class="spec-value">Up to 30ft (10m)</span>
-                          </div>
-                          <div class="spec-row">
-                            <span class="spec-name">Battery Capacity</span>
-                            <span class="spec-value">800mAh Li-ion</span>
-                          </div>
-                          <div class="spec-row">
-                            <span class="spec-name">Usage Time</span>
-                            <span class="spec-value">35+ hours</span>
-                          </div>
-                          <div class="spec-row">
-                            <span class="spec-name">Charge Time</span>
-                            <span class="spec-value">2.5 hours</span>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div class="col-md-6">
-                      <div class="tech-group">
-                        <h4>Physical Dimensions</h4>
-                        <div class="spec-table">
-                          <div class="spec-row">
-                            <span class="spec-name">Weight</span>
-                            <span class="spec-value">285g</span>
-                          </div>
-                          <div class="spec-row">
-                            <span class="spec-name">Dimensions</span>
-                            <span class="spec-value">190 x 165 x 82mm</span>
-                          </div>
-                          <div class="spec-row">
-                            <span class="spec-name">Ear Cup Material</span>
-                            <span class="spec-value">Memory Foam</span>
-                          </div>
-                          <div class="spec-row">
-                            <span class="spec-name">Headband</span>
-                            <span class="spec-value">Adjustable Steel</span>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div class="col-md-6">
-                      <div class="tech-group">
-                        <h4>Advanced Features</h4>
-                        <div class="spec-table">
-                          <div class="spec-row">
-                            <span class="spec-name">Noise Cancellation</span>
-                            <span class="spec-value">Hybrid ANC</span>
-                          </div>
-                          <div class="spec-row">
-                            <span class="spec-name">Voice Assistant</span>
-                            <span class="spec-value">Siri &amp; Google</span>
-                          </div>
-                          <div class="spec-row">
-                            <span class="spec-name">Microphone Type</span>
-                            <span class="spec-value">Dual Array</span>
-                          </div>
-                          <div class="spec-row">
-                            <span class="spec-name">Water Rating</span>
-                            <span class="spec-value">IPX5</span>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Reviews Tab -->
-              <div class="tab-pane fade" id="ecommerce-product-details-5-customer-reviews">
-                <div class="reviews-content">
-                  <div class="reviews-header">
-                    <div class="rating-overview">
-                      <div class="average-score">
-                        <div class="score-display">4.6</div>
-                        <div class="score-stars">
-                          <i class="bi bi-star-fill"></i>
-                          <i class="bi bi-star-fill"></i>
-                          <i class="bi bi-star-fill"></i>
-                          <i class="bi bi-star-fill"></i>
-                          <i class="bi bi-star-half"></i>
-                        </div>
-                        <div class="total-reviews">127 customer reviews</div>
-                      </div>
-
-                      <div class="rating-distribution">
-                        <div class="rating-row">
-                          <span class="stars-label">5★</span>
-                          <div class="progress-container">
-                            <div class="progress-fill" style="width: 68%;"></div>
-                          </div>
-                          <span class="count-label">86</span>
-                        </div>
-                        <div class="rating-row">
-                          <span class="stars-label">4★</span>
-                          <div class="progress-container">
-                            <div class="progress-fill" style="width: 22%;"></div>
-                          </div>
-                          <span class="count-label">28</span>
-                        </div>
-                        <div class="rating-row">
-                          <span class="stars-label">3★</span>
-                          <div class="progress-container">
-                            <div class="progress-fill" style="width: 6%;"></div>
-                          </div>
-                          <span class="count-label">8</span>
-                        </div>
-                        <div class="rating-row">
-                          <span class="stars-label">2★</span>
-                          <div class="progress-container">
-                            <div class="progress-fill" style="width: 3%;"></div>
-                          </div>
-                          <span class="count-label">4</span>
-                        </div>
-                        <div class="rating-row">
-                          <span class="stars-label">1★</span>
-                          <div class="progress-container">
-                            <div class="progress-fill" style="width: 1%;"></div>
-                          </div>
-                          <span class="count-label">1</span>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div class="write-review-cta">
-                      <h4>Share Your Experience</h4>
-                      <p>Help others make informed decisions</p>
-                      <button class="btn review-btn">Write Review</button>
-                    </div>
-                  </div>
-
-                  <div class="customer-reviews-list">
-                    <div class="review-card">
-                      <div class="reviewer-profile">
-                        <img src="{{ asset('assets/img/person/person-f-3.webp') }}" alt="Customer" class="profile-pic">
-                        <div class="profile-details">
-                          <div class="customer-name">Sarah Martinez</div>
-                          <div class="review-meta">
-                            <div class="review-stars">
-                              <i class="bi bi-star-fill"></i>
-                              <i class="bi bi-star-fill"></i>
-                              <i class="bi bi-star-fill"></i>
-                              <i class="bi bi-star-fill"></i>
-                              <i class="bi bi-star-fill"></i>
-                            </div>
-                            <span class="review-date">March 28, 2024</span>
-                          </div>
-                        </div>
-                      </div>
-                      <h5 class="review-headline">Outstanding audio quality and comfort</h5>
-                      <div class="review-text">
-                        <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam. Eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p>
-                      </div>
-                      <div class="review-actions">
-                        <button class="action-btn"><i class="bi bi-hand-thumbs-up"></i> Helpful (12)</button>
-                        <button class="action-btn"><i class="bi bi-chat-dots"></i> Reply</button>
-                      </div>
-                    </div>
-
-                    <div class="review-card">
-                      <div class="reviewer-profile">
-                        <img src="{{ asset('assets/img/person/person-m-5.webp') }}" alt="Customer" class="profile-pic">
-                        <div class="profile-details">
-                          <div class="customer-name">David Chen</div>
-                          <div class="review-meta">
-                            <div class="review-stars">
-                              <i class="bi bi-star-fill"></i>
-                              <i class="bi bi-star-fill"></i>
-                              <i class="bi bi-star-fill"></i>
-                              <i class="bi bi-star-fill"></i>
-                              <i class="bi bi-star"></i>
-                            </div>
-                            <span class="review-date">March 15, 2024</span>
-                          </div>
-                        </div>
-                      </div>
-                      <h5 class="review-headline">Great value, minor connectivity issues</h5>
-                      <div class="review-text">
-                        <p>Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Overall satisfied with the purchase.</p>
-                      </div>
-                      <div class="review-actions">
-                        <button class="action-btn"><i class="bi bi-hand-thumbs-up"></i> Helpful (8)</button>
-                        <button class="action-btn"><i class="bi bi-chat-dots"></i> Reply</button>
-                      </div>
-                    </div>
-
-                    <div class="review-card">
-                      <div class="reviewer-profile">
-                        <img src="{{ asset('assets/img/person/person-f-7.webp') }}" alt="Customer" class="profile-pic">
-                        <div class="profile-details">
-                          <div class="customer-name">Emily Rodriguez</div>
-                          <div class="review-meta">
-                            <div class="review-stars">
-                              <i class="bi bi-star-fill"></i>
-                              <i class="bi bi-star-fill"></i>
-                              <i class="bi bi-star-fill"></i>
-                              <i class="bi bi-star-fill"></i>
-                              <i class="bi bi-star-fill"></i>
-                            </div>
-                            <span class="review-date">February 22, 2024</span>
-                          </div>
-                        </div>
-                      </div>
-                      <h5 class="review-headline">Perfect for work-from-home setup</h5>
-                      <div class="review-text">
-                        <p>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident.</p>
-                      </div>
-                      <div class="review-actions">
-                        <button class="action-btn"><i class="bi bi-hand-thumbs-up"></i> Helpful (15)</button>
-                        <button class="action-btn"><i class="bi bi-chat-dots"></i> Reply</button>
-                      </div>
-                    </div>
-
-                    <div class="load-more-section">
-                      <button class="btn load-more-reviews">Show More Reviews</button>
-                    </div>
-                  </div>
-                </div>
-              </div>
             </div>
-          </div>
+
+            <!-- LIST REVIEW -->
+            <div class="customer-reviews-list">
+
+                @forelse($sanpham->reviews as $review)
+                    <div class="review-card mb-4 p-3 border rounded">
+
+                        <div class="d-flex align-items-center mb-2">
+                            <strong>{{ $review->user->name }}</strong>
+                            <span class="ms-3 text-muted">
+                                {{ $review->created_at->format('d/m/Y') }}
+                            </span>
+                        </div>
+
+                        <div class="mb-2">
+                            @for($i=1; $i<=5; $i++)
+                                <i class="bi {{ $i <= $review->rating ? 'bi-star-fill' : 'bi-star' }}"></i>
+                            @endfor
+                        </div>
+
+                        <p>{{ $review->comment }}</p>
+
+                    </div>
+                @empty
+                    <p class="text-muted">
+                        Chưa có đánh giá nào cho sản phẩm này.
+                    </p>
+                @endforelse
+
+            </div>
         </div>
-      </div>
+    </div>
+
+
 
     </div>
   </section><!-- /Product Details Section -->
 
 </main>
+
+<script>
+    console.log('User ID:', @json(Auth::id()));
+    console.log('Sản phẩm ID:', @json($sanpham->ma_san_pham));
+    console.log('Đã có trong giỏ:', @json($daCoTrongGio));
+</script>
+
 @endsection

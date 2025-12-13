@@ -20,7 +20,9 @@ class ThanhToanController extends Controller
         $phi_vc = session('phi_vc');
         $thanh_tien = session('thanh_tien');
         $tien_hang = session('tien_hang');
-        
+        $tien_giam = session('tien_giam');
+        $ma_khuyen_mai = session('ma_khuyen_mai');
+
         // Lấy thông tin giỏ hàng
         $giohang = GioHang::with('sanpham')->where('ma_nguoi_dung', $ma_nguoi_dung)->where('trang_thai_mua',0)->get();
         $nguoidung = User::where('ma_nguoi_dung', $ma_nguoi_dung)->first();
@@ -37,7 +39,7 @@ class ThanhToanController extends Controller
         // Tạo mã QR
         $qrcode = "https://img.vietqr.io/image/{$ma_nh}-{$tai_khoan}-compact2.png?amount={$thanh_tien}&addInfo={$noi_dung}";
 
-        return view('user.thanhtoan', compact('giohang', 'qrcode','thanhtoan','nguoidung'));
+        return view('user.thanhtoan', compact('giohang', 'qrcode','thanhtoan','nguoidung', 'tien_giam'));
     }
 
     // public function luuSession1(Request $request) {
@@ -72,8 +74,10 @@ class ThanhToanController extends Controller
         $phi_vc = session('phi_vc');
         $thanh_tien = session('thanh_tien');
         $tien_hang = session('tien_hang');
+        $tien_giam = session('tien_giam');
+        $ma_khuyen_mai = session('ma_khuyen_mai');
 
-        if (!$ma_vc || !$phi_vc || !$thanh_tien || !$tien_hang) {
+        if (!$ma_vc || !$phi_vc || !$thanh_tien || !$tien_hang || !$tien_giam || !$ma_khuyen_mai) {
             return response()->json(['error' => 'Thiếu dữ liệu session'], 400);
         }
 
@@ -88,7 +92,9 @@ class ThanhToanController extends Controller
             'tien_hang' => $tien_hang,
             'loai_van_chuyen' => $van_chuyen->dv_van_chuyen,
             'phi_van_chuyen' => $phi_vc,
-            'thanh_tien' => $thanh_tien
+            'thanh_tien' => $thanh_tien,
+            'giam_gia' => $tien_giam,
+            'ma_khuyen_mai' => $ma_khuyen_mai
         ]);
 
         // lấy mã đơn hàng vừa tạo 

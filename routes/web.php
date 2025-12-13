@@ -15,6 +15,7 @@ use App\Http\Controllers\DonHangAdminController;
 use App\Http\Controllers\KhuyenMaiController;
 use App\Http\Controllers\NhapHangController;
 use App\Http\Controllers\SanPhamAdminController;
+use App\Http\Controllers\YeuThichController;
 use App\Models\DonHang;
 use App\Models\KhuyenMai;
 use App\Models\User;
@@ -123,14 +124,17 @@ Route::middleware(['auth', 'admin'])->group(function () {
 Route::middleware(['auth', 'customer'])->group(function () {
     Route::prefix('/user')->group(function () {
         Route::get('/sanpham', [DanhMucController::class, 'index'])->name('sanpham');
+        // Route::get('/san-pham/{id}', [SanPhamController::class, 'chiTiet']) ->name('chitietsanpham');
+
         Route::get('/giohang', [GioHangController::class, 'index'])->name('giohang');
         Route::post('/giohang/xoa', [GioHangController::class, 'xoaSanPham'])->name('giohang.xoa');
         // Route::get('/kiem-tra-van-chuyen', [GioHangController::class, 'truocThanhToan'])->name('kiemTraVanChuyen');
 
         Route::post('/themvaogiohang/{id}', [SanPhamController::class, 'themVaoGioHang'])->name('themgiohang');
         Route::get('/chitietsanpham/{id}', [SanPhamController::class, 'index'])->name('chitietsanpham');
-
-
+        Route::post('/yeu-thich/{id}', [SanPhamController::class, 'yeuThich'])->name('yeuthich');
         Route::get('/thanhtoan', [ThanhToanController::class, 'show'])->name('thanhtoan');
+        Route::post('/yeu-thich/{id}', [YeuThichController::class, 'toggle'])->name('yeuthich.toggle')->middleware('auth');
+
     });
 });

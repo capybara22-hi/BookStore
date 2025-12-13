@@ -205,13 +205,17 @@
                           <h4 class="product-title">
                             <a href="{{ route('chitietsanpham', ['id' => $sp->ma_san_pham]) }}">{{ $sp->ten_san_pham }}</a>
                           </h4>
-                          <div class="product-meta">
-                            <div class="product-price">{{ number_format($sp->gia_tien_sp) }} VND</div>
-                            <div class="product-rating">
-                              <i class="bi bi-star-fill"></i>
-                              4.8 <span>(42)</span>
-                            </div>
+                          @php
+                            $avg = round($sp->reviews->avg('rating'), 1);
+                            $count = $sp->reviews->count();
+                          @endphp
+
+                          <div class="product-rating">
+                            <i class="bi bi-star-fill"></i>
+                            {{ $avg > 0 ? $avg : '0.0' }}
+                            <span>({{ $count }})</span>
                           </div>
+
                         </div>
                       </div>
                     </div>

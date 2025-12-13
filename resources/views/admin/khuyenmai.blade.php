@@ -699,14 +699,18 @@
                 <input type="date" 
                       style="width:100%; padding:8px; margin-top:5px; border-radius:6px; border:1px solid #ccc;"
                       class="timeBD" required
-                      ><br><br>
-                
+                      ><br><br>                        
                 <label>Thời gian kết thúc:</label><br>
                 <input type="date" 
                       style="width:100%; padding:8px; margin-top:5px; border-radius:6px; border:1px solid #ccc;"
                       class="timeKT" required
+                      ><br><br>
+                <label>Số lượng:</label><br>
+                <input type="number" 
+                      style="width:100%; padding:8px; margin-top:5px; border-radius:6px; border:1px solid #ccc;"
+                      class="themsoLuongKM" required
                       >
-              </div>`
+              </div>
               <div id="tt_an" style="color:red;"></div>
       
               <div style="text-align:right;">
@@ -818,6 +822,12 @@
                                           class="suatimeKT" required
                                           value = "{{$km->ngay_ket_thuc}}"
                                           >
+                                    <label>Số lượng:</label><br>
+                                    <input type="number" 
+                                          style="width:100%; padding:8px; margin-top:5px; border-radius:6px; border:1px solid #ccc;"
+                                          class="suasoluongKM" required
+                                          value = "{{$km->so_luong}}"
+                                          >
                                   </div>
                                   <div id="tt_an_sua" style="color:red;"></div>
                           
@@ -871,6 +881,7 @@
       const themGiaDonKM = document.querySelector('.themGiaDonKM');
       const timeBD = document.querySelector('.timeBD');
       const timeKT = document.querySelector('.timeKT');
+      const themsoLuongKM = document.querySelector('.themsoLuongKM');
       const tt_an = document.getElementById('tt_an');
       const luuKM = document.querySelector('.luuKM');
 
@@ -924,7 +935,8 @@
         const valGiaDonKM = themGiaDonKM.value.trim();
         const valTimeBD = timeBD.value.trim();
         const valTimeKT = timeKT.value.trim();
-        if (valTenKM === "" || valPhanTramKM === "" || valGiaDonKM === "" || valTimeBD === "" || valTimeKT === "") {
+        const valSoLuongKM = themsoLuongKM.value.trim();
+        if (valTenKM === "" || valPhanTramKM === "" || valGiaDonKM === "" || valTimeBD === "" || valTimeKT === "" || valSoLuongKM === "") {
           tt_an.innerHTML = "BẠN PHẢI NHẬP ĐẦY ĐỦ THÔNG TIN!!!";
           return; // dừng lại, không gửi fetch
         }
@@ -939,7 +951,8 @@
             phan_tram : valPhanTramKM,
             gia_don : valGiaDonKM,
             tg_bd : valTimeBD,
-            tg_kt : valTimeKT
+            tg_kt : valTimeKT,
+            so_luong : valSoLuongKM
           })
         })
         .then(response => response.json())
@@ -968,11 +981,12 @@
               const valGiaDonKM   = modal.querySelector('.suaGiaDonKM').value.trim();
               const valTimeBD     = modal.querySelector('.suatimeBD').value.trim();
               const valTimeKT     = modal.querySelector('.suatimeKT').value.trim();
+              const valSoLuongKM  = modal.querySelector('.suasoluongKM').value.trim();
 
               const thongBaoErr = modal.querySelector('#tt_an_sua');
 
               // Kiểm tra rỗng
-              if (!valTenKM || !valPhanTramKM || !valGiaDonKM || !valTimeBD || !valTimeKT) {
+              if (!valTenKM || !valPhanTramKM || !valGiaDonKM || !valTimeBD || !valTimeKT || !valSoLuongKM) {
                   thongBaoErr.innerHTML = "Vui lòng nhập đầy đủ thông tin!";
                   return;
               }
@@ -990,7 +1004,8 @@
                       phan_tram: valPhanTramKM,
                       gia_don: valGiaDonKM,
                       tg_bd: valTimeBD,
-                      tg_kt: valTimeKT
+                      tg_kt: valTimeKT,
+                      so_luong: valSoLuongKM
                   })
               })
               .then(response => response.json())

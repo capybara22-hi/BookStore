@@ -1,3 +1,12 @@
+@if(session()->has('successBYT'))
+<script>
+  alert("{{ session('successBYT') }}");
+</script>
+@elseif(session()->has('success'))
+<script>
+  alert("{{ session('success') }}");
+</script>
+@endif
 @extends('components.homeLayout')
 
 @section('taikhoan')
@@ -56,7 +65,7 @@
                     <a class="nav-link" data-bs-toggle="tab" href="#wishlist">
                       <i class="bi bi-heart"></i>
                       <span>Yêu thích</span>
-                      <span class="badge">12</span>
+                      <span class="badge">{{ count($yeu_thich) }}</span>
                     </a>
                   </li>
                   <li class="nav-item">
@@ -328,96 +337,66 @@
                 <!-- Wishlist Tab -->
                 <div class="tab-pane fade" id="wishlist">
                   <div class="section-header" data-aos="fade-up">
-                    <h2>My Wishlist</h2>
-                    <div class="header-actions">
-                      <button type="button" class="btn-add-all">Add All to Cart</button>
-                    </div>
+                    <h2>Những cuốn sách yêu thích</h2>
                   </div>
 
                   <div class="wishlist-grid">
                     <!-- Wishlist Item 1 -->
-                    <div class="wishlist-card" data-aos="fade-up" data-aos-delay="100">
-                      <div class="wishlist-image">
-                        <img src="{{ asset('assets/img/product/product-1.webp') }}" alt="Product" loading="lazy">
-                        <button class="btn-remove" type="button" aria-label="Remove from wishlist">
-                          <i class="bi bi-trash"></i>
-                        </button>
-                        <div class="sale-badge">-20%</div>
-                      </div>
-                      <div class="wishlist-content">
-                        <h4>Lorem ipsum dolor sit amet</h4>
-                        <div class="product-meta">
-                          <div class="rating">
-                            <i class="bi bi-star-fill"></i>
-                            <i class="bi bi-star-fill"></i>
-                            <i class="bi bi-star-fill"></i>
-                            <i class="bi bi-star-fill"></i>
-                            <i class="bi bi-star-half"></i>
-                            <span>(4.5)</span>
+                    @foreach($yeu_thich as $yt)
+                      <div class="wishlist-card" data-aos="fade-up" data-aos-delay="100">
+                          <div class="wishlist-image">
+                              <img src="{{ asset('assets/img/product/product-1.webp') }}" alt="Product" loading="lazy">
+                              
+                              <!-- Nút xóa khỏi yêu thích -->
+                              <form action="{{ route('yeuthich.toggle', $yt->ma_san_pham) }}" method="POST" style="display:inline">
+                                  @csrf
+                                  <button class="btn-remove" type="submit" aria-label="Remove from wishlist">
+                                      <i class="bi bi-trash"></i>
+                                  </button>
+                              </form>
                           </div>
-                          <div class="price">
-                            <span class="current">$79.99</span>
-                            <span class="original">$99.99</span>
-                          </div>
-                        </div>
-                        <button type="button" class="btn-add-cart">Add to Cart</button>
-                      </div>
-                    </div>
 
-                    <!-- Wishlist Item 2 -->
-                    <div class="wishlist-card" data-aos="fade-up" data-aos-delay="200">
-                      <div class="wishlist-image">
-                        <img src="{{ asset('assets/img/product/product-2.webp') }}" alt="Product" loading="lazy">
-                        <button class="btn-remove" type="button" aria-label="Remove from wishlist">
-                          <i class="bi bi-trash"></i>
-                        </button>
-                      </div>
-                      <div class="wishlist-content">
-                        <h4>Consectetur adipiscing elit</h4>
-                        <div class="product-meta">
-                          <div class="rating">
-                            <i class="bi bi-star-fill"></i>
-                            <i class="bi bi-star-fill"></i>
-                            <i class="bi bi-star-fill"></i>
-                            <i class="bi bi-star-fill"></i>
-                            <i class="bi bi-star"></i>
-                            <span>(4.0)</span>
-                          </div>
-                          <div class="price">
-                            <span class="current">$149.99</span>
-                          </div>
-                        </div>
-                        <button type="button" class="btn-add-cart">Add to Cart</button>
-                      </div>
-                    </div>
+                          <div class="wishlist-content">
+                              <h4>{{ $yt->sanpham->ten_san_pham }}</h4>
 
-                    <!-- Wishlist Item 3 -->
-                    <div class="wishlist-card" data-aos="fade-up" data-aos-delay="300">
-                      <div class="wishlist-image">
-                        <img src="{{ asset('assets/img/product/product-3.webp') }}" alt="Product" loading="lazy">
-                        <button class="btn-remove" type="button" aria-label="Remove from wishlist">
-                          <i class="bi bi-trash"></i>
-                        </button>
-                        <div class="out-of-stock-badge">Out of Stock</div>
-                      </div>
-                      <div class="wishlist-content">
-                        <h4>Sed do eiusmod tempor</h4>
-                        <div class="product-meta">
-                          <div class="rating">
-                            <i class="bi bi-star-fill"></i>
-                            <i class="bi bi-star-fill"></i>
-                            <i class="bi bi-star-fill"></i>
-                            <i class="bi bi-star-fill"></i>
-                            <i class="bi bi-star-fill"></i>
-                            <span>(5.0)</span>
+                              {{-- Rating --}}
+                              @php
+                                  $avgRating = round($yt->sanpham->reviews->avg('rating'), 1);
+                                  $fullStars = floor($avgRating);
+                                  $halfStar = ($avgRating - $fullStars) >= 0.5 ? 1 : 0;
+                                  $emptyStars = 5 - $fullStars - $halfStar;
+                              @endphp
+
+                              <div class="product-meta">
+                                  <div class="rating">
+                                      @for($i=0; $i<$fullStars; $i++)
+                                          <i class="bi bi-star-fill"></i>
+                                      @endfor
+                                      @if($halfStar)
+                                          <i class="bi bi-star-half"></i>
+                                      @endif
+                                      @for($i=0; $i<$emptyStars; $i++)
+                                          <i class="bi bi-star"></i>
+                                      @endfor
+                                      <span>({{ $avgRating }})</span>
+                                  </div>
+
+                                  <div class="price">
+                                      <span class="current">{{ number_format($yt->sanpham->gia_tien_sp) }} VND</span>
+                                  </div>
+                              </div>
+
+                              <!-- Thêm vào giỏ hàng -->
+                              <form action="{{ route('themgiohang', ['id' => $yt->ma_san_pham]) }}" method="POST">
+                                  @csrf
+                                  <button type="submit" class="btn btn-primary btn-add-cart">
+                                      <i class="bi bi-bag-plus"></i> Thêm vào giỏ hàng
+                                  </button>
+                              </form>
                           </div>
-                          <div class="price">
-                            <span class="current">$199.99</span>
-                          </div>
-                        </div>
-                        <button type="button" class="btn-notify">Notify When Available</button>
                       </div>
-                    </div>
+                    @endforeach
+
                   </div>
                 </div>
 

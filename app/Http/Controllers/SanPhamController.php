@@ -4,66 +4,98 @@ namespace App\Http\Controllers;
 
 use App\Models\SanPham;
 use App\Models\GioHang;
+use App\Models\YeuThich;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class SanPhamController extends Controller
 {
-    //
-    public function index($id){
-        $sanpham = SanPham::with('file')->findOrFail($id);
-            // tạo response cho view
-        $response = response()->view('user.chitietsanpham', compact('sanpham'));
+    // CHI TIẾT SẢN PHẨM
+    public function index($id)
+    {
+        $userId = Auth::id(); // lấy user đang đăng nhập
 
-        // thêm header chống cache
-        $response->headers->set('Cache-Control','no-store, no-cache, must-revalidate, max-age=0');
-        $response->headers->set('Pragma','no-cache');
-        $response->headers->set('Expires','Sat, 01 Jan 2000 00:00:00 GMT');
+        $sanpham = SanPham::with([
+            'file',
+            'reviews.user'
+        ])->findOrFail($id);
 
-        return $response;
-    }
+        $avgRating = round($sanpham->reviews->avg('rating'), 1);
+        $totalReviews = $sanpham->reviews->count();
 
-    public function themVaoGioHang(Request $request , $id){
+        // 🔥 kiểm tra sản phẩm có trong giỏ hàng chưa (chưa mua)
+        $daCoTrongGio = false;
 
-        $ma_nguoi_dung = 1;
-        $action = $request->input('action');
-        // lấy thông tin sản phẩm theo id
-        $sanpham = SanPham::findOrFail($id);
-
-        // lấy số lượng sản phẩm đã được chọn
-        $soLuong = $request->input('so_luong_sp', 1);
-
-        //tính tổng tiền
-        $tongTien = $soLuong * $sanpham->gia_tien_sp;
-        
-        // lấy thông tin giỏ hàng theo mã sản phẩm
-        if($action === 'add'){
-            $giohang = GioHang::where('ma_nguoi_dung', $ma_nguoi_dung)
-                      ->where('ma_san_pham', $sanpham->ma_san_pham)
-                      ->first();
-
-            if (!$giohang || $giohang->trang_thai_mua == 1) {
-                
-                GioHang::create([
-                    'ma_nguoi_dung' => $ma_nguoi_dung,
-                    'ma_san_pham'   => $sanpham->ma_san_pham,
-                    'ten_sp'        => $sanpham->ten_san_pham,
-                    'gia_sp'        => $sanpham->gia_tien_sp,
-                    'so_luong_sp'   => $soLuong,
-                    'tong_tien'     => $tongTien,
-                ]);
-            } else {
-            
-                $giohang->so_luong_sp += $soLuong;
-                $giohang->tong_tien = $giohang->so_luong_sp * $giohang->gia_sp;
-                $giohang->save();
-            }
-            
-            return redirect()->back()->with('success', 'Sản phẩm đã được thêm vào giỏ hàng!');
+        if ($userId) {
+            $daCoTrongGio = GioHang::where('ma_nguoi_dung', $userId)
+                ->where('ma_san_pham', $id)
+                ->where('trang_thai_mua', 0)
+                ->exists();
         }
-        
-        
-        
-        
+
+        $daYeuThich = false;
+
+        if ($userId) {
+            $daYeuThich = YeuThich::where('ma_nguoi_dung', $userId)
+                ->where('ma_san_pham', $id)
+                ->exists();
+        }
+
+
+        return view('user.chitietsanpham', compact(
+            'sanpham',
+            'avgRating',
+            'totalReviews',
+            'daCoTrongGio',
+            'daYeuThich'
+        ));
     }
-    
+
+    // THÊM GIỎ HÀNG
+    public function themVaoGioHang(Request $request, $id)
+    {
+        $userId = Auth::id();
+        if (!$userId) {
+            return redirect()->route('login');
+        }
+
+        $sanpham = SanPham::findOrFail($id);
+        $soLuong = $request->so_luong_sp ?? 1;
+
+        $giohang = GioHang::where('ma_nguoi_dung', $userId)
+            ->where('ma_san_pham', $id)
+            ->where('trang_thai_mua', 0)
+            ->first();
+
+        if ($giohang) {
+            return back()->with('success', 'Sản phẩm đã có trong giỏ hàng');
+        }
+
+        GioHang::create([
+            'ma_nguoi_dung' => $userId,
+            'ma_san_pham' => $id,
+            'ten_sp' => $sanpham->ten_san_pham,
+            'gia_sp' => $sanpham->gia_tien_sp,
+            'so_luong_sp' => $soLuong,
+            'tong_tien' => $soLuong * $sanpham->gia_tien_sp,
+        ]);
+
+        return back()->with('success', 'Đã thêm vào giỏ hàng');
+    }
+
+    // // YÊU THÍCH
+    // public function yeuThich($id)
+    // {
+    //     $userId = Auth::id();
+    //     if (!$userId) {
+    //         return redirect()->route('login');
+    //     }
+
+    //     YeuThich::firstOrCreate([
+    //         'ma_nguoi_dung' => $userId,
+    //         'ma_san_pham' => $id
+    //     ]);
+
+    //     return back();
+    // }
 }

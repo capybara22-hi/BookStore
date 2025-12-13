@@ -45,4 +45,10 @@ class User extends Authenticatable implements CanResetPasswordContract
     {
         return $this->role_id === '1';
     }
+
+    public function yeuthich()
+    {
+        return $this->hasMany(YeuThich::class, 'ma_nguoi_dung', 'ma_nguoi_dung');
+    }
+
 }

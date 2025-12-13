@@ -278,6 +278,10 @@
                     <span>Vận chuyển</span>
                     <span class = "van_chuyen">{{ number_format(session('phi_vc'))}} VND</span>
                   </div>
+                  <div class="order-shipping d-flex justify-content-between">
+                    <span>Giảm giá</span>
+                    <span class = "giam_gia">{{ number_format($tien_giam)}} VND</span>
+                  </div>
                   <div class="order-total d-flex justify-content-between">
                     <span>Thành tiền</span>
                     <span class = "thanh_tien">{{ number_format(session('thanh_tien'))}} VND</span>

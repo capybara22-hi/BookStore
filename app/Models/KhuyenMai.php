@@ -18,6 +18,7 @@ class KhuyenMai extends Model
         'gia_don_hang',
         'ngay_bat_dau',
         'ngay_ket_thuc',
+        'so_luong'
     ];
 
 }

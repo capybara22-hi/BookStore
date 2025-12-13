@@ -20,7 +20,8 @@ class KhuyenMaiController extends Controller
             'phan_tram_giam' => $data['phan_tram'],
             'gia_don_hang' =>  $data['gia_don'],
             'ngay_bat_dau' =>  $data['tg_bd'],
-            'ngay_ket_thuc' =>  $data['tg_kt']
+            'ngay_ket_thuc' =>  $data['tg_kt'],
+            'so_luong' =>  $data['so_luong']
         ]);
 
         return response()->json([
@@ -55,7 +56,8 @@ class KhuyenMaiController extends Controller
             'phan_tram_giam' => $data['phan_tram'],
             'gia_don_hang' => $data['gia_don'],
             'ngay_bat_dau' => $data['tg_bd'],
-            'ngay_ket_thuc' => $data['tg_kt']
+            'ngay_ket_thuc' => $data['tg_kt'],
+            'so_luong' => $data['so_luong']
         ]);
 
         return response()->json([

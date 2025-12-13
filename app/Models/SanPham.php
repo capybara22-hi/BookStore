@@ -38,5 +38,15 @@ class SanPham extends Model
         return $this->belongsTo(TheLoai::class, 'ma_the_loai', 'ma_the_loai');
     }
 
+    public function reviews()
+    {
+        return $this->hasMany(Review::class, 'ma_san_pham', 'ma_san_pham');
+    }
+
+    public function yeuthich()
+    {
+        return $this->hasMany(YeuThich::class, 'ma_san_pham', 'ma_san_pham');
+    }
+
 
 }

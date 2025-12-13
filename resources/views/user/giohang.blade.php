@@ -57,7 +57,7 @@
                                     <div class="product-details">
                                         <h6 class="product-title">{{ $gh->ten_sp }}</h6>
                                         <div class="product-meta">
-                                            <span class="product-color">Tác giả: Black</span>
+                                            <span class="product-color">Tác giả: {{ $gh->sanpham->tac_gia }}</span>
                                         </div>
                                         <button class="remove-item" type="button" data-id="{{ $gh->ma_gio_hang }}">
                                             <i class="bi bi-trash"></i> Xóa
@@ -101,6 +101,86 @@
                 <span class="summary-label">Tổng tiền hàng</span>
                 <span class="summary-value">0 VND</span>
               </div>
+              <div style="text-align:right">
+                <button type="button"
+                    id="btnOpenPromo"
+                    style="
+                      padding:6px 12px;
+                      border-radius:6px;
+                      border:1px solid #0d6efd;
+                      background:#fff;
+                      color:#0d6efd;
+                      cursor:pointer;
+                    ">
+                  Chọn khuyến mãi
+                </button>
+
+                <div id="selectedPromoText"
+                    style="margin-top:5px; font-size:13px; color:green; display:none;">
+                </div>
+              </div>
+
+
+              <!-- MODAL KHUYẾN MÃI -->
+              <div id="promoModal"
+                  style="
+                      display:none;
+                      position:fixed;
+                      top:100px; left:0;
+                      width:100%; height:100%;
+                      background:rgba(0,0,0,0.5);
+                      z-index:9999;
+                  ">
+
+                <div style="
+                    background:#fff;
+                    width:400px;
+                    max-width:90%;
+                    margin:80px auto;
+                    border-radius:10px;
+                    padding:15px;
+                ">
+                  <h5 style="margin-bottom:10px;">Chọn khuyến mãi</h5>
+
+                  <div id="promoList">
+                    @foreach($ds_khuyen_mai as $km)
+                      <div class="form-check" style="margin-bottom:8px;">
+                        <input class="form-check-input promo-option"
+                          type="radio"
+                          name="promo"
+                          id="km_modal_{{ $km->ma_khuyen_mai }}"
+                          data-discount="{{ $km->phan_tram_giam }}"
+                          data-cond="{{ $km->gia_don_hang }}"
+                          value="{{ $km->ma_khuyen_mai }}">
+
+                        <label for="km_modal_{{ $km->ma_khuyen_mai }}"
+                          class="promo-label"
+                          style="cursor:pointer;">
+                          Giảm {{ $km->phan_tram_giam }}%
+                          (Đơn từ {{ number_format($km->gia_don_hang) }}đ)
+                        </label>
+                      </div>
+                    @endforeach
+                  </div>
+
+                  <div style="text-align:right; margin-top:15px;">
+                    <button id="btnClosePromo"
+                      style="margin-right:10px;">Hủy</button>
+
+                    <button id="btnApplyPromo"
+                      style="
+                        background:#0d6efd;
+                        color:#fff;
+                        border:none;
+                        padding:6px 12px;
+                        border-radius:6px;
+                      ">
+                      Áp dụng
+                    </button>
+                  </div>
+                </div>
+              </div>
+
 
               <div class="summary-item shipping-item">
                 <span class="summary-label">Vận chuyển</span>
@@ -133,6 +213,12 @@
 
                   </div>
               </div>
+
+              <div class="summary-item discount-item">
+                <span class="summary-label">Giảm giá</span>
+                <span class="summary-value" id="discountValue">0 VND</span>
+              </div>
+
 
               <div class="summary-total">
                 <span class="summary-label">Thành tiền</span>
@@ -201,6 +287,48 @@
             if (firstEnabled) firstEnabled.checked = true;
         }
       };
+
+    const updatePromoOptions = (totalItemsPrice) => {
+      let hasValidSelected = false;
+
+      document.querySelectorAll(".promo-option").forEach(radio => {
+        const cond = parseFloat(radio.dataset.cond) || 0;
+        const label = radio.closest(".form-check").querySelector(".promo-label");
+
+        if (totalItemsPrice < cond) {
+          radio.disabled = true;
+          radio.checked = false;
+
+          label.style.color = "red";
+          label.style.opacity = "0.6";
+          label.style.cursor = "not-allowed";
+        } else {
+          radio.disabled = false;
+
+          label.style.color = "";
+          label.style.opacity = "";
+          label.style.cursor = "";
+          if (radio.checked) hasValidSelected = true;
+        }
+      });
+
+      // ❌ nếu KM đang áp bị mất điều kiện → reset UI
+      if (!hasValidSelected) {
+        document.getElementById("selectedPromoText").style.display = "none";
+        document.getElementById("btnOpenPromo").innerText = "Chọn khuyến mãi";
+      }
+    };
+
+
+    const getPromoDiscount = (totalItemsPrice) => {
+      const selected = document.querySelector(".promo-option:checked");
+      if (!selected) return 0;
+
+      const percent = parseFloat(selected.dataset.discount) || 0;
+      return totalItemsPrice * percent / 100;
+    };
+
+
     // Chạy khi toàn bộ nội dung trang (HTML) đã được tải xong
     document.addEventListener("DOMContentLoaded", function () {
 
@@ -208,7 +336,6 @@
       const cartItems = document.querySelectorAll(".cart-item"); // Danh sách tất cả sản phẩm trong giỏ hàng
       const totalItemsPriceEl = document.querySelector(".summary-item .summary-value"); // Tổng tiền hàng
       const shippingRadios = document.querySelectorAll("input[name='shipping']"); // Các lựa chọn giao hàng
-      const taxEl = document.querySelector(".summary-item:nth-of-type(3) .summary-value"); // Tiền thuế
       const grandTotalEl = document.querySelector(".summary-total .summary-value"); // Tổng cộng (sau thuế + ship)
 
       // === HÀM LẤY PHÍ VẬN CHUYỂN DỰA THEO LỰA CHỌN ===
@@ -228,53 +355,58 @@
 
       // === HÀM CẬP NHẬT TỔNG TIỀN GIỎ HÀNG ===
       const updateCartSummary = () => {
-        let totalItemsPrice = 0; // Tổng tiền hàng (chưa thuế, chưa ship)
+        let totalItemsPrice = 0;
 
-        // Lặp qua từng sản phẩm trong giỏ
         cartItems.forEach(item => {
-          const quantityInput = item.querySelector(".quantity-input"); // Ô nhập số lượng
-          const priceTag = item.querySelector(".current-price"); // Giá sản phẩm
-          const itemTotal = item.querySelector(".item-total span"); // Ô hiển thị tổng tiền từng sản phẩm
-
-          // Lấy số lượng
-          const quantity = parseInt(quantityInput.value);
-
-          // Lấy giá và chuyển từ chuỗi "35,000 VND" => 35000 (số)
+          const quantity = parseInt(item.querySelector(".quantity-input").value);
           const price = parseFloat(
-            priceTag.textContent
-              .replace("VND", "") // bỏ chữ VND
-              .replace(/,/g, "")  // bỏ dấu phẩy ngăn cách nghìn
-              .trim()             // bỏ khoảng trắng dư
+            item.querySelector(".current-price").textContent
+              .replace("VND", "")
+              .replace(/,/g, "")
+              .trim()
           );
 
-          // Tính tổng tiền từng sản phẩm
           const total = quantity * price;
+          item.querySelector(".item-total span").textContent =
+            `${total.toLocaleString()} VND`;
 
-          // Hiển thị lại tổng tiền từng sản phẩm (có định dạng dấu phẩy)
-          itemTotal.textContent = `${total.toLocaleString()} VND`;
-
-          // Cộng dồn vào tổng toàn bộ giỏ hàng
           totalItemsPrice += total;
         });
 
-        // Hiển thị tổng tiền hàng
-        totalItemsPriceEl.textContent = `${totalItemsPrice.toLocaleString()} VND`;
-        // sessionStorage.setItem('tien_hang', totalItemsPrice);
-        // 🔴 BẮT BUỘC: kiểm tra điều kiện vận chuyển
+        // Tổng tiền hàng
+        totalItemsPriceEl.textContent =
+          `${totalItemsPrice.toLocaleString()} VND`;
+
+        // 1. KM theo tổng tiền hàng
+        updatePromoOptions(totalItemsPrice);
+        const discount = getPromoDiscount(totalItemsPrice);
+        // ✅ hiển thị giảm giá
+        document.getElementById("discountValue").textContent =
+          `- ${discount.toLocaleString()} VND`;
+
+        // 2. Vận chuyển vẫn theo tổng tiền hàng gốc
         updateShippingOptions(totalItemsPrice);
-        // Lấy phí vận chuyển
         const { fee: shipping, dv_vc } = getShippingCost();
-        // sessionStorage.setItem('phi_vc', shipping);
 
-        // Tính tổng cộng (hàng + thuế + phí ship)
-        const grandTotal = totalItemsPrice  + shipping;
+        // ✅ 3. tổng cuối
+        const grandTotal = totalItemsPrice - discount + shipping;
 
-        // Hiển thị tổng cuối cùng ra giao diện
-        grandTotalEl.textContent = `${grandTotal.toLocaleString()} VND`;
-        // sessionStorage.setItem('thanh_tien', grandTotal);
+        grandTotalEl.textContent =
+          `${grandTotal.toLocaleString()} VND`;
 
-        guiSessionDonHang(dv_vc, shipping, grandTotal, totalItemsPrice);
+        // lưu session
+        const promoId = getSelectedPromoId();
+        guiSessionDonHang(
+          dv_vc,
+          shipping,
+          grandTotal,
+          totalItemsPrice,
+          promoId,
+          discount
+        );
+
       };
+
 
       // === GẮN SỰ KIỆN CHO TỪNG SẢN PHẨM ===
       cartItems.forEach(item => {
@@ -351,6 +483,13 @@
           }
       });
 
+      // === KHI CHỌN RADIO KHUYẾN MÃI → UPDATE NGAY GIẢM GIÁ ===
+      document.querySelectorAll(".promo-option").forEach(radio => {
+        radio.addEventListener("change", () => {
+          updateCartSummary();
+        });
+      });
+
 
       // === GỌI HÀM MỘT LẦN KHI MỚI LOAD TRANG ===
       updateCartSummary();
@@ -381,7 +520,14 @@
     };
 
     // // Gửi sesion thông tin đơn hàng
-    const guiSessionDonHang = (ma_vc, phi_vc, thanh_tien, tien_hang) => {
+    const guiSessionDonHang = (
+        ma_vc,
+        phi_vc,
+        thanh_tien,
+        tien_hang,
+        ma_khuyen_mai,
+        tien_giam
+      ) => {
       fetch("/luu-session", {
         method: "POST",
         headers: {
@@ -392,7 +538,9 @@
           ma_vc: ma_vc,
           phi_vc: phi_vc,
           thanh_tien: thanh_tien,
-          tien_hang: tien_hang
+          tien_hang: tien_hang,
+          ma_khuyen_mai: ma_khuyen_mai,
+          tien_giam: tien_giam
         })
       })
       .then(response => response.json())
@@ -415,5 +563,58 @@
             alert("Không có sản phẩm nào cần thanh toán");
         }
     });
+    // ====== MODAL KHUYẾN MÃI ======
+    const promoModal = document.getElementById("promoModal");
+    const btnOpenPromo = document.getElementById("btnOpenPromo");
+    const btnClosePromo = document.getElementById("btnClosePromo");
+    const btnApplyPromo = document.getElementById("btnApplyPromo");
+
+    // mở modal
+    btnOpenPromo.addEventListener("click", () => {
+      promoModal.style.display = "block";
+    });
+
+    // đóng modal
+    btnClosePromo.addEventListener("click", () => {
+      promoModal.style.display = "none";
+    });
+
+    // áp dụng khuyến mãi
+    btnApplyPromo.addEventListener("click", () => {
+      const selected = document.querySelector(".promo-option:checked");
+      const promoTextEl = document.getElementById("selectedPromoText");
+
+      if (selected) {
+        const label = selected.closest(".form-check")
+                            .querySelector(".promo-label").innerText;
+
+        promoTextEl.innerText = "Đã áp dụng: " + label;
+        promoTextEl.style.display = "block";
+
+        btnOpenPromo.innerText = "Đổi khuyến mãi";
+      } else {
+        promoTextEl.innerText = "";
+        promoTextEl.style.display = "none";
+        btnOpenPromo.innerText = "Chọn khuyến mãi";
+      }
+
+      promoModal.style.display = "none";
+      updateCartSummary();
+    });
+
+
+    // click ra ngoài modal thì đóng
+    promoModal.addEventListener("click", (e) => {
+      if (e.target === promoModal) {
+        promoModal.style.display = "none";
+      }
+    });
+
+    const getSelectedPromoId = () => {
+      const selected = document.querySelector(".promo-option:checked");
+      return selected ? selected.value : null;
+    };
+
+
   </script>
 @endsection
