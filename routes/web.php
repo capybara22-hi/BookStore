@@ -124,7 +124,8 @@ Route::middleware(['auth', 'customer'])->group(function () {
     Route::prefix('/user')->group(function () {
         Route::get('/sanpham', [DanhMucController::class, 'index'])->name('sanpham');
         Route::get('/giohang', [GioHangController::class, 'index'])->name('giohang');
-
+        Route::post('/giohang/xoa', [GioHangController::class, 'xoaSanPham'])->name('giohang.xoa');
+        // Route::get('/kiem-tra-van-chuyen', [GioHangController::class, 'truocThanhToan'])->name('kiemTraVanChuyen');
 
         Route::post('/themvaogiohang/{id}', [SanPhamController::class, 'themVaoGioHang'])->name('themgiohang');
         Route::get('/chitietsanpham/{id}', [SanPhamController::class, 'index'])->name('chitietsanpham');

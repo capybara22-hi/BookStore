@@ -59,7 +59,7 @@
                                         <div class="product-meta">
                                             <span class="product-color">Tác giả: Black</span>
                                         </div>
-                                        <button class="remove-item" type="button">
+                                        <button class="remove-item" type="button" data-id="{{ $gh->ma_gio_hang }}">
                                             <i class="bi bi-trash"></i> Xóa
                                         </button>
                                     </div>
@@ -90,23 +90,6 @@
                   @endif
               @endforeach
 
-
-              <div class="cart-actions">
-                <div class="row">
-                  <div class="col-lg-6 mb-3 mb-lg-0">
-                    <div class="coupon-form">
-                      <div class="input-group">
-                        
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-lg-6 text-md-end">
-                    <button class="btn btn-outline-remove">
-                      <i class="bi bi-trash"></i> Xóa sản phẩm trong giỏ hàng
-                    </button>
-                  </div>
-                </div>
-              </div>
             </div>
           </div>
 
@@ -121,17 +104,36 @@
 
               <div class="summary-item shipping-item">
                 <span class="summary-label">Vận chuyển</span>
-                <div class="shipping-options">
-                  @foreach($ds_van_chuyen as $vc)
-                    <div class="form-check text-end">
-                      <input class="form-check-input" type="radio" name="shipping" id="{{ $vc->ma_van_chuyen }}" data-fee="{{ $vc->so_tien }}" {{ $loop->first ? 'checked' : '' }}>
-                      <label class="form-check-label" for="">
-                        {{ $vc->dv_van_chuyen}}  - {{number_format($vc ->so_tien)}} VND {{ $vc -> mo_ta}}
-                      </label>
-                    </div>
-                  @endforeach
-                </div>
+                  <div class="shipping-options">
+
+                      @foreach($ds_van_chuyen as $vc)
+                          <div class="form-check text-end">
+                              <input class="form-check-input shipping-option"
+                                type="radio"
+                                name="shipping"
+                                id="vc_{{ $vc->ma_van_chuyen }}"
+                                data-fee="{{ $vc->so_tien}}"
+                                data-cond="{{ $vc->dieu_kien ?? 0 }}"
+                                value="{{ $vc->ma_van_chuyen }}">
+
+                              <label class="form-check-label shipping-label"
+                                  for="vc_{{ $vc->ma_van_chuyen }}"
+                                  style="transition: 0.3s;">
+                                {{ $vc->dv_van_chuyen }} - {{ number_format($vc->so_tien) }} VND
+
+                                @if($vc->dieu_kien)
+                                    <span class="shipping-condition">
+                                        (Miễn phí từ {{ number_format($vc->dieu_kien) }}đ)
+                                    </span>
+                                @endif
+                              </label>
+
+                          </div>
+                      @endforeach
+
+                  </div>
               </div>
+
               <div class="summary-total">
                 <span class="summary-label">Thành tiền</span>
                 <span class="summary-value">0 VND</span>
@@ -168,6 +170,37 @@
 
   <!-- tự động tăng giảm giá tiền sản phẩm -->
   <script>
+
+    // KIỂM TRA MỞ / KHÓA VẬN CHUYỂN
+      const updateShippingOptions = (totalItemsPrice) => {
+        document.querySelectorAll(".shipping-option").forEach(radio => {
+            const cond = parseFloat(radio.dataset.cond) || 0;
+            const label = radio.closest(".form-check").querySelector(".shipping-label");
+
+            if (cond > 0 && totalItemsPrice < cond) {
+                radio.disabled = true;
+                radio.checked = false;
+
+                // 🔴 style inline
+                label.style.color = "red";
+                label.style.opacity = "0.6";
+                label.style.cursor = "not-allowed";
+            } else {
+                radio.disabled = false;
+
+                // 🔵 reset style
+                label.style.color = "";
+                label.style.opacity = "";
+                label.style.cursor = "";
+            }
+        });
+
+        // Nếu radio đang chọn bị khóa → chọn cái khác
+        if (!document.querySelector(".shipping-option:checked")) {
+            const firstEnabled = document.querySelector(".shipping-option:not(:disabled)");
+            if (firstEnabled) firstEnabled.checked = true;
+        }
+      };
     // Chạy khi toàn bộ nội dung trang (HTML) đã được tải xong
     document.addEventListener("DOMContentLoaded", function () {
 
@@ -227,6 +260,8 @@
         // Hiển thị tổng tiền hàng
         totalItemsPriceEl.textContent = `${totalItemsPrice.toLocaleString()} VND`;
         // sessionStorage.setItem('tien_hang', totalItemsPrice);
+        // 🔴 BẮT BUỘC: kiểm tra điều kiện vận chuyển
+        updateShippingOptions(totalItemsPrice);
         // Lấy phí vận chuyển
         const { fee: shipping, dv_vc } = getShippingCost();
         // sessionStorage.setItem('phi_vc', shipping);
@@ -284,12 +319,44 @@
         radio.addEventListener("change", updateCartSummary);
       });
 
+      // ======================= XÓA SẢN PHẨM TRONG GIỎ HÀNG =======================
+
+      document.addEventListener("click", function (event) {
+          const btnRemove = event.target.closest(".remove-item");
+
+          if (btnRemove) {
+              const cartItem = btnRemove.closest(".cart-item");
+              const cartId = cartItem.dataset.id;
+
+              if (!confirm("Bạn có chắc muốn xóa sản phẩm này?")) return;
+
+              fetch("{{ route('giohang.xoa') }}", {
+                  method: "POST",
+                  headers: {
+                      "Content-Type": "application/json",
+                      "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').content
+                  },
+                  body: JSON.stringify({ ma_gio_hang: cartId })
+              })
+              .then(res => res.json())
+              .then(data => {
+                  if (data.status === "success") {
+                      cartItem.remove();
+                      updateCartSummary();
+                  } else {
+                      alert("Lỗi: " + data.message);
+                  }
+              })
+              .catch(err => console.error("Lỗi khi xóa:", err));
+          }
+      });
+
+
       // === GỌI HÀM MỘT LẦN KHI MỚI LOAD TRANG ===
       updateCartSummary();
 
       
     });
-
     
     // === GỬI YÊU CẦU CẬP NHẬT LÊN SERVER ===
     const updateQuantityToServer = (cartId, newQuantity) => {

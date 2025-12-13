@@ -55,6 +55,34 @@ class GioHangController extends Controller
         ]);
 
         return response()->json(['status' => 'ok']);
+    }
+
+    public function xoaSanPham(Request $req)
+{
+    $id = $req->ma_gio_hang;
+
+    if (!$id) {
+        return response()->json([
+            'status' => 'error',
+            'message' => 'Thiếu mã giỏ hàng'
+        ], 400);
+    }
+
+    $gh = GioHang::where('ma_gio_hang', $id)->first();
+
+    if (!$gh) {
+        return response()->json([
+            'status' => 'error',
+            'message' => 'Sản phẩm không tồn tại'
+        ], 404);
+    }
+
+    $gh->delete();
+
+    return response()->json([
+        'status' => 'success',
+        'message' => 'Đã xóa sản phẩm'
+    ]);
 }
 
     
