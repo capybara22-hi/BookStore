@@ -51,4 +51,9 @@ class User extends Authenticatable implements CanResetPasswordContract
         return $this->hasMany(YeuThich::class, 'ma_nguoi_dung', 'ma_nguoi_dung');
     }
 
+    public function diachi()
+    {
+        return $this->hasMany(DiaChi::class, 'ma_nguoi_dung', 'ma_nguoi_dung');
+    }
+
 }

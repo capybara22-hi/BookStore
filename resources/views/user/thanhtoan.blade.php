@@ -2,6 +2,10 @@
 <script>
   alert("{{ session('don_hang') }}");
 </script>
+@elseif(session()->has('errorDC'))
+<script>
+  alert("{{ session('errorDC') }}");
+</script>
 @endif
 <!DOCTYPE html>
 <html lang="en">
@@ -517,9 +521,11 @@
       .then(data => {
         console.log("Cập nhật thành công:", data);
 
+        alert("Bạn đã đặt hàng thành công");
+
         // gán lại sự kiện click để chuyển trang
         this.onclick = function() {
-          window.location.href = "/user/taikhoan"; // đường dẫn đến trang xem đơn hàng
+          window.location.href = "/user/user/taikhoan"; // đường dẫn đến trang xem đơn hàng
         };
 
         // chặn quay lại trang trước

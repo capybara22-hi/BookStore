@@ -14,6 +14,11 @@
 <script>
   alert("{{ session('successXDG') }}");
 </script>
+@elseif(session()->has('successTDC'))
+<script>
+    alert("{{ session('successTDC') }}");
+</script>
+
 @endif
 @extends('components.homeLayout')
 
@@ -219,7 +224,7 @@
                                 {{ $dh->trang_thai_dh == 5 ? 'background-color: red; color: white; cursor: not-allowed;' : '' }}
                                 {{ $dh->trang_thai_dh == 1 ? 'background-color: #000000ff; color: white; cursor: not-allowed;' : '' }}
                                 {{ $dh->trang_thai_dh == 2 ? 'background-color: #000000ff; color: white; cursor: not-allowed;' : '' }}
-                                {{ $dh->trang_thai_dh == 3 ? 'background-color: #000000ff; color: white; cursor: not-allowed;' : '' }}
+                                {{ $dh->trang_thai_dh == 3 ? 'background-color: green; color: white; cursor: not-allowed;' : '' }}
                                 
                             ">
                             
@@ -229,6 +234,8 @@
                                 Đánh giá đơn hàng
                             @elseif($dh->trang_thai_dh == 5)
                                 Đơn hàng bị hủy
+                            @elseif($dh->trang_thai_dh == 3)
+                                Đã nhận được hàng
                             @else
                                 Theo dõi đơn hàng
                             @endif
@@ -358,7 +365,7 @@
                                         <div class="item-info">
                                           <h6 class="product-name">{{ $gh->ten_sp }}</h6>
                                           <div class="item-meta">
-                                            <span class="sku">Tac gia:???</span>
+                                            <span class="sku">Tac gia: {{ $gh->sanpham->tac_gia }}</span>
                                             <span class="qty">SL: {{ $gh->so_luong_sp }}</span>
                                           </div>
                                         </div>
@@ -381,6 +388,10 @@
                                 <span>Vận chuyển</span>
                                 <span>{{ number_format($dh->phi_van_chuyen)}} VND</span>
                               </div>
+                              <div class="price-row">
+                                <span>Giảm giá</span>
+                                <span> - {{ number_format($dh->giam_gia)}} VND</span>
+                              </div>
                               <div class="price-row total">
                                 <span>Thành tiền</span>
                                 <span>{{ number_format($dh->thanh_tien)}} VND</span>
@@ -391,10 +402,18 @@
                           <div class="detail-section">
                             <h5>Địa chỉ giao hàng</h5>
                             <div class="address-info">
-                              <p>Sarah Anderson<br>123 Main Street<br>Apt 4B<br>New York, NY 10001<br>United States</p>
-                              <p class="contact">+1 (555) 123-4567</p>
+                              @if($dh->diaChi)
+                                <p>
+                                  {{ $dh->diaChi->ten_nguoi_nhan }}<br>
+                                  {{ $dh->diaChi->dia_chi }}<br>
+                                  {{ $dh->diaChi->sdt }}
+                                </p>
+                              @else
+                                <p>Chưa có địa chỉ cho đơn hàng này</p>
+                              @endif
                             </div>
                           </div>
+
                         </div>
                       </div>
                     </div>
@@ -479,18 +498,21 @@
                           <i class="bi bi-funnel"></i>
                           <span>Sắp xếp</span>
                         </button>
-                        <ul class="dropdown-menu">
-                          <li><a class="dropdown-item" href="#">Gần đây</a></li>
-                          <li><a class="dropdown-item" href="#">Đánh giá cao - thấp</a></li>
-                          <li><a class="dropdown-item" href="#">Đánh giá thấp - cao</a></li>
+                        <ul class="dropdown-menu" id="reviewFilterMenu">
+                            <li><a class="dropdown-item" href="#" data-filter="recent">Gần đây</a></li>
+                            <li><a class="dropdown-item" href="#" data-filter="high">Đánh giá cao - thấp</a></li>
+                            <li><a class="dropdown-item" href="#" data-filter="low">Đánh giá thấp - cao</a></li>
                         </ul>
+
                       </div>
                     </div>
                   </div>
 
                   <div class="reviews-grid">
                       @foreach($reviews as $review)
-                          <div class="review-card" data-aos="fade-up">
+                          <div class="review-card"
+                              data-rating="{{ $review->rating }}"
+                              data-date="{{ $review->created_at->timestamp }}">
                               <div class="review-header">
                                   <img src="{{ asset('assets/img/product/product-1.webp') }}" alt="Product" class="product-image" loading="lazy">
                                   <div class="review-meta">
@@ -578,10 +600,42 @@
                   <div class="section-header" data-aos="fade-up">
                     <h2>Địa chỉ của tôi</h2>
                     <div class="header-actions">
-                      <button type="button" class="btn-add-new">
-                        <i class="bi bi-plus-lg"></i>
-                        Thêm địa chỉ mới
+                      <!-- Button mở modal -->
+                      <button type="button" class="btn-add-new" data-bs-toggle="modal" data-bs-target="#addAddressModal">
+                        <i class="bi bi-plus-lg"></i> Thêm địa chỉ mới
                       </button>
+                      <!-- Modal Thêm địa chỉ -->
+                      <div class="modal fade" id="addAddressModal" tabindex="-1" aria-labelledby="addAddressModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                          <div class="modal-content">
+                            <form action="{{ route('diachi.store') }}" method="POST">
+                              @csrf
+                              <div class="modal-header">
+                                <h5 class="modal-title" id="addAddressModalLabel">Thêm địa chỉ mới</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                              </div>
+                              <div class="modal-body">
+                                <div class="mb-3">
+                                  <label for="dia_chi" class="form-label">Địa chỉ</label>
+                                  <input type="text" class="form-control" id="dia_chi" name="dia_chi" required>
+                                </div>
+                                <div class="mb-3">
+                                  <label for="sdt" class="form-label">Số điện thoại</label>
+                                  <input type="text" class="form-control" id="sdt" name="sdt" required>
+                                </div>
+                                <div class="mb-3">
+                                  <label for="ten_nguoi_nhan" class="form-label">Tên người nhận</label>
+                                  <input type="text" class="form-control" id="ten_nguoi_nhan" name="ten_nguoi_nhan" required>
+                                </div>
+                              </div>
+                              <div class="modal-footer">
+                                <button type="submit" class="btn btn-primary">Thêm địa chỉ</button>
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                              </div>
+                            </form>
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   </div>
 
@@ -590,31 +644,35 @@
                       $index = 1;
                     @endphp
                     <!-- Address Card 1 -->
-                     @foreach($dia_chi as $dc)
-                    <div class="address-card default" data-aos="fade-up" data-aos-delay="100">
+                    @foreach($dia_chi as $dc)
+                    <div class="address-card default" data-aos="fade-up" data-aos-delay="100" data-id="{{ $dc->ma_dia_chi }}">
                       <div class="card-header">
-                        <h4>Địa chỉ @php echo $index++; @endphp </h4>
-                        <!-- <span class="default-badge">Default</span> -->
+                        <h4>Địa chỉ {{ $loop->iteration }}</h4>
                       </div>
                       <div class="card-body">
-                        <p class="address-text"> {{ $dc->dia_chi}}</p>
+                        <p class="address-text">{{ $dc->dia_chi }}</p>
                         <div class="contact-info">
-                          <div><i class="bi bi-person"></i> {{ $dc->ten_nguoi_nhan}}</div>
-                          <div><i class="bi bi-telephone"></i> (+84 ) {{$dc->so_dien_thoai}}</div>
+                          <div><i class="bi bi-person"></i> {{ $dc->ten_nguoi_nhan }}</div>
+                          <div><i class="bi bi-telephone"></i>{{ $dc->sdt }}</div>
                         </div>
                       </div>
                       <div class="card-actions">
                         <button type="button" class="btn-edit">
-                          <i class="bi bi-pencil"></i>
-                          Sửa
+                          <i class="bi bi-pencil"></i> Sửa
                         </button>
                         <button type="button" class="btn-remove">
-                          <i class="bi bi-trash"></i>
-                          Xóa
+                          <i class="bi bi-trash"></i> Xóa
                         </button>
+                        
+                        @if($dc->mac_dinh == 1)
+                          <span class="text-default">Đang là mặc định</span>
+                        @else
+                          <button type="button" class="btn-make-default">Làm mặc định</button>
+                        @endif
                       </div>
                     </div>
                     @endforeach
+
                   </div>
                 </div>
 
@@ -733,19 +791,37 @@
           const status = parseInt(this.dataset.status);
           const maDH = this.dataset.dh;
 
-          // ⛔ ĐÃ ĐÁNH GIÁ
+          // ⛔ Đã hủy / đã đánh giá
           if (status === 5 || status === 6) return;
 
-          // ⭐ ĐÁNH GIÁ
+          // ⭐ Đánh giá
           if (status === 4) {
               const modalEl = document.getElementById(`evaluateModal${maDH}`);
-              if (modalEl) {
-                  new bootstrap.Modal(modalEl).show();
-              }
+              if (modalEl) new bootstrap.Modal(modalEl).show();
               return;
           }
 
-          // 👁️ THEO DÕI ĐƠN HÀNG (≤3)
+          // ✅ ĐÃ NHẬN ĐƯỢC HÀNG (status = 3)
+          if (status === 3) {
+              if (!confirm("Xác nhận bạn đã nhận được hàng?")) return;
+
+              fetch(`/user/don-hang/${maDH}/nhan-hang`, {
+                  method: 'POST',
+                  headers: {
+                      'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                  }
+              })
+              .then(res => res.json())
+              .then(data => {
+                  if (data.status === 'success') {
+                      alert("Cảm ơn bạn đã xác nhận nhận hàng!");
+                      location.reload();
+                  }
+              });
+              return;
+          }
+
+          // 👁️ Theo dõi đơn hàng (1–2)
           const tracking = document.getElementById(`tracking${maDH}`);
           if (tracking) {
               new bootstrap.Collapse(tracking, { toggle: true });
@@ -753,6 +829,7 @@
 
       });
   });
+
 
   document.querySelectorAll('.btn-cancel-order').forEach(btn => {
       btn.addEventListener('click', function () {
@@ -831,6 +908,93 @@
         });
     });
 
+  });
+
+  document.addEventListener("DOMContentLoaded", function () {
+
+    const reviewContainer = document.querySelector('.reviews-grid');
+    const filterItems = document.querySelectorAll('#reviewFilterMenu .dropdown-item');
+
+    filterItems.forEach(item => {
+        item.addEventListener('click', function (e) {
+            e.preventDefault();
+
+            const filterType = this.dataset.filter;
+            const reviews = Array.from(reviewContainer.querySelectorAll('.review-card'));
+
+            let sortedReviews;
+
+            if (filterType === 'recent') {
+                // 🕒 Gần đây nhất
+                sortedReviews = reviews.sort((a, b) =>
+                    b.dataset.date - a.dataset.date
+                );
+            }
+
+            if (filterType === 'high') {
+                // ⭐ Cao → thấp
+                sortedReviews = reviews.sort((a, b) =>
+                    b.dataset.rating - a.dataset.rating
+                );
+            }
+
+            if (filterType === 'low') {
+                // ⭐ Thấp → cao
+                sortedReviews = reviews.sort((a, b) =>
+                    a.dataset.rating - b.dataset.rating
+                );
+            }
+
+            // Render lại
+            reviewContainer.innerHTML = '';
+            sortedReviews.forEach(card => reviewContainer.appendChild(card));
+        });
+    });
+
+  });
+
+// Xử lý nút set địa chỉ mặc định
+  document.addEventListener("DOMContentLoaded", function() {
+    document.querySelectorAll('.btn-make-default').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const card = this.closest('.address-card');
+            const maDC = card.dataset.id;
+
+            if (!confirm("Bạn có chắc muốn đặt địa chỉ này làm mặc định?")) return;
+
+            fetch(`/user/dia-chi/${maDC}/mac-dinh`, {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    // Cập nhật UI
+                    document.querySelectorAll('.address-card').forEach(c => {
+                        const btnDefault = c.querySelector('.btn-make-default');
+                        const textDefault = c.querySelector('.text-default');
+
+                        if (c.dataset.id == maDC) {
+                            if(btnDefault) btnDefault.style.display = 'none';
+                            if(textDefault) textDefault.style.display = 'inline';
+                            else {
+                                const span = document.createElement('span');
+                                span.classList.add('text-default');
+                                span.innerText = 'Đang là mặc định';
+                                c.querySelector('.card-actions').appendChild(span);
+                            }
+                        } else {
+                            if(btnDefault) btnDefault.style.display = 'inline';
+                            if(textDefault) textDefault.style.display = 'none';
+                        }
+                    });
+                }
+            });
+        });
+    });
   });
 
 </script>

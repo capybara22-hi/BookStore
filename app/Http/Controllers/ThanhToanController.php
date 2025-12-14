@@ -8,6 +8,7 @@ use App\Models\ThanhToan;
 use App\Models\User;
 use App\Models\VanChuyen;
 use App\Models\DonHang;
+use App\Models\DiaChi;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use Illuminate\Support\Facades\Auth;
 
@@ -87,15 +88,26 @@ class ThanhToanController extends Controller
             return response()->json(['error' => 'Không tìm thấy vận chuyển', 'ma_vc' => session('ma_vc')], 404);
         }
 
+          // Lấy địa chỉ mặc định của user
+        $dia_chi = DiaChi::where('ma_nguoi_dung', $ma_nguoi_dung)
+                    ->where('mac_dinh', 1)
+                    ->first();
+
+        if (!$dia_chi) {
+            return response()->json(['errorDC' => 'Người dùng chưa có địa chỉ mặc định'], 400);
+        }
+
         // Insert đơn hàng
         $don_hang = DonHang::create([
             'ma_nguoi_dung' => $ma_nguoi_dung,
+            'ma_dia_chi' => $dia_chi->ma_dia_chi,  // thêm ma_dia_chi
             'tien_hang' => $tien_hang,
             'loai_van_chuyen' => $van_chuyen->dv_van_chuyen,
             'phi_van_chuyen' => $phi_vc,
             'thanh_tien' => $thanh_tien,
             'giam_gia' => $tien_giam,
-            'ma_khuyen_mai' => $ma_khuyen_mai
+            'ma_khuyen_mai' => $ma_khuyen_mai,
+            'ngay_dat_hang' => now(), // thêm ngay_dat_hang
         ]);
 
         // lấy mã đơn hàng vừa tạo 
@@ -111,7 +123,7 @@ class ThanhToanController extends Controller
         return response()->json([
             'successTDH' => true,
             'trang_thai_mua' => $request->trang_thai,
-            'don_hang' => 'Đã tạo đơn hàng thành công'
+            'don_hang' => 'Đã đặt đơn hàng thành công'
         ]);
     }
 

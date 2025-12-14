@@ -36,45 +36,6 @@ class TaiKhoanController extends Controller
     }
 
 
-    // public function update(Request $request, $id)
-    // {
-    //     $review = Review::findOrFail($id);
-
-    //     if (Auth::id() !== $review->ma_nguoi_dung) {
-    //         return redirect()->back()->with('error', 'Bạn không có quyền chỉnh sửa đánh giá này.');
-    //     }
-
-    //     if ($review->edit_count >= 2) {
-    //         return redirect()->back()->with('error', 'Bạn đã chỉnh sửa đánh giá tối đa 2 lần.');
-    //     }
-
-    //     // Validate dữ liệu
-    //     $validated = $request->validate([
-    //         'rating' => 'required|integer|min:1|max:5',
-    //         'comment' => 'required|string|max:1000',
-    //     ]);
-
-    //     $review->update([
-    //         'rating' => $validated['rating'],
-    //         'comment' => $validated['comment'],
-    //         'edit_count' => $review->edit_count + 1,
-    //     ]);
-
-    //     return redirect()->back()->with('success', 'Cập nhật review thành công');
-    // }
-
-    // public function destroy($id)
-    // {
-    //     $review = Review::findOrFail($id);
-
-    //     if (Auth::id() !== $review->ma_nguoi_dung) {
-    //         return redirect()->back()->with('error', 'Bạn không có quyền xóa đánh giá này.');
-    //     }
-
-    //     $review->delete();
-    //     return redirect()->back()->with('success', 'Đã xóa review');
-    // }
-
     public function huy($id){
         $dh = DonHang::find($id);
         if($dh){
@@ -85,8 +46,8 @@ class TaiKhoanController extends Controller
         return response()->json(['status'=>'error'], 404);
     }
 
-    public function xacNhanNhanHang($id){
-        $dh = DonHang::find($id);
+    public function nhanHang($maDH){
+        $dh = DonHang::where('ma_don_hang', $maDH)->first();
         if($dh){
             $dh->trang_thai_dh = 4; // Đã giao
             $dh->save();

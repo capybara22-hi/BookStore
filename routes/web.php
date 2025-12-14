@@ -17,6 +17,7 @@ use App\Http\Controllers\NhapHangController;
 use App\Http\Controllers\SanPhamAdminController;
 use App\Http\Controllers\YeuThichController;
 use App\Http\Controllers\ReviewController;
+use App\Http\Controllers\DiaChiController;
 use App\Models\DonHang;
 use App\Models\KhuyenMai;
 use App\Models\User;
@@ -135,7 +136,7 @@ Route::middleware(['auth', 'customer'])->group(function () {
         Route::post('/yeu-thich/{id}', [SanPhamController::class, 'yeuThich'])->name('yeuthich');
         Route::get('/thanhtoan', [ThanhToanController::class, 'show'])->name('thanhtoan');
         Route::post('/yeu-thich/{id}', [YeuThichController::class, 'toggle'])->name('yeuthich.toggle')->middleware('auth');
-        Route::get('/user/taikhoan', [TaiKhoanController::class, 'index'])->name('taikhoan');
+        Route::get('/user/user/taikhoan', [TaiKhoanController::class, 'index'])->name('taikhoan');
         // Edit review (AJAX)
         Route::get('/review/{id}/edit', [ReviewController::class, 'edit'])->name('review.edit');
 
@@ -146,8 +147,13 @@ Route::middleware(['auth', 'customer'])->group(function () {
         Route::delete('/review/{id}', [ReviewController::class, 'destroy'])->name('review.destroy');
 
         Route::post('/don-hang/{id}/huy', [TaiKhoanController::class,'huy'])->name('donhang.huy');
-        Route::post('/don-hang/{id}/xac-nhan', [TaiKhoanController::class,'xacNhanNhanHang'])->name('donhang.xacnhan');
+        // Route::post('/don-hang/{id}/xac-nhan', [TaiKhoanController::class,'xacNhanNhanHang'])->name('donhang.xacnhan');
         Route::post('/review/store', [ReviewController::class,'store'])->name('review.store');
+        Route::post('/don-hang/{id}/nhan-hang', [TaiKhoanController::class, 'nhanHang'])->name('donhang.nhanhang');
+
+        Route::post('/user/dia-chi/them', [DiaChiController::class, 'store'])->name('diachi.store');
+
+        Route::post('/dia-chi/{id}/mac-dinh', [DiaChiController::class, 'setMacDinh'])->name('diachi.macdinh');
 
     });
 });
