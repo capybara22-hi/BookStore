@@ -135,7 +135,7 @@ Route::middleware(['auth', 'customer'])->group(function () {
         Route::post('/yeu-thich/{id}', [SanPhamController::class, 'yeuThich'])->name('yeuthich');
         Route::get('/thanhtoan', [ThanhToanController::class, 'show'])->name('thanhtoan');
         Route::post('/yeu-thich/{id}', [YeuThichController::class, 'toggle'])->name('yeuthich.toggle')->middleware('auth');
-        Route::get('/taikhoan', [TaiKhoanController::class, 'index'])->name('taikhoan');
+        Route::get('/user/taikhoan', [TaiKhoanController::class, 'index'])->name('taikhoan');
         // Edit review (AJAX)
         Route::get('/review/{id}/edit', [ReviewController::class, 'edit'])->name('review.edit');
 

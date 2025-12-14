@@ -121,20 +121,21 @@
                     <div class="header-actions">
                       <div class="search-box">
                         <i class="bi bi-search"></i>
-                        <input type="text" placeholder="Tìm kiếm đơn hàng...">
+                        <input type="text" id="searchOrderInput" placeholder="Tìm kiếm đơn hàng...">
                       </div>
                       <div class="dropdown">
                         <button class="filter-btn" data-bs-toggle="dropdown">
                           <i class="bi bi-funnel"></i>
                           <span>Bộ lọc</span>
                         </button>
-                        <ul class="dropdown-menu">
-                          <li><a class="dropdown-item" href="#">Tất cả đơn hàng</a></li>
-                          <li><a class="dropdown-item" href="#">Chờ xác nhận</a></li>
-                          <li><a class="dropdown-item" href="#">Đang chuẩn bị hàng</a></li>
-                          <li><a class="dropdown-item" href="#">Đang giao hàng</a></li>
-                          <li><a class="dropdown-item" href="#">Đã giao hàng thành công</a></li>
-                          <li><a class="dropdown-item" href="#">Đơn hàng đã bị hủy</a></li>
+                        <ul class="dropdown-menu" id="orderFilterMenu">
+                            <li><a class="dropdown-item" href="#" data-status="all">Tất cả đơn hàng</a></li>
+                            <li><a class="dropdown-item" href="#" data-status="1">Chờ xác nhận</a></li>
+                            <li><a class="dropdown-item" href="#" data-status="2">Đang chuẩn bị hàng</a></li>
+                            <li><a class="dropdown-item" href="#" data-status="3">Đang giao hàng</a></li>
+                            <li><a class="dropdown-item" href="#" data-status="4">Đã giao hàng thành công</a></li>
+                            <li><a class="dropdown-item" href="#" data-status="5">Đơn hàng đã bị hủy</a></li>
+                            <li><a class="dropdown-item" href="#" data-status="6">Đơn hàng đã đánh giá</a></li>
                         </ul>
                       </div>
                     </div>
@@ -143,13 +144,13 @@
                   <div class="orders-grid">
                     <!-- Order Card 1 -->
                     @foreach($don_hang as $dh)
-                    <div class="order-card" data-aos="fade-up" data-aos-delay="100">
+                    <div class="order-card" data-aos="fade-up" data-aos-delay="100"  data-status="{{ $dh->trang_thai_dh }}">
                       <div class="order-header">
                         <div class="order-id">
                           <span class="label">Mã đơn hàng:</span>
                           <span class="value">{{ $dh->ma_don_hang}}</span>
                         </div>
-                        <div class="order-date">Feb 20, 2025</div>
+                        <div class="order-date"></div>
                       </div>
                       <div class="order-content">
                         <div class="product-grid">
@@ -184,6 +185,9 @@
                                 @case(5)
                                   <span class="status cancelled">Đơn hàng đã bị hủy</span>
                                   @break
+                                @case(6)
+                                  <span class="status processing">Đơn hàng đã đánh giá</span>
+                                  @break
                             @endswitch
                             
                           </div>
@@ -205,24 +209,31 @@
                       </div>
                       <div class="order-footer">
                         <button type="button" 
-                                class="btn-order-action" 
-                                data-dh="{{ $dh->ma_don_hang }}" 
-                                data-status="{{ $dh->trang_thai_dh }}"
-                                {{ $dh->trang_thai_dh == 6 ? 'disabled' : '' }}
-                                style="
-                                    {{ $dh->trang_thai_dh >= 4 ? 'background-color: orange; color: white;' : '' }}
-                                    {{ $dh->trang_thai_dh == 6 ? 'background-color: gray; cursor: not-allowed;' : '' }}
-                                ">
+                            class="btn-order-action"
+                            data-dh="{{ $dh->ma_don_hang }}"
+                            data-status="{{ $dh->trang_thai_dh }}"
+                            {{ in_array($dh->trang_thai_dh, [5,6]) ? 'disabled' : '' }}
+                            style="
+                                {{ $dh->trang_thai_dh == 4 ? 'background-color: orange; color: white;' : '' }}
+                                {{ $dh->trang_thai_dh == 6 ? 'background-color: #898989; color: black;cursor: not-allowed;' : '' }}
+                                {{ $dh->trang_thai_dh == 5 ? 'background-color: red; color: white; cursor: not-allowed;' : '' }}
+                                {{ $dh->trang_thai_dh == 1 ? 'background-color: #000000ff; color: white; cursor: not-allowed;' : '' }}
+                                {{ $dh->trang_thai_dh == 2 ? 'background-color: #000000ff; color: white; cursor: not-allowed;' : '' }}
+                                {{ $dh->trang_thai_dh == 3 ? 'background-color: #000000ff; color: white; cursor: not-allowed;' : '' }}
+                                
+                            ">
+                            
                             @if($dh->trang_thai_dh == 6)
                                 Đã đánh giá
-                            @elseif($dh->trang_thai_dh >= 4)
+                            @elseif($dh->trang_thai_dh == 4)
                                 Đánh giá đơn hàng
-                            @elseif($dh->trang_thai_dh == 3)
-                                Xác nhận đã nhận
+                            @elseif($dh->trang_thai_dh == 5)
+                                Đơn hàng bị hủy
                             @else
-                                Hủy đơn hàng
+                                Theo dõi đơn hàng
                             @endif
                         </button>
+
                         <button type="button" 
                                 class="btn-details" 
                                 data-bs-toggle="collapse" 
@@ -280,7 +291,6 @@
                             <div class="timeline-content">
                               <h5>Xác nhận đơn hàng</h5>
                               <p>Đơn hàng của bạn đang trong quá trình chờ xác nhận</p>
-                              <span class="timeline-date">Feb 20, 2025 - 10:30 AM</span>
                             </div>
                           </div>
 
@@ -291,7 +301,6 @@
                             <div class="timeline-content">
                               <h5>Chuẩn bị hàng</h5>
                               <p>Đơn hàng của bạn đang được chuẩn bị để gửi đi</p>
-                              <span class="timeline-date">Feb 20, 2025 - 2:45 PM</span>
                             </div>
                           </div>
 
@@ -312,11 +321,17 @@
                             </div>
                             <div class="timeline-content">
                               <h5>Nhận hàng thành công</h5>
-                              <p>Bạn đã nhận được hàng: Feb 22, 2025</p>
                             </div>
                             <div style=' margin-top: 30px;'>
-                              <button style="background: {{ $dh->trang_thai_dh >= 3 ? 'gray': 'red'}}; color : {{ $dh->trang_thai_dh >= 3 ? 'black': 'white'}}; border-radius: 10px; width: 300px; height: 40px; margin-bottom:10px;" {{ $dh->trang_thai_dh >= 3 ? 'disabled' : ''}}>Hủy đơn hàng</button>
-                              <p style='color:red;'>Đơn hàng đang được giao sẽ không được hủy nữa</p>
+                              @if($dh->trang_thai_dh < 3)
+                              <button class="btn-cancel-order"
+                                  data-dh="{{ $dh->ma_don_hang }}"
+                                  style="background:red; color:white; border-radius:10px; width:300px; height:40px;">
+                                  Hủy đơn hàng
+                              </button>
+                              @else
+                              <p style="color:red;">Đơn hàng đang được giao sẽ không được hủy</p>
+                              @endif
                             </div>
                           </div>
                         </div>
@@ -341,7 +356,7 @@
                                       <div class="item">
                                         <img src="{{ asset($anhBia->duong_dan_luu) }}" alt="Product" loading="lazy">
                                         <div class="item-info">
-                                          <h6>{{ $gh->ten_sp}}</h6>
+                                          <h6 class="product-name">{{ $gh->ten_sp }}</h6>
                                           <div class="item-meta">
                                             <span class="sku">Tac gia:???</span>
                                             <span class="qty">SL: {{ $gh->so_luong_sp }}</span>
@@ -715,68 +730,109 @@
   document.querySelectorAll('.btn-order-action').forEach(btn => {
       btn.addEventListener('click', function () {
 
-          let status = parseInt(this.dataset.status);
+          const status = parseInt(this.dataset.status);
           const maDH = this.dataset.dh;
 
-          // ⛔ ĐÃ ĐÁNH GIÁ → KHÔNG LÀM GÌ
-          if (status === 6) {
+          // ⛔ ĐÃ ĐÁNH GIÁ
+          if (status === 5 || status === 6) return;
+
+          // ⭐ ĐÁNH GIÁ
+          if (status === 4) {
+              const modalEl = document.getElementById(`evaluateModal${maDH}`);
+              if (modalEl) {
+                  new bootstrap.Modal(modalEl).show();
+              }
               return;
           }
 
-          // ✅ XÁC NHẬN ĐÃ NHẬN HÀNG
-          if (status === 3) {
-              if (!confirm("Bạn đã nhận được hàng?")) return;
-
-              fetch(`/user/don-hang/${maDH}/xac-nhan`, {
-                  method: 'POST',
-                  headers: {
-                      'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
-                  }
-              })
-              .then(res => res.json())
-              .then(data => {
-                  if (data.status === 'success') {
-                      alert("Xác nhận nhận hàng thành công");
-
-                      // 🔁 cập nhật nút ngay
-                      this.dataset.status = 4;
-                      this.textContent = "Đánh giá đơn hàng";
-                      this.style.background = "orange";
-                      this.style.color = "white";
-                  }
-              });
-          }
-
-          // ⭐ MỞ MODAL ĐÁNH GIÁ
-          else if (status === 4) {
-              const modalEl = document.getElementById(`evaluateModal${maDH}`);
-              if (modalEl) {
-                  const modal = new bootstrap.Modal(modalEl);
-                  modal.show();
-              }
-          }
-
-          // ❌ HỦY ĐƠN
-          else if (status < 3) {
-              if (!confirm("Bạn có chắc muốn hủy đơn hàng?")) return;
-
-              fetch(`/user/don-hang/${maDH}/huy`, {
-                  method: 'POST',
-                  headers: {
-                      'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
-                  }
-              })
-              .then(res => res.json())
-              .then(data => {
-                  if (data.status === 'success') {
-                      alert("Đơn hàng đã bị hủy");
-                      location.reload();
-                  }
-              });
+          // 👁️ THEO DÕI ĐƠN HÀNG (≤3)
+          const tracking = document.getElementById(`tracking${maDH}`);
+          if (tracking) {
+              new bootstrap.Collapse(tracking, { toggle: true });
           }
 
       });
   });
+
+  document.querySelectorAll('.btn-cancel-order').forEach(btn => {
+      btn.addEventListener('click', function () {
+
+          const maDH = this.dataset.dh;
+
+          if (!confirm("Bạn có chắc muốn hủy đơn hàng?")) return;
+
+          fetch(`/user/don-hang/${maDH}/huy`, {
+              method: 'POST',
+              headers: {
+                  'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+              }
+          })
+          .then(res => res.json())
+          .then(data => {
+              if (data.status === 'success') {
+                  alert("Đơn hàng đã bị hủy");
+                  location.reload();
+              }
+          });
+      });
+  });
+
+  document.addEventListener("DOMContentLoaded", function () {
+
+      const searchInput = document.getElementById('searchOrderInput');
+      const orderCards = document.querySelectorAll('.order-card');
+
+      searchInput.addEventListener('input', function () {
+
+          // 🔎 Chuẩn hoá từ khoá (không phân biệt hoa/thường)
+          const keyword = this.value.toLowerCase().trim();
+
+          orderCards.forEach(card => {
+              const productNames = card.querySelectorAll('.product-name');
+              let matched = false;
+
+              productNames.forEach(nameEl => {
+
+                  // 🔎 Chuẩn hoá tên sản phẩm
+                  const productName = nameEl.innerText.toLowerCase();
+
+                  if (productName.includes(keyword)) {
+                      matched = true;
+                  }
+              });
+
+              // Hiện / ẩn đơn hàng
+              card.style.display = (matched || keyword === '') ? 'block' : 'none';
+          });
+      });
+
+  });
+
+  document.addEventListener("DOMContentLoaded", function () {
+
+    const filterItems = document.querySelectorAll('#orderFilterMenu .dropdown-item');
+    const orderCards = document.querySelectorAll('.order-card');
+
+    filterItems.forEach(item => {
+        item.addEventListener('click', function (e) {
+            e.preventDefault();
+
+            const filterStatus = this.dataset.status;
+
+            orderCards.forEach(card => {
+                const orderStatus = card.dataset.status;
+
+                if (filterStatus === 'all' || orderStatus === filterStatus) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        });
+    });
+
+  });
+
 </script>
 
 @endsection

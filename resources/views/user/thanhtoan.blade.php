@@ -1,6 +1,6 @@
-@if(session()->has('successTDH'))
+@if(session()->has('don_hang'))
 <script>
-  alert("{{ session('successTDH') }}");
+  alert("{{ session('don_hang') }}");
 </script>
 @endif
 <!DOCTYPE html>
@@ -519,7 +519,7 @@
 
         // gán lại sự kiện click để chuyển trang
         this.onclick = function() {
-          window.location.href = "/taikhoan"; // đường dẫn đến trang xem đơn hàng
+          window.location.href = "/user/taikhoan"; // đường dẫn đến trang xem đơn hàng
         };
 
         // chặn quay lại trang trước

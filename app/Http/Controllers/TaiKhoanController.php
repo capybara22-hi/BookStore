@@ -35,62 +35,45 @@ class TaiKhoanController extends Controller
         
     }
 
-    // public function edit($id)
+
+    // public function update(Request $request, $id)
     // {
     //     $review = Review::findOrFail($id);
 
-    //     // Kiểm tra user đăng nhập
     //     if (Auth::id() !== $review->ma_nguoi_dung) {
     //         return redirect()->back()->with('error', 'Bạn không có quyền chỉnh sửa đánh giá này.');
     //     }
 
-    //     // Giới hạn chỉnh sửa tối đa 2 lần
     //     if ($review->edit_count >= 2) {
     //         return redirect()->back()->with('error', 'Bạn đã chỉnh sửa đánh giá tối đa 2 lần.');
     //     }
 
-    //     // Trả về JSON để fill modal
-    //     return response()->json($review);
+    //     // Validate dữ liệu
+    //     $validated = $request->validate([
+    //         'rating' => 'required|integer|min:1|max:5',
+    //         'comment' => 'required|string|max:1000',
+    //     ]);
+
+    //     $review->update([
+    //         'rating' => $validated['rating'],
+    //         'comment' => $validated['comment'],
+    //         'edit_count' => $review->edit_count + 1,
+    //     ]);
+
+    //     return redirect()->back()->with('success', 'Cập nhật review thành công');
     // }
 
-    public function update(Request $request, $id)
-    {
-        $review = Review::findOrFail($id);
+    // public function destroy($id)
+    // {
+    //     $review = Review::findOrFail($id);
 
-        if (Auth::id() !== $review->ma_nguoi_dung) {
-            return redirect()->back()->with('error', 'Bạn không có quyền chỉnh sửa đánh giá này.');
-        }
+    //     if (Auth::id() !== $review->ma_nguoi_dung) {
+    //         return redirect()->back()->with('error', 'Bạn không có quyền xóa đánh giá này.');
+    //     }
 
-        if ($review->edit_count >= 2) {
-            return redirect()->back()->with('error', 'Bạn đã chỉnh sửa đánh giá tối đa 2 lần.');
-        }
-
-        // Validate dữ liệu
-        $validated = $request->validate([
-            'rating' => 'required|integer|min:1|max:5',
-            'comment' => 'required|string|max:1000',
-        ]);
-
-        $review->update([
-            'rating' => $validated['rating'],
-            'comment' => $validated['comment'],
-            'edit_count' => $review->edit_count + 1,
-        ]);
-
-        return redirect()->back()->with('success', 'Cập nhật review thành công');
-    }
-
-    public function destroy($id)
-    {
-        $review = Review::findOrFail($id);
-
-        if (Auth::id() !== $review->ma_nguoi_dung) {
-            return redirect()->back()->with('error', 'Bạn không có quyền xóa đánh giá này.');
-        }
-
-        $review->delete();
-        return redirect()->back()->with('success', 'Đã xóa review');
-    }
+    //     $review->delete();
+    //     return redirect()->back()->with('success', 'Đã xóa review');
+    // }
 
     public function huy($id){
         $dh = DonHang::find($id);
