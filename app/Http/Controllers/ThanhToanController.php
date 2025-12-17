@@ -9,6 +9,7 @@ use App\Models\User;
 use App\Models\VanChuyen;
 use App\Models\DonHang;
 use App\Models\DiaChi;
+use App\Models\KhuyenMai;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use Illuminate\Support\Facades\Auth;
 
@@ -66,6 +67,11 @@ class ThanhToanController extends Controller
         $tien_hang = session('tien_hang');
         $tien_giam = session('tien_giam');
         $ma_khuyen_mai = session('ma_khuyen_mai');
+
+        if ($ma_khuyen_mai) {
+            KhuyenMai::where('ma_khuyen_mai', $ma_khuyen_mai)
+                ->decrement('so_luong', 1);
+        }
 
         if (!$ma_vc || !$phi_vc || !$thanh_tien || !$tien_hang) {
             return response()->json(['error' => 'Thiếu dữ liệu session'], 400);

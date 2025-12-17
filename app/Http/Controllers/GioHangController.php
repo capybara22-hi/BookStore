@@ -21,7 +21,9 @@ class GioHangController extends Controller
 
         $sanpham = SanPham::with('file')->get();
 
-        $ds_khuyen_mai = KhuyenMai::all();
+        $ds_khuyen_mai = KhuyenMai::whereNotNull('so_luong')
+                        ->where('so_luong', '>', 0)
+                        ->get();
 
         $ds_van_chuyen = VanChuyen::all();
 

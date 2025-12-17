@@ -124,7 +124,7 @@
             </div>
 
             <!-- Yêu thích -->
-            <a href="taikhoan.blade.php" class="header-action-btn d-none d-md-block">
+            <a href="{{ route('taikhoan') }}" class="header-action-btn d-none d-md-block">
               <i class="bi bi-heart"></i>
               <span class="badge">0</span>
             </a>

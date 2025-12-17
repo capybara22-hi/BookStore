@@ -133,7 +133,7 @@
                   ">
 
                 <div style="
-                    background:#fff;
+                    background:rgba(190, 178, 178);
                     width:400px;
                     max-width:90%;
                     margin:80px auto;
@@ -156,8 +156,7 @@
                         <label for="km_modal_{{ $km->ma_khuyen_mai }}"
                           class="promo-label"
                           style="cursor:pointer;">
-                          Giảm {{ $km->phan_tram_giam }}%
-                          (Đơn từ {{ number_format($km->gia_don_hang) }}đ)
+                          {{ $km->nd_khuyen_mai }} 
                         </label>
                       </div>
                     @endforeach
