@@ -25,9 +25,9 @@ class DiaChi extends Model
         return $this->belongsTo(User::class, 'ma_nguoi_dung');
     }
 
-     // Một địa chỉ có thể có nhiều đơn hàng
-    public function donHang()
-    {
-        return $this->hasMany(DonHang::class, 'ma_dia_chi', 'ma_dia_chi');
-    }
+    // Một địa chỉ có thể có nhiều đơn hàng
+    // public function donHang()
+    // {
+    //     return $this->hasMany(DonHang::class, 'ma_dia_chi', 'ma_dia_chi');
+    // }
 }

@@ -154,6 +154,7 @@ Route::middleware(['auth', 'customer'])->group(function () {
         Route::post('/user/dia-chi/them', [DiaChiController::class, 'store'])->name('diachi.store');
 
         Route::post('/dia-chi/{id}/mac-dinh', [DiaChiController::class, 'setMacDinh'])->name('diachi.macdinh');
+        Route::post('/dia-chi/{id}/xoa', [DiaChiController::class, 'destroy'])->name('diachi.destroy');
 
     });
 });
