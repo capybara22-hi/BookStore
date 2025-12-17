@@ -72,7 +72,6 @@ Route::post('/reset-password', [AuthController::class, 'resetPassword'])->name('
 
 
 
-
 // Route::view('/taikhoan', 'user.taikhoan')->name('taikhoan');
 
 // Route::view('/home', 'user.home')->name('home');
@@ -146,15 +145,15 @@ Route::middleware(['auth', 'customer'])->group(function () {
 
         Route::delete('/review/{id}', [ReviewController::class, 'destroy'])->name('review.destroy');
 
-        Route::post('/don-hang/{id}/huy', [TaiKhoanController::class,'huy'])->name('donhang.huy');
+        Route::post('/don-hang/{id}/huy', [TaiKhoanController::class, 'huy'])->name('donhang.huy');
         // Route::post('/don-hang/{id}/xac-nhan', [TaiKhoanController::class,'xacNhanNhanHang'])->name('donhang.xacnhan');
-        Route::post('/review/store', [ReviewController::class,'store'])->name('review.store');
+        Route::post('/review/store', [ReviewController::class, 'store'])->name('review.store');
         Route::post('/don-hang/{id}/nhan-hang', [TaiKhoanController::class, 'nhanHang'])->name('donhang.nhanhang');
 
         Route::post('/user/dia-chi/them', [DiaChiController::class, 'store'])->name('diachi.store');
 
         Route::post('/dia-chi/{id}/mac-dinh', [DiaChiController::class, 'setMacDinh'])->name('diachi.macdinh');
-        Route::post('/dia-chi/{id}/xoa', [DiaChiController::class, 'destroy'])->name('diachi.destroy');
 
+        Route::post('/dia-chi/{id}/xoa', [DiaChiController::class, 'destroy'])->name('diachi.destroy');
     });
 });

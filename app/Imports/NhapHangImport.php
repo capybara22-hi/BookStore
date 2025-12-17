@@ -25,8 +25,13 @@ class NhapHangImport implements ToModel, WithHeadingRow
 
     public function model(array $row)
     {
-        if (!isset($row['code']) || !isset($row['so_luong_sp'])) {
+        // Kiểm tra cột bắt buộc có tồn tại không
+        if (!array_key_exists('code', $row) || !array_key_exists('so_luong_sp', $row)) {
             throw new \Exception("File Excel không đúng cấu trúc!");
+        }
+        // Bỏ qua dòng trống (code rỗng hoặc số lượng rỗng)
+        if (empty(trim($row['code'])) || empty(trim($row['so_luong_sp']))) {
+            return null;
         }
 
         // Tìm sản phẩm 

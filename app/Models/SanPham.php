@@ -21,6 +21,7 @@ class SanPham extends Model
         'so_luong_sp',
         'mo_ta_san_pham',
         'ma_the_loai',
+        'status',
     ];
 
     public function file()
@@ -47,6 +48,4 @@ class SanPham extends Model
     {
         return $this->hasMany(YeuThich::class, 'ma_san_pham', 'ma_san_pham');
     }
-
-
 }
