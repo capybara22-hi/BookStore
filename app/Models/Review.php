@@ -14,6 +14,7 @@ class Review extends Model
     protected $fillable = [
         'ma_nguoi_dung',
         'ma_san_pham',
+        'ma_don_hang',
         'rating',
         'comment',
         'edit_count'
