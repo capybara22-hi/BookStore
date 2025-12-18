@@ -102,6 +102,11 @@ Route::middleware(['auth', 'admin'])->group(function () {
 
     Route::get('/donhangadmin', [DonHangAdminController::class, 'index'])->name('donhangadmin');
 
+    // Admin: confirm / cancel order status
+    Route::post('/donhangadmin/{id}/confirm', [DonHangAdminController::class, 'confirm'])->name('donhangadmin.confirm');
+    Route::post('/donhangadmin/{id}/cancel', [DonHangAdminController::class, 'cancel'])->name('donhangadmin.cancel');
+    Route::get('/donhangadmin/{id}', [DonHangAdminController::class, 'show'])->name('donhangadmin.show');
+
     Route::get('/sanphamadmin', [SanPhamAdminController::class, 'index'])->name('sanphamadmin');
 
     Route::get('/nhaphang', [BaoCaoNhapHangController::class, 'index'])->name('nhaphang');
