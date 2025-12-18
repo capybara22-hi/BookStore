@@ -54,16 +54,6 @@
             <h1 class="sitename">MiuBook</h1>
           </a>
 
-          <!-- Search -->
-          <form class="search-form desktop-search-form">
-            <div class="input-group">
-              <input type="text" class="form-control" placeholder="Tìm kiếm sản phẩm">
-              <button class="btn" type="submit">
-                <i class="bi bi-search"></i>
-              </button>
-            </div>
-          </form>
-
           <!-- Actions -->
           <div class="header-actions d-flex align-items-center justify-content-end">
 
@@ -126,13 +116,13 @@
             <!-- Yêu thích -->
             <a href="{{ route('taikhoan') }}" class="header-action-btn d-none d-md-block">
               <i class="bi bi-heart"></i>
-              <span class="badge">0</span>
+              <span class="badge">{{ isset($wishCount) ? $wishCount : 0 }}</span>
             </a>
 
             <!-- Giỏ hàng -->
             <a href="{{ route('giohang') }}" class="header-action-btn">
               <i class="bi bi-cart3"></i>
-              <span class="badge">0</span>
+              <span class="badge">{{ isset($cartCount) ? $cartCount : 0 }}</span>
             </a>
 
             <!-- Mobile Navigation Toggle -->
@@ -375,6 +365,27 @@
 
   <!-- Main JS File -->
   <script src="{{ asset('assets/js/main.js') }}"></script>
+
+@php $messengerUrl = env('MESSENGER_URL', 'https://m.me/892734690595449'); @endphp
+@if(request()->routeIs('home'))
+  <a id="messengerBtn" href="{{ $messengerUrl }}" target="_blank" rel="noopener" style="position:fixed; right:20px; top:80%; transform:translateY(-50%); width:56px; height:56px; border-radius:50%; background:#0084ff; display:flex; align-items:center; justify-content:center; box-shadow:0 6px 18px rgba(0,0,0,0.15); z-index:99999;">
+    <i class="bi bi-messenger" style="color:#fff; font-size:24px;"></i>
+  </a>
+  <script>
+    (function(){
+      var btn = document.getElementById('messengerBtn');
+      if(!btn) return;
+      btn.addEventListener('click', function(e){
+        e.preventDefault();
+        var url = this.href;
+        var w = 600, h = 700;
+        var left = (screen.width/2) - (w/2);
+        var top = (screen.height/2) - (h/2);
+        window.open(url, 'messenger_popup', 'toolbar=0,location=0,status=0,menubar=0,scrollbars=1,resizable=1,width='+w+',height='+h+',top='+top+',left='+left);
+      });
+    })();
+  </script>
+@endif
 
 </body>
 

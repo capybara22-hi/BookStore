@@ -55,12 +55,11 @@
               <div class="user-info" data-aos="fade-right">
                 <div class="user-avatar">
                   <img src="{{ asset('assets/img/person/person-f-1.webp') }}" alt="Profile" loading="lazy">
-                  <span class="status-badge"><i class="bi bi-shield-check"></i></span>
+                  <span class="status-badge"><i class="bi bi-award"></i></span>
                 </div>
                 <h4>{{ $nguoi_dung->name}}</h4>
                 <div class="user-status">
-                  <i class="bi bi-award"></i>
-                  <span>Premium Member</span>
+                  
                 </div>
               </div>
 
