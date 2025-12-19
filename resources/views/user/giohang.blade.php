@@ -133,7 +133,7 @@
                   ">
 
                 <div style="
-                    background:rgba(190, 178, 178);
+                    background:#fff;
                     width:400px;
                     max-width:90%;
                     margin:80px auto;
@@ -151,7 +151,8 @@
                           id="km_modal_{{ $km->ma_khuyen_mai }}"
                           data-discount="{{ $km->phan_tram_giam }}"
                           data-cond="{{ $km->gia_don_hang }}"
-                          value="{{ $km->ma_khuyen_mai }}">
+                          value="{{ $km->ma_khuyen_mai }}"
+                          style="border:1px solid #0a0a0aff;">
 
                         <label for="km_modal_{{ $km->ma_khuyen_mai }}"
                           class="promo-label"
@@ -193,7 +194,8 @@
                                 id="{{ $vc->ma_van_chuyen }}"
                                 data-fee="{{ $vc->so_tien}}"
                                 data-cond="{{ $vc->dieu_kien ?? 0 }}"
-                                value="{{ $vc->ma_van_chuyen }}">
+                                value="{{ $vc->ma_van_chuyen }}"
+                                style="border:1px solid #0a0a0aff;">
 
                               <label class="form-check-label shipping-label"
                                   for="vc_{{ $vc->ma_van_chuyen }}"
