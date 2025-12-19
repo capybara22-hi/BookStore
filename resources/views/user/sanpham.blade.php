@@ -273,17 +273,102 @@
   </form>
 </main>
 
-<!-- <script>
-  document.addEventListener("DOMContentLoaded", function (){
-    const Loc = document.querySelectorAll('.boLoc');
+<div id="chatbot-icon"><img src="{{ asset('assets/img/about/chatbot.jpg') }}" alt="" style="width: 60px; height: 60px; border-radius: 50%; border: 2px solid #4e73df;"></div>
 
-    Loc.forEach(item=>{
-      item.addEventListener('click', function(){
-        const valLoc = item.getAttribute("data-id");
+<div id="chatbot-box">
+    <p style="color: #ffffffff; background: #832a9eff; padding: 10px;">Xin chào, hãy nói cho tôi nội dung sách bạn muốn tìm và tôi sẽ giúp bạn tìm kiếm.</p>
+    <div id="chatbot-messages"></div>
+    <div id="chatbot-input">        
+        <input type="text" id="chatbot-text" placeholder="Nhập sách bạn muốn...">
+        <button onclick="sendMessage()">Gửi</button>
+    </div>
+</div>
+<script>
+document.getElementById('chatbot-icon').onclick = function () {
+    let box = document.getElementById('chatbot-box');
+    box.style.display = box.style.display === 'flex' ? 'none' : 'flex';
+};
 
-        fetch(`/sanpham?keyLoc=${valLoc}`, { method: "GET" })
-      });
+function sendMessage() {
+    let text = document.getElementById('chatbot-text').value;
+    if (!text) return;
+
+    let messages = document.getElementById('chatbot-messages');
+    messages.innerHTML += `<div><b>Bạn:</b> ${text}</div>`;
+
+    fetch('/user/chatbot/search', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        'Accept': 'application/json',
+            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+        },
+        body: JSON.stringify({ query: text })
+    })
+    .then(res => {
+      if (!res.ok) throw new Error('Network response was not ok');
+      return res.json();
+    })
+    .then(data => {
+      messages.innerHTML += `<div><b>Chatbot:</b> ${data.reply}</div>`;
+    })
+    .catch(err => {
+      console.error(err);
+      messages.innerHTML += `<div><b>Chatbot:</b> Lỗi kết nối hoặc phản hồi không hợp lệ.</div>`;
     });
-  });
-</script> -->
+
+    document.getElementById('chatbot-text').value = '';
+}
+</script>
+<style>
+  #chatbot-icon {
+      position: fixed;
+      bottom: 150px;
+      right: 20px;
+      background: #4e73df;
+      color: white;
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      font-size: 30px;
+      z-index: 9999;
+  }
+  #chatbot-box {
+      position: fixed;
+      bottom: 220px;
+      right: 20px;
+      width: 320px;
+      height: 420px;
+      background: white;
+      border-radius: 10px;
+      border: 1px solid #ccc;
+      display: none;
+      flex-direction: column;
+      z-index: 9999;
+  }
+  #chatbot-messages {
+      flex: 1;
+      padding: 10px;
+      overflow-y: auto;
+  }
+  #chatbot-input {
+      display: flex;
+  }
+  #chatbot-input input {
+      flex: 1;
+      padding: 10px;
+      border: none;
+      border-top: 1px solid #ccc;
+  }
+  #chatbot-input button {
+      padding: 10px;
+      background: #4e73df;
+      color: white;
+      border: none;
+  }
+</style>
 @endsection
