@@ -144,6 +144,6 @@ Route::middleware(['auth', 'customer'])->group(function () {
         Route::post('/dia-chi/{id}/mac-dinh', [DiaChiController::class, 'setMacDinh'])->name('diachi.macdinh');
 
         Route::post('/dia-chi/{id}/xoa', [DiaChiController::class, 'destroy'])->name('diachi.destroy');
-        Route::post('/chatbot/search', [ChatbotController::class, 'search']);
+        Route::post('/chatbot', [ChatbotController::class, 'chat']);
     });
 });

@@ -296,7 +296,7 @@ function sendMessage() {
     let messages = document.getElementById('chatbot-messages');
     messages.innerHTML += `<div><b>Bạn:</b> ${text}</div>`;
 
-    fetch('/user/chatbot/search', {
+    fetch('/user/chatbot', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
