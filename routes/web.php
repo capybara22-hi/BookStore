@@ -117,6 +117,10 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::post('nhaphang/import', [NhapHangController::class, 'import'])->name('nhaphang.import');
 
     Route::get('/chitietnhaphang/{id}', [BaoCaoNhapHangController::class, 'chitietnhaphang'])->name('chitietnhaphang');
+
+    Route::patch('/sanphamadmin/{ma_san_pham}/toggle-status', [SanPhamAdminController::class, 'toggleStatus'])->name('sanpham.toggle-status');
+
+    Route::put('/sanphamadmin', [SanPhamAdminController::class, 'update'])->name('sanpham.update');
 });
 
 
