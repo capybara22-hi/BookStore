@@ -9,6 +9,7 @@ use App\Models\User;
 use App\Models\VanChuyen;
 use App\Models\DonHang;
 use App\Models\DiaChi;
+use App\Models\KhuyenMai;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use Illuminate\Support\Facades\Auth;
 
@@ -32,11 +33,6 @@ class ThanhToanController extends Controller
         $ma_nh = $thanhtoan->ngan_hang;
         $tai_khoan = $thanhtoan->so_tk;
         $noi_dung = urlencode($nguoidung->name .'- Thanh toán tiền sách -'.  $nguoidung->ma_nguoi_dung );
-        // // Tính tổng tiền (giả sử có cột 'so_luong' và 'don_gia')
-        // $tong_tien = $giohang->sum('tong_tien');
-
-        // Dữ liệu cần hiển thị khi quét QR (có thể là nội dung chuyển khoản)
-        // $noi_dung_qr = "Thanh toan don hang : <br>" . " - So tien: " . number_format($tong_tien, 0, ',', '.') . " VND";
 
         // Tạo mã QR
         $qrcode = "https://img.vietqr.io/image/{$ma_nh}-{$tai_khoan}-compact2.png?amount={$thanh_tien}&addInfo={$noi_dung}";
@@ -44,13 +40,6 @@ class ThanhToanController extends Controller
         return view('user.thanhtoan', compact('giohang', 'qrcode','thanhtoan','nguoidung', 'tien_giam'));
     }
 
-    // public function luuSession1(Request $request) {
-    //     session([
-    //         'trang_thai' => $request->trang_thai,
-    //     ]);
-
-    //     return response()->json(['status' => 'ok']);
-    // }
 
     public function updateTrangThai(Request $request)
     {
@@ -79,6 +68,11 @@ class ThanhToanController extends Controller
         $tien_giam = session('tien_giam');
         $ma_khuyen_mai = session('ma_khuyen_mai');
 
+        if ($ma_khuyen_mai) {
+            KhuyenMai::where('ma_khuyen_mai', $ma_khuyen_mai)
+                ->decrement('so_luong', 1);
+        }
+
         if (!$ma_vc || !$phi_vc || !$thanh_tien || !$tien_hang) {
             return response()->json(['error' => 'Thiếu dữ liệu session'], 400);
         }
@@ -99,15 +93,17 @@ class ThanhToanController extends Controller
 
         // Insert đơn hàng
         $don_hang = DonHang::create([
-            'ma_nguoi_dung' => $ma_nguoi_dung,
-            'ma_dia_chi' => $dia_chi->ma_dia_chi,  // thêm ma_dia_chi
+            'ma_nguoi_dung' => $ma_nguoi_dung,        
             'tien_hang' => $tien_hang,
             'loai_van_chuyen' => $van_chuyen->dv_van_chuyen,
-            'phi_van_chuyen' => $phi_vc,
-            'thanh_tien' => $thanh_tien,
-            'giam_gia' => $tien_giam,
             'ma_khuyen_mai' => $ma_khuyen_mai,
-            'ngay_dat_hang' => now(), // thêm ngay_dat_hang
+            'giam_gia' => $tien_giam,
+            'phi_van_chuyen' => $phi_vc,
+            'thanh_tien' => $thanh_tien,  
+            'dia_chi' => $dia_chi->dia_chi,  // thêm ma_dia_chi      
+            'ngay_dat_hang' => now(), // thêm ngay_dat_hang  
+            'sdt' => $dia_chi->sdt,  // thêm ma_dia_chi
+            'ten_nguoi_nhan' => $dia_chi->ten_nguoi_nhan             
         ]);
 
         // lấy mã đơn hàng vừa tạo 

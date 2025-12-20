@@ -11,7 +11,7 @@ class DonHang extends Model
     protected $table = 'don_hang';
     protected $primaryKey = 'ma_don_hang';
     public $timestamps = false;
-    protected $fillable = ['ma_nguoi_dung', 'tien_hang', 'loai_van_chuyen', 'phi_van_chuyen', 'thanh_tien', 'trang_thai_dh', 'ma_dia_chi', 'ngay_dat_hang'];
+    protected $fillable = ['ma_nguoi_dung', 'tien_hang', 'loai_van_chuyen', 'phi_van_chuyen', 'thanh_tien', 'trang_thai_dh', 'dia_chi', 'ngay_dat_hang', 'sdt', 'ten_nguoi_nhan', 'ma_khuyen_mai', 'giam_gia'];
 
     public function user()
     {
@@ -19,8 +19,8 @@ class DonHang extends Model
     }
 
     // Quan hệ với địa chỉ
-    public function diaChi()
-    {
-        return $this->belongsTo(DiaChi::class, 'ma_dia_chi', 'ma_dia_chi');
-    }
+    // public function diaChi()
+    // {
+    //     return $this->belongsTo(DiaChi::class, 'ma_dia_chi', 'ma_dia_chi');
+    // }
 }

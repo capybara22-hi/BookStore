@@ -27,22 +27,36 @@ class DiaChiController extends Controller
     }
 
     public function setMacDinh($id)
-{
-    try {
-        $userId = auth()->id();
+    {
+        try {
+            $userId = auth()->id();
 
-        // reset địa chỉ mặc định
-        DiaChi::where('ma_nguoi_dung', $userId)->update(['mac_dinh' => 0]);
+            // reset địa chỉ mặc định
+            DiaChi::where('ma_nguoi_dung', $userId)->update(['mac_dinh' => 0]);
 
-        $diaChi = DiaChi::findOrFail($id);
-        $diaChi->mac_dinh = 1;
-        $diaChi->save();
+            $diaChi = DiaChi::findOrFail($id);
+            $diaChi->mac_dinh = 1;
+            $diaChi->save();
 
-        return response()->json(['status' => 'success']);
-    } catch (\Exception $e) {
-        return response()->json(['status' => 'error', 'message' => $e->getMessage()], 500);
+            return response()->json(['status' => 'success']);
+        } catch (\Exception $e) {
+            return response()->json(['status' => 'error', 'message' => $e->getMessage()], 500);
+        }
     }
-}
+
+    public function destroy($id)
+    {
+        $diaChi = DiaChi::find($id);
+
+        if (!$diaChi) {
+            return response()->json(['status' => 'error', 'message' => 'Địa chỉ không tồn tại']);
+        }
+
+        $diaChi->delete();
+
+        return response()->json(['status' => 'success', 'message' => 'Địa chỉ đã bị xóa']);
+    }
+
 
 
 }

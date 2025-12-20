@@ -55,12 +55,11 @@
               <div class="user-info" data-aos="fade-right">
                 <div class="user-avatar">
                   <img src="{{ asset('assets/img/person/person-f-1.webp') }}" alt="Profile" loading="lazy">
-                  <span class="status-badge"><i class="bi bi-shield-check"></i></span>
+                  <span class="status-badge"><i class="bi bi-award"></i></span>
                 </div>
                 <h4>{{ $nguoi_dung->name}}</h4>
                 <div class="user-status">
-                  <i class="bi bi-award"></i>
-                  <span>Premium Member</span>
+                  
                 </div>
               </div>
 
@@ -402,11 +401,11 @@
                           <div class="detail-section">
                             <h5>Địa chỉ giao hàng</h5>
                             <div class="address-info">
-                              @if($dh->diaChi)
+                              @if($dh->dia_chi)
                                 <p>
-                                  {{ $dh->diaChi->ten_nguoi_nhan }}<br>
-                                  {{ $dh->diaChi->dia_chi }}<br>
-                                  {{ $dh->diaChi->sdt }}
+                                  {{ $dh->ten_nguoi_nhan }}<br>
+                                  {{ $dh->dia_chi }}<br>
+                                  {{ $dh->sdt }}
                                 </p>
                               @else
                                 <p>Chưa có địa chỉ cho đơn hàng này</p>
@@ -640,14 +639,11 @@
                   </div>
 
                   <div class="addresses-grid">
-                    @php 
-                      $index = 1;
-                    @endphp
                     <!-- Address Card 1 -->
                     @foreach($dia_chi as $dc)
                     <div class="address-card default" data-aos="fade-up" data-aos-delay="100" data-id="{{ $dc->ma_dia_chi }}">
                       <div class="card-header">
-                        <h4>Địa chỉ {{ $loop->iteration }}</h4>
+                        <h4>Địa chỉ</h4>
                       </div>
                       <div class="card-body">
                         <p class="address-text">{{ $dc->dia_chi }}</p>
@@ -657,12 +653,14 @@
                         </div>
                       </div>
                       <div class="card-actions">
-                        <button type="button" class="btn-edit">
+                        <!-- <button type="button" class="btn-edit">
                           <i class="bi bi-pencil"></i> Sửa
+                        </button> -->
+                        @if($dc->mac_dinh == 0)
+                        <button type="button" class="btn-remove" data-id="{{ $dc->ma_dia_chi }}">
+                            <i class="bi bi-trash"></i> Xóa
                         </button>
-                        <button type="button" class="btn-remove">
-                          <i class="bi bi-trash"></i> Xóa
-                        </button>
+                        @endif
                         
                         @if($dc->mac_dinh == 1)
                           <span class="text-default">Đang là mặc định</span>
@@ -791,17 +789,17 @@
           const status = parseInt(this.dataset.status);
           const maDH = this.dataset.dh;
 
-          // ⛔ Đã hủy / đã đánh giá
+          //  Đã hủy / đã đánh giá
           if (status === 5 || status === 6) return;
 
-          // ⭐ Đánh giá
+          //  Đánh giá
           if (status === 4) {
               const modalEl = document.getElementById(`evaluateModal${maDH}`);
               if (modalEl) new bootstrap.Modal(modalEl).show();
               return;
           }
 
-          // ✅ ĐÃ NHẬN ĐƯỢC HÀNG (status = 3)
+          //  ĐÃ NHẬN ĐƯỢC HÀNG (status = 3)
           if (status === 3) {
               if (!confirm("Xác nhận bạn đã nhận được hàng?")) return;
 
@@ -821,7 +819,7 @@
               return;
           }
 
-          // 👁️ Theo dõi đơn hàng (1–2)
+          //  Theo dõi đơn hàng (1–2)
           const tracking = document.getElementById(`tracking${maDH}`);
           if (tracking) {
               new bootstrap.Collapse(tracking, { toggle: true });
@@ -992,11 +990,44 @@
                         }
                     });
                 }
+
+                if (data.status === 'success') {
+                    // Load lại trang
+                    location.reload();
+                }
             });
         });
     });
   });
 
+// Xử lý nút xóa địa chỉ
+  document.addEventListener("DOMContentLoaded", function() {
+      document.querySelectorAll('.btn-remove').forEach(btn => {
+          btn.addEventListener('click', function() {
+              const maDC = this.dataset.id;
+
+              if (!confirm("Bạn có chắc muốn xóa địa chỉ này?")) return;
+
+              fetch(`/user/dia-chi/${maDC}/xoa`, {
+                  method: 'POST',
+                  headers: {
+                      'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                      'Content-Type': 'application/json'
+                  }
+              })
+              .then(res => res.json())
+              .then(data => {
+                  if (data.status === 'success') {
+                      alert(data.message);
+                      // Xóa thẻ địa chỉ khỏi DOM
+                      this.closest('.address-card').remove();
+                  } else {
+                      alert(data.message);
+                  }
+              });
+          });
+      });
+  });
 </script>
 
 @endsection

@@ -151,13 +151,13 @@
                           id="km_modal_{{ $km->ma_khuyen_mai }}"
                           data-discount="{{ $km->phan_tram_giam }}"
                           data-cond="{{ $km->gia_don_hang }}"
-                          value="{{ $km->ma_khuyen_mai }}">
+                          value="{{ $km->ma_khuyen_mai }}"
+                          style="border:1px solid #0a0a0aff;">
 
                         <label for="km_modal_{{ $km->ma_khuyen_mai }}"
                           class="promo-label"
                           style="cursor:pointer;">
-                          Giảm {{ $km->phan_tram_giam }}%
-                          (Đơn từ {{ number_format($km->gia_don_hang) }}đ)
+                          {{ $km->nd_khuyen_mai }} 
                         </label>
                       </div>
                     @endforeach
@@ -194,7 +194,8 @@
                                 id="{{ $vc->ma_van_chuyen }}"
                                 data-fee="{{ $vc->so_tien}}"
                                 data-cond="{{ $vc->dieu_kien ?? 0 }}"
-                                value="{{ $vc->ma_van_chuyen }}">
+                                value="{{ $vc->ma_van_chuyen }}"
+                                style="border:1px solid #0a0a0aff;">
 
                               <label class="form-check-label shipping-label"
                                   for="vc_{{ $vc->ma_van_chuyen }}"

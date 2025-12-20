@@ -24,25 +24,35 @@ class ReviewController extends Controller
         $sanPhams = GioHang::where('ma_don_hang', $request->ma_don_hang)
             ->select('ma_san_pham')
             ->get();
-
+        // dd($request->all());
         foreach ($sanPhams as $sp) {
 
-            // ❗ Tránh đánh giá trùng
+            // Tránh đánh giá trùng
             $daDanhGia = Review::where('ma_nguoi_dung', $userId)
-                ->where('ma_san_pham', $sp->ma_san_pham)
+                ->where('ma_san_pham', $sp->ma_san_pham)->where('ma_don_hang', $request->ma_don_hang)
                 ->exists();
 
-            if ($daDanhGia) {
+             
+
+            if ($daDanhGia == true) {
+                // dd($daDanhGia);
                 continue;
             }
+           
+            
+            try {
+                Review::create([
+                    'ma_nguoi_dung' => $userId,
+                    'ma_san_pham'   => $sp->ma_san_pham,
+                    'ma_don_hang'   => $request->ma_don_hang,
+                    'rating'        => $request->rating,
+                    'comment'       => $request->comment,
+                    'edit_count'    => 0
+                ]);
+            } catch (\Exception $e) {
+                dd($e->getMessage());
+            }
 
-            Review::create([
-                'ma_nguoi_dung' => $userId,
-                'ma_san_pham'   => $sp->ma_san_pham,
-                'rating'        => $request->rating,
-                'comment'       => $request->comment,
-                'edit_count'    => 0
-            ]);
 
             DonHang::where('ma_don_hang', $request->ma_don_hang)
             ->update([

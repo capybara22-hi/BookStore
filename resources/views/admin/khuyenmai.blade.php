@@ -155,7 +155,7 @@
                       <input type="date"
                         style="width:100%; padding:8px; margin-top:5px; border-radius:6px; border:1px solid #ccc;"
                         class="suatimeKT" required
-                        value="{{$km->ngay_ket_thuc}}">
+                        value="{{$km->ngay_ket_thuc}}"><br><br>
                       <label>Số lượng:</label><br>
                       <input type="number"
                         style="width:100%; padding:8px; margin-top:5px; border-radius:6px; border:1px solid #ccc;"
