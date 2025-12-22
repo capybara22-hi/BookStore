@@ -116,9 +116,7 @@ Route::middleware(['auth', 'admin'])->group(function () {
 
     Route::put('/sanphamadmin', [SanPhamAdminController::class, 'update'])->name('sanpham.update');
 
-<<<<<<< HEAD
     Route::get('/doanhthu', [DoanhthuController::class, 'index'])->name('doanhthu');
-=======
     // Admin: quản lý danh mục
     Route::post('/danhmuc/theloai', [AdminDanhMucController::class, 'storeTheLoai'])->name('danhmuc.theloai.store');
     // Thể loại: sửa / xóa / xem sản phẩm / gán sản phẩm
@@ -141,7 +139,7 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::post('/admin/reviews/{id}/reply', [AdminReviewController::class, 'reply'])->name('admin.reviews.reply');
     Route::post('/admin/reviews/{id}/toggle-hide', [AdminReviewController::class, 'toggleHide'])->name('admin.reviews.toggleHide');
     Route::delete('/admin/reviews/{id}', [AdminReviewController::class, 'destroy'])->name('admin.reviews.destroy');
->>>>>>> 4749df44161dbf97bc4767488f98404ce0d79d17
+
 });
 
 
