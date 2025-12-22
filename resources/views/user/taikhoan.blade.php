@@ -18,6 +18,16 @@
 <script>
   alert("{{ session('successTDC') }}");
 </script>
+@elseif(session()->has('don_hang'))
+<script>
+  // Thông báo thanh toán thành công từ VNPay
+  alert("✅ {{ session('don_hang') }}");
+</script>
+@elseif(session()->has('errorDC'))
+<script>
+  // Thông báo lỗi thanh toán
+  alert("❌ {{ session('errorDC') }}");
+</script>
 
 @endif
 @extends('components.homeLayout')

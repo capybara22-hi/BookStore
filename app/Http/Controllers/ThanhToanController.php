@@ -99,10 +99,11 @@ class ThanhToanController extends Controller
             'giam_gia' => $tien_giam,
             'phi_van_chuyen' => $phi_vc,
             'thanh_tien' => $thanh_tien,
-            'dia_chi' => $dia_chi->dia_chi,  // thêm ma_dia_chi      
-            'ngay_dat_hang' => now(), // thêm ngay_dat_hang  
-            'sdt' => $dia_chi->sdt,  // thêm ma_dia_chi
-            'ten_nguoi_nhan' => $dia_chi->ten_nguoi_nhan
+            'dia_chi' => $dia_chi->dia_chi,
+            'ngay_dat_hang' => now(),
+            'sdt' => $dia_chi->sdt,
+            'ten_nguoi_nhan' => $dia_chi->ten_nguoi_nhan,
+            'trang_thai_dh' => 1 // COD = Đã đặt hàng (chờ giao)
         ]);
 
         // lấy mã đơn hàng vừa tạo 

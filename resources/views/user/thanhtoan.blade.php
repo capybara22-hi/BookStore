@@ -26,53 +26,8 @@
   <section id="checkout" class="checkout section">
 
     <div class="container" data-aos="fade-up" data-aos-delay="100">
-      <div class="row">
-        <div class="col-lg-7">
-          <!-- Checkout Form -->
-
-          <div class="checkout-container" data-aos="fade-up">
-            <form class="checkout-form">
-              <!-- Customer Information -->
-              <div class="checkout-section" id="customer-info">
-                <br><br>
-                <p style="text-align:center;"> <img src="<?php echo $qrcode; ?>" style="width: 300px; height: 350px;" alt=""></p>
-                <p style='color: red; text-align:center;' id="cho_thanh_toan"> Đang chờ thanh toán <br> Vui lòng quét mã thanh toán <br> và nhấn nút xác nhận sau khi thanh toán thành công</p>
-                <div class="section-header">
-                  <h3> &emsp;&emsp;&emsp;&emsp; &emsp;&emsp;&emsp;&emsp; &emsp;&emsp;&nbsp;&nbsp;Thanh toán đơn hàng</h3>
-                </div>
-                <div class="section-content">
-                  <div class="form-group">
-                    <label for="">Số tài khoản: </label>
-                    <input type="text" class="form-control" name="stk" id="" placeholder="" readonly value="{{$thanhtoan->so_tk}}">
-                  </div>
-                  <div class="form-group">
-                    <label for="">Tên chủ tài khoản:</label>
-                    <input type="text" class="form-control" name="ten_tk" id="" placeholder="" readonly value="{{$thanhtoan->ten_chu_tk}}">
-                  </div>
-                  <div class="form-group">
-                    <label for="">Số tiền chuyển:</label>
-                    <input type="text" class="form-control" name="tien_chuyen" id="so_tien_chuyen" placeholder="" readonly value="{{ number_format(session('thanh_tien')) }} VND">
-                  </div>
-                  <div class="form-group">
-                    <label for="">Nội dung chuyển khoản:</label>
-                    <input type="text" class="form-control" name="nd_chuyen" id="" placeholder="" readonly value="{{ $nguoidung->name}} - Thanh toán tiền sách - {{ $nguoidung->ma_nguoi_dung}}">
-                  </div>
-                  <div class="form-group">
-                    <label for="">Ngân hàng người nhận:</label>
-                    <input type="text" class="form-control" name="ngan_hang" id="" placeholder="" readonly value="{{$thanhtoan->ngan_hang}}">
-                  </div>
-                  <div class="form-group">
-                    <button type="submit" class="form-control" style="background-color:green; color:white;" id="da_xac_nhan">
-                      Xác nhận đã thanh toán
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </form>
-          </div>
-        </div>
-
-        <div class="col-lg-5">
+      <div class="row justify-content-center">
+        <div class="col-lg-6">
           <!-- Order Summary -->
           <div class="order-summary" data-aos="fade-left" data-aos-delay="200">
             <div class="order-summary-header">
@@ -125,6 +80,33 @@
               </div>
             </div>
           </div>
+
+          <!-- VNPay Payment Button -->
+          <div class="vnpay-payment" style="margin-top: 30px; text-align: center;">
+            <!-- <button type="button" id="btnVNPay" style="
+              background: linear-gradient(135deg, #0088cc 0%, #005a8c 100%);
+              color: white;
+              border: none;
+              padding: 15px 40px;
+              font-size: 18px;
+              font-weight: bold;
+              border-radius: 8px;
+              cursor: pointer;
+              width: 100%;
+              transition: all 0.3s ease;
+              box-shadow: 0 4px 15px rgba(0, 136, 204, 0.3);
+            " onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 20px rgba(0, 136, 204, 0.4)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 15px rgba(0, 136, 204, 0.3)';">
+              <i class="bi bi-credit-card" style="margin-right: 10px;"></i>
+              Thanh toán qua VNPay
+            </button> -->
+            <form action="{{ route('thanhtoanvnpay') }}" method="post">
+              @csrf
+              <input type="hidden" name="total_vnpay" value="{{ number_format(session('thanh_tien'))}}">
+              <button type="submit" class="btn btn-success check_out"
+                name="redirect">Thanh toán VNPAY</button>
+            </form>
+
+          </div>
         </div>
       </div>
 
@@ -174,46 +156,28 @@
 </main>
 
 <script>
-  document.getElementById("da_xac_nhan").addEventListener("click", function() {
-    const tt = document.getElementById("cho_thanh_toan");
-    tt.innerHTML = "Bạn đã xác nhận thanh toán";
-    tt.style.color = "green";
-    this.style.backgroundColor = "orange";
-    this.disabled = false; // cho phép nhấn nút
-    this.innerHTML = "Xem đơn hàng của bạn";
+  document.getElementById("btnVNPay").addEventListener("click", function(e) {
+    e.preventDefault();
 
-    fetch("/luu-session1", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').getAttribute("content")
-        },
-        body: JSON.stringify({
-          trang_thai: 1
-        })
-      })
-      .then(response => response.json())
-      .then(data => {
-        console.log("Cập nhật thành công:", data);
+    // Vô hiệu hóa nút để tránh nhấn nhiều lần
+    this.disabled = true;
+    this.innerHTML = '<i class="bi bi-hourglass-split" style="margin-right: 10px;"></i>Đang xử lý...';
 
-        alert("Bạn đã đặt hàng thành công");
+    // Tạo form để submit sang VNPay
+    const form = document.createElement('form');
+    form.method = 'POST';
+    form.action = '{{ route("vnpay.payment") }}';
 
-        // gán lại sự kiện click để chuyển trang
-        this.onclick = function() {
-          window.location.href = "/user/user/taikhoan"; // đường dẫn đến trang xem đơn hàng
-        };
+    // Thêm CSRF token
+    const csrfInput = document.createElement('input');
+    csrfInput.type = 'hidden';
+    csrfInput.name = '_token';
+    csrfInput.value = document.querySelector('meta[name="csrf-token"]').getAttribute("content");
+    form.appendChild(csrfInput);
 
-        // chặn quay lại trang trước
-        history.pushState(null, null, location.href);
-        window.onpopstate = function() {
-          history.go(1);
-        };
-      })
-      .catch(error => {
-        console.error("Lỗi cập nhật:", error);
-      });
-  }, {
-    once: true
-  });;
+    // Submit form
+    document.body.appendChild(form);
+    form.submit();
+  });
 </script>
 @endsection

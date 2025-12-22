@@ -20,6 +20,7 @@ use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\DiaChiController;
 use App\Http\Controllers\ChatbotController;
 use App\Http\Controllers\DoanhthuController;
+use App\Http\Controllers\ThanhToanVNPayController;
 use App\Models\DonHang;
 use App\Models\KhuyenMai;
 use App\Models\User;
@@ -76,6 +77,10 @@ Route::post('/giohang/update', [GioHangController::class, 'updateQuantity'])->na
 Route::post('/luu-session', [GioHangController::class, 'luuSession']);
 
 Route::post('/luu-session1', [ThanhToanController::class, 'updateTrangThai'])->name('giohang.update1');
+
+// VNPay routes
+Route::post('/vnpay-payment', [ThanhToanVNPayController::class, 'vnpay_payment'])->name('vnpay.payment');
+Route::get('/vnpay-return', [ThanhToanVNPayController::class, 'vnpay_return'])->name('vnpay.return');
 
 // Phần quyền admin 
 Route::middleware(['auth', 'admin'])->group(function () {
@@ -149,5 +154,8 @@ Route::middleware(['auth', 'customer'])->group(function () {
 
         Route::post('/dia-chi/{id}/xoa', [DiaChiController::class, 'destroy'])->name('diachi.destroy');
         Route::post('/chatbot', [ChatbotController::class, 'chat']);
+
+
+        Route::post('/user/thanhtoan', [ThanhToanVNPayController::class, 'vnpay_payment'])->name('thanhtoanvnpay');
     });
 });
