@@ -181,8 +181,12 @@
               </div>
             </div>
 
+<<<<<<< HEAD
 
             <!-- <div class="summary-item shipping-item">
+=======
+              <div class="summary-item shipping-item">
+>>>>>>> 4749df44161dbf97bc4767488f98404ce0d79d17
                 <span class="summary-label">Vận chuyển</span>
                   <div class="shipping-options">
 

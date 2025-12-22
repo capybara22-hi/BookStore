@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\DanhMucController;
 use App\Http\Controllers\TheLoaiController;
+use App\Http\Controllers\Admin\DanhMucController as AdminDanhMucController;
 use App\Http\Controllers\SanPhamController;
 use App\Http\Controllers\GioHangController;
 use App\Http\Controllers\ThanhToanController;
@@ -17,6 +18,8 @@ use App\Http\Controllers\NhapHangController;
 use App\Http\Controllers\SanPhamAdminController;
 use App\Http\Controllers\YeuThichController;
 use App\Http\Controllers\ReviewController;
+use App\Http\Controllers\Admin\VanChuyenController as AdminVanChuyenController;
+use App\Http\Controllers\Admin\ReviewController as AdminReviewController;
 use App\Http\Controllers\DiaChiController;
 use App\Http\Controllers\ChatbotController;
 use App\Http\Controllers\DoanhthuController;
@@ -113,7 +116,32 @@ Route::middleware(['auth', 'admin'])->group(function () {
 
     Route::put('/sanphamadmin', [SanPhamAdminController::class, 'update'])->name('sanpham.update');
 
+<<<<<<< HEAD
     Route::get('/doanhthu', [DoanhthuController::class, 'index'])->name('doanhthu');
+=======
+    // Admin: quản lý danh mục
+    Route::post('/danhmuc/theloai', [AdminDanhMucController::class, 'storeTheLoai'])->name('danhmuc.theloai.store');
+    // Thể loại: sửa / xóa / xem sản phẩm / gán sản phẩm
+    Route::get('/danhmuc/theloai/{id}/edit', [AdminDanhMucController::class, 'editTheLoai'])->name('danhmuc.theloai.edit');
+    Route::put('/danhmuc/theloai/{id}', [AdminDanhMucController::class, 'updateTheLoai'])->name('danhmuc.theloai.update');
+    Route::delete('/danhmuc/theloai/{id}', [AdminDanhMucController::class, 'destroyTheLoai'])->name('danhmuc.theloai.destroy');
+    Route::get('/danhmuc/theloai/{id}/sanpham', [AdminDanhMucController::class, 'showSanPham'])->name('danhmuc.theloai.sanpham');
+    Route::post('/danhmuc/theloai/{id}/sanpham', [AdminDanhMucController::class, 'assignSanPham'])->name('danhmuc.theloai.sanpham.assign');
+
+    Route::resource('/danhmuc', AdminDanhMucController::class);
+    // Admin: quản lý vận chuyển
+    Route::get('/vanchuyen', [AdminVanChuyenController::class, 'index'])->name('vanchuyen.index');
+    Route::post('/vanchuyen', [AdminVanChuyenController::class, 'store'])->name('vanchuyen.store');
+    Route::get('/vanchuyen/{id}/edit', [AdminVanChuyenController::class, 'edit'])->name('vanchuyen.edit');
+    Route::put('/vanchuyen/{id}', [AdminVanChuyenController::class, 'update'])->name('vanchuyen.update');
+    Route::delete('/vanchuyen/{id}', [AdminVanChuyenController::class, 'destroy'])->name('vanchuyen.destroy');
+    // Admin: quản lý đánh giá
+    Route::get('/admin/reviews', [AdminReviewController::class, 'index'])->name('admin.reviews.index');
+    Route::post('/admin/reviews/{id}/mark-replied', [AdminReviewController::class, 'markReplied'])->name('admin.reviews.markReplied');
+    Route::post('/admin/reviews/{id}/reply', [AdminReviewController::class, 'reply'])->name('admin.reviews.reply');
+    Route::post('/admin/reviews/{id}/toggle-hide', [AdminReviewController::class, 'toggleHide'])->name('admin.reviews.toggleHide');
+    Route::delete('/admin/reviews/{id}', [AdminReviewController::class, 'destroy'])->name('admin.reviews.destroy');
+>>>>>>> 4749df44161dbf97bc4767488f98404ce0d79d17
 });
 
 

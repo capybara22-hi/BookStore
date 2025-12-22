@@ -186,8 +186,8 @@
           <div class="customer-reviews-list">
 
             @forelse($sanpham->reviews as $review)
+            @if($review->is_hidden == 0)
             <div class="review-card mb-4 p-3 border rounded">
-
               <div class="d-flex align-items-center mb-2">
                 <strong>{{ $review->user->name }}</strong>
                 <span class="ms-3 text-muted">
@@ -201,9 +201,18 @@
                   @endfor
               </div>
 
+
               <p>{{ $review->comment }}</p>
 
+              @if(!empty($review->danh_gia))
+              <div class="mt-2 p-3 bg-gray-100 rounded">
+                <strong>Phản hồi từ cửa hàng:</strong>
+                <div class="mt-1">{{ $review->danh_gia }}</div>
+              </div>
+              @endif
+
             </div>
+            @endif
             @empty
             <p class="text-muted">
               Chưa có đánh giá nào cho sản phẩm này.
