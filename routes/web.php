@@ -18,6 +18,7 @@ use App\Http\Controllers\NhapHangController;
 use App\Http\Controllers\SanPhamAdminController;
 use App\Http\Controllers\YeuThichController;
 use App\Http\Controllers\ReviewController;
+use App\Http\Controllers\Admin\VanChuyenController as AdminVanChuyenController;
 use App\Http\Controllers\Admin\ReviewController as AdminReviewController;
 use App\Http\Controllers\DiaChiController;
 use App\Http\Controllers\ChatbotController;
@@ -119,6 +120,12 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::post('/danhmuc/theloai/{id}/sanpham', [AdminDanhMucController::class, 'assignSanPham'])->name('danhmuc.theloai.sanpham.assign');
 
     Route::resource('/danhmuc', AdminDanhMucController::class);
+    // Admin: quản lý vận chuyển
+    Route::get('/vanchuyen', [AdminVanChuyenController::class, 'index'])->name('vanchuyen.index');
+    Route::post('/vanchuyen', [AdminVanChuyenController::class, 'store'])->name('vanchuyen.store');
+    Route::get('/vanchuyen/{id}/edit', [AdminVanChuyenController::class, 'edit'])->name('vanchuyen.edit');
+    Route::put('/vanchuyen/{id}', [AdminVanChuyenController::class, 'update'])->name('vanchuyen.update');
+    Route::delete('/vanchuyen/{id}', [AdminVanChuyenController::class, 'destroy'])->name('vanchuyen.destroy');
     // Admin: quản lý đánh giá
     Route::get('/admin/reviews', [AdminReviewController::class, 'index'])->name('admin.reviews.index');
     Route::post('/admin/reviews/{id}/mark-replied', [AdminReviewController::class, 'markReplied'])->name('admin.reviews.markReplied');
