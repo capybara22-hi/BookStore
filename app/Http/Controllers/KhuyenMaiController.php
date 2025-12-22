@@ -20,7 +20,8 @@ class KhuyenMaiController extends Controller
             'phan_tram_giam' => $data['phan_tram'],
             'gia_don_hang' =>  $data['gia_don'],
             'ngay_bat_dau' =>  $data['tg_bd'],
-            'ngay_ket_thuc' =>  $data['tg_kt']
+            'ngay_ket_thuc' =>  $data['tg_kt'],
+            'so_luong' =>  $data['so_luong']
         ]);
 
         return response()->json([
@@ -28,5 +29,43 @@ class KhuyenMaiController extends Controller
             'data' => $khuyen_mai
         ]);
     }
+
+    public function xoaKM(Request $request){
+        //xoa khuyen mai
+        $data = $request->json()->all();
+        $maKmXoa = KhuyenMai::findOrFail($data['id_xoa']);
+        
+        $maKmXoa->delete();
+        return response()->json([
+            'success' => true,
+            'message' => 'Khuyến mãi đã được xóa!'
+        ]);
+    }
+
+    public function suaKM(Request $request)
+    {
+        // Lấy dữ liệu JSON gửi từ Fetch
+        $data = $request->json()->all();
+        
+        // Tìm khuyến mãi theo ID
+        $km = KhuyenMai::findOrFail($data['id_sua']);
+
+        // Cập nhật dữ liệu
+        $km->update([
+            'nd_khuyen_mai' => $data['nd_km'],
+            'phan_tram_giam' => $data['phan_tram'],
+            'gia_don_hang' => $data['gia_don'],
+            'ngay_bat_dau' => $data['tg_bd'],
+            'ngay_ket_thuc' => $data['tg_kt'],
+            'so_luong' => $data['so_luong']
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Cập nhật khuyến mãi thành công!',
+            'data' => $km
+        ]);
+    }
+
     
 }

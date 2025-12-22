@@ -7,7 +7,6 @@
       class="my-6 text-2xl font-semibold text-gray-700 dark:text-gray-200">
       Danh sách đơn hàng
     </h2>
-
     <!-- With avatar -->
     <h4
       class="mb-4 text-lg font-semibold text-gray-600 dark:text-gray-300">
@@ -56,13 +55,13 @@
                 {{$dh->ma_don_hang}}
               </td>
               <td class="px-4 py-3 text-xs">
-                <span
-                  class="px-2 py-1 font-semibold leading-tight text-green-700 bg-green-100 rounded-full dark:bg-green-700 dark:text-green-100">
-                  <Button>Xác nhận</Button>
-                </span>
+                <form action="{{ route('donhangadmin.confirm', $dh->ma_don_hang) }}" method="POST" style="display:inline">
+                  @csrf
+                  <button type="submit" class="px-2 py-1 font-semibold leading-tight text-white bg-green-600 rounded" style="background-color: #4CAF50; width: 100px; height: 35px;">Xác nhận</button>
+                </form>
               </td>
               <td class="px-4 py-3 text-sm">
-                <Button>Xem chi tiết</Button>
+                <a href="{{ route('donhangadmin.show', $dh->ma_don_hang) }}" class="px-2 py-1 font-semibold leading-tight text-white bg-purple-600 rounded">Xem chi tiết</a>
               </td>
             </tr>
             @endif
@@ -123,13 +122,13 @@
                 {{$dh->ma_don_hang}}
               </td>
               <td class="px-4 py-3 text-xs">
-                <span
-                  class="px-2 py-1 font-semibold leading-tight text-green-700 bg-green-100 rounded-full dark:bg-green-700 dark:text-green-100">
-                  <Button>Xác nhận</Button>
-                </span>
+                <form action="{{ route('donhangadmin.confirm', $dh->ma_don_hang) }}" method="POST" style="display:inline">
+                  @csrf
+                  <button type="submit" class="px-2 py-1 font-semibold leading-tight text-white bg-green-600 rounded" style="background-color: #4CAF50; width: 100px; height: 35px;">Xác nhận</button>
+                </form>
               </td>
               <td class="px-4 py-3 text-sm">
-                <Button>Xem chi tiết</Button>
+                <a href="{{ route('donhangadmin.show', $dh->ma_don_hang) }}" class="px-2 py-1 font-semibold leading-tight text-white bg-purple-600 rounded">Xem chi tiết</a>
               </td>
             </tr>
             @endif
@@ -189,13 +188,13 @@
                 {{$dh->ma_don_hang}}
               </td>
               <td class="px-4 py-3 text-xs">
-                <span
-                  class="px-2 py-1 font-semibold leading-tight text-green-700 bg-green-100 rounded-full dark:bg-green-700 dark:text-green-100">
-                  <Button>Xác nhận</Button>
-                </span>
+                <form action="{{ route('donhangadmin.confirm', $dh->ma_don_hang) }}" method="POST" style="display:inline">
+                  @csrf
+                  <button type="submit" class="px-2 py-1 font-semibold leading-tight text-white bg-green-600 rounded" style="background-color: #4CAF50; width: 100px; height: 35px;">Xác nhận</button>
+                </form>
               </td>
               <td class="px-4 py-3 text-sm">
-                <Button>Xem chi tiết</Button>
+                <a href="{{ route('donhangadmin.show', $dh->ma_don_hang) }}" class="px-2 py-1 font-semibold leading-tight text-white bg-purple-600 rounded">Xem chi tiết</a>
               </td>
             </tr>
             @endif
@@ -211,7 +210,7 @@
     <!-- With avatar -->
     <h4
       class="mb-4 text-lg font-semibold text-gray-600 dark:text-gray-300">
-      Yêu cầu hủy đơn hàng
+      Hủy đơn hàng
     </h4>
     <div class="w-full mb-8 overflow-hidden rounded-lg shadow-xs">
       <div class="w-full overflow-x-auto">
@@ -221,14 +220,14 @@
               class="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">
               <th class="px-4 py-3">Người dùng</th>
               <th class="px-4 py-3">Mã đơn hàng</th>
-              <th class="px-4 py-3">Xác Nhận</th>
+              <th class="px-4 py-3">Hủy đơn hàng</th>
               <th class="px-4 py-3">Xem chi tiết</th>
             </tr>
           </thead>
           <tbody
             class="bg-white divide-y dark:divide-gray-700 dark:bg-gray-800">
             @foreach($don_hang as $dh)
-            @if($dh->trang_thai_dh == 5)
+            @if($dh->trang_thai_dh == 1 || $dh->trang_thai_dh == 2)
             <tr class="text-gray-700 dark:text-gray-400">
               <td class="px-4 py-3">
                 <div class="flex items-center text-sm">
@@ -256,13 +255,13 @@
                 {{$dh->ma_don_hang}}
               </td>
               <td class="px-4 py-3 text-xs">
-                <span
-                  class="px-2 py-1 font-semibold leading-tight text-green-700 bg-green-100 rounded-full dark:bg-green-700 dark:text-green-100">
-                  <Button>Xác nhận</Button>
-                </span>
+                <form action="{{ route('donhangadmin.cancel', $dh->ma_don_hang) }}" method="POST" style="display:inline">
+                  @csrf
+                  <button type="submit" class="px-2 py-1 font-semibold leading-tight text-white bg-red-600 rounded" style="background-color: #f44336; width: 100px; height: 35px;">Hủy đơn</button>
+                </form>
               </td>
               <td class="px-4 py-3 text-sm">
-                <Button>Xem chi tiết</Button>
+                <a href="{{ route('donhangadmin.show', $dh->ma_don_hang) }}" class="px-2 py-1 font-semibold leading-tight text-white bg-purple-600 rounded">Xem chi tiết</a>
               </td>
             </tr>
             @endif

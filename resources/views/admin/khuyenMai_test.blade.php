@@ -3,9 +3,9 @@
 
 <head>
     <meta charset="UTF-8" />
-    <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Trang chủ admin</title>
+    <title>Tables - Windmill Dashboard</title>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <link
         href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
         rel="stylesheet" />
@@ -14,30 +14,20 @@
         src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js"
         defer></script>
     <script src="{{ asset('assets1/js/init-alpine.js')}}"></script>
-    <link
-        rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.css" />
-    <script
-        src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"
-        defer></script>
-    <script src="{{ asset('assets1/js/charts-lines.js')}}" defer></script>
-    <script src="{{ asset('assets1/js/charts-pie.js')}}" defer></script>
-
-    <style>
-        /* .menu_current {
-            display: none;
-        } */
-
-        .active {
-            display: block;
-        }
-    </style>
 </head>
 
 <body>
+    <div id="successMessage" style="display:none; 
+        background: #4CAF50; 
+        color: white; 
+        padding: 10px; 
+        border-radius: 5px; 
+        margin-top: 10px;">
+        Thêm khuyến mãi thành công!
+    </div>
     <div
         class="flex h-screen bg-gray-50 dark:bg-gray-900"
-        :class="{ 'overflow-hidden': isSideMenuOpen }">
+        :class="{ 'overflow-hidden': isSideMenuOpen}">
         <!-- Desktop sidebar -->
         <aside
             class="z-20 hidden w-64 overflow-y-auto bg-white dark:bg-gray-800 md:block flex-shrink-0">
@@ -47,14 +37,12 @@
                     href="#">
                     MiuBook
                 </a>
-                <ul class="mt-6" id="menu">
-                    <li class="relative px-6 py-3 menu-item">
-                        <span
-                            class="absolute inset-y-0 left-0 w-1 bg-purple-600 rounded-tr-lg rounded-br-lg hidden highlight"
-                            aria-hidden="true"></span>
+                <ul class="mt-6">
+                    <li class="relative px-6 py-3">
+
                         <a
-                            class="inline-flex items-center w-full text-sm font-semibold text-gray-800 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200 dark:text-gray-100"
-                            href="{{ route('indexadmin') }}">
+                            class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
+                            href="{{route('indexadmin')}}">
                             <svg
                                 class="w-5 h-5"
                                 aria-hidden="true"
@@ -70,14 +58,12 @@
                             <span class="ml-4">Tổng quan</span>
                         </a>
                     </li>
+                </ul>
+                <ul>
+                    <li class="relative px-6 py-3">
 
-
-                    <li class="relative px-6 py-3 menu-item">
-                        <span
-                            class="absolute inset-y-0 left-0 w-1 bg-purple-600 rounded-tr-lg rounded-br-lg hidden highlight"
-                            aria-hidden="true"></span>
                         <a
-                            class="inline-flex items-center w-full text-sm font-semibold text-gray-800 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200 dark:text-gray-100"
+                            class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
                             href="{{ route('donhangadmin')}}">
                             <svg
                                 class="w-5 h-5"
@@ -94,13 +80,11 @@
                             <span class="ml-4">Đơn hàng</span>
                         </a>
                     </li>
-                    <li class="relative px-6 py-3 menu-item">
-                        <span
-                            class="absolute inset-y-0 left-0 w-1 bg-purple-600 rounded-tr-lg rounded-br-lg hidden highlight"
-                            aria-hidden="true"></span>
+                    <li class="relative px-6 py-3">
+
                         <a
-                            class="inline-flex items-center w-full text-sm font-semibold text-gray-800 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200 dark:text-gray-100"
-                            href="{{ route('nhaphang') }}">
+                            class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
+                            href="{{route('nhaphang')}}">
                             <svg
                                 class="w-5 h-5"
                                 aria-hidden="true"
@@ -113,16 +97,14 @@
                                 <path
                                     d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
                             </svg>
-                            <span class="ml-4">Nhập hàng</span>
+                            <span class="ml-4">Báo cáo nhập hàng</span>
                         </a>
                     </li>
-                    <li class="relative px-6 py-3 menu-item">
-                        <span
-                            class="absolute inset-y-0 left-0 w-1 bg-purple-600 rounded-tr-lg rounded-br-lg hidden highlight"
-                            aria-hidden="true"></span>
+                    <li class="relative px-6 py-3">
+
                         <a
-                            class="inline-flex items-center w-full text-sm font-semibold text-gray-800 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200 dark:text-gray-100"
-                            href="{{ route('sanphamadmin') }}">
+                            class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
+                            href="{{route('sanphamadmin')}}">
                             <svg
                                 class="w-5 h-5"
                                 aria-hidden="true"
@@ -139,13 +121,13 @@
                             <span class="ml-4">Danh sách sản phẩm</span>
                         </a>
                     </li>
-                    <li class="relative px-6 py-3 menu-item">
+                    <li class="relative px-6 py-3">
                         <span
-                            class="absolute inset-y-0 left-0 w-1 bg-purple-600 rounded-tr-lg rounded-br-lg hidden highlight"
+                            class="absolute inset-y-0 left-0 w-1 bg-purple-600 rounded-tr-lg rounded-br-lg"
                             aria-hidden="true"></span>
                         <a
                             class="inline-flex items-center w-full text-sm font-semibold text-gray-800 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200 dark:text-gray-100"
-                            href="{{route('khuyenmai')}}">
+                            href="">
                             <svg
                                 class="w-5 h-5"
                                 aria-hidden="true"
@@ -161,13 +143,10 @@
                             <span class="ml-4">Khuyến mãi</span>
                         </a>
                     </li>
-                    <li class="relative px-6 py-3 menu-item">
-                        <span
-                            class="absolute inset-y-0 left-0 w-1 bg-purple-600 rounded-tr-lg rounded-br-lg hidden highlight"
-                            aria-hidden="true"></span>
+                    <li class="relative px-6 py-3">
                         <a
-                            class="inline-flex items-center w-full text-sm font-semibold text-gray-800 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200 dark:text-gray-100"
-                            href="#">
+                            class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
+                            href="modals.html">
                             <svg
                                 class="w-5 h-5"
                                 aria-hidden="true"
@@ -183,94 +162,27 @@
                             <span class="ml-4">Báo cáo doanh thu</span>
                         </a>
                     </li>
-                    <li class="relative px-6 py-3 menu-item">
-                        <span
-                            class="absolute inset-y-0 left-0 w-1 bg-purple-600 rounded-tr-lg rounded-br-lg hidden highlight"
-                            aria-hidden="true"></span>
-                        <a
-                            class="inline-flex items-center w-full text-sm font-semibold text-gray-800 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200 dark:text-gray-100"
-                            href="##">
-                            <svg
-                                class="w-5 h-5"
-                                aria-hidden="true"
-                                fill="none"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                stroke-width="2"
-                                viewBox="0 0 24 24"
-                                stroke="currentColor">
-                                <path
-                                    d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
-                            </svg>
-                            <span class="ml-4">Quản lý đánh giá</span>
-                        </a>
-                    </li>
-                    <li class="relative px-6 py-3 menu-item">
-                        <span
-                            class="absolute inset-y-0 left-0 w-1 bg-purple-600 rounded-tr-lg rounded-br-lg hidden highlight"
-                            aria-hidden="true"></span>
-                        <a
-                            class="inline-flex items-center w-full text-sm font-semibold text-gray-800 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200 dark:text-gray-100"
-                            href="###">
-                            <svg
-                                class="w-5 h-5"
-                                aria-hidden="true"
-                                fill="none"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                stroke-width="2"
-                                viewBox="0 0 24 24"
-                                stroke="currentColor">
-                                <path
-                                    d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
-                            </svg>
-                            <span class="ml-4">Quản lý danh mục/thể loại</span>
-                        </a>
-                    </li>
-                    <li class="relative px-6 py-3 menu-item">
-                        <span
-                            class="absolute inset-y-0 left-0 w-1 bg-purple-600 rounded-tr-lg rounded-br-lg hidden highlight"
-                            aria-hidden="true"></span>
-                        <a
-                            class="inline-flex items-center w-full text-sm font-semibold text-gray-800 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200 dark:text-gray-100"
-                            href="####">
-                            <svg
-                                class="w-5 h-5"
-                                aria-hidden="true"
-                                fill="none"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                stroke-width="2"
-                                viewBox="0 0 24 24"
-                                stroke="currentColor">
-                                <path
-                                    d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
-                            </svg>
-                            <span class="ml-4">Quản lý vận chuyển</span>
-                        </a>
-                    </li>
                 </ul>
-                <!-- <div class="px-6 my-6">
+                <div class="px-6 my-6">
                     <button
                         class="flex items-center justify-between w-full px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple">
                         Create account
                         <span class="ml-2" aria-hidden="true">+</span>
                     </button>
-                </div> -->
+                </div>
             </div>
         </aside>
         <!-- Mobile sidebar -->
         <!-- Backdrop -->
-        <!-- <div
-        x-show="isSideMenuOpen"
-        x-transition:enter="transition ease-in-out duration-150"
-        x-transition:enter-start="opacity-0"
-        x-transition:enter-end="opacity-100"
-        x-transition:leave="transition ease-in-out duration-150"
-        x-transition:leave-start="opacity-100"
-        x-transition:leave-end="opacity-0"
-        class="fixed inset-0 z-10 flex items-end bg-black bg-opacity-50 sm:items-center sm:justify-center"
-      ></div> -->
+        <div
+            x-show="isSideMenuOpen"
+            x-transition:enter="transition ease-in-out duration-150"
+            x-transition:enter-start="opacity-0"
+            x-transition:enter-end="opacity-100"
+            x-transition:leave="transition ease-in-out duration-150"
+            x-transition:leave-start="opacity-100"
+            x-transition:leave-end="opacity-0"
+            class="fixed inset-0 z-10 flex items-end bg-black bg-opacity-50 sm:items-center sm:justify-center"></div>
         <aside
             class="fixed inset-y-0 z-20 flex-shrink-0 w-64 mt-16 overflow-y-auto bg-white dark:bg-gray-800 md:hidden"
             x-show="isSideMenuOpen"
@@ -286,15 +198,12 @@
                 <a
                     class="ml-6 text-lg font-bold text-gray-800 dark:text-gray-200"
                     href="#">
-                    MiuBook
+                    Windmill
                 </a>
                 <ul class="mt-6">
                     <li class="relative px-6 py-3">
-                        <span
-                            class="absolute inset-y-0 left-0 w-1 bg-purple-600 rounded-tr-lg rounded-br-lg hidden"
-                            aria-hidden="true"></span>
                         <a
-                            class="inline-flex items-center w-full text-sm font-semibold text-gray-800 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200 dark:text-gray-100"
+                            class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
                             href="index.html">
                             <svg
                                 class="w-5 h-5"
@@ -308,7 +217,7 @@
                                 <path
                                     d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
                             </svg>
-                            <span class="ml-4">Tổng quan</span>
+                            <span class="ml-4">Dashboard</span>
                         </a>
                     </li>
                 </ul>
@@ -329,7 +238,7 @@
                                 <path
                                     d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path>
                             </svg>
-                            <span class="ml-4">Đơn hàng</span>
+                            <span class="ml-4">Forms</span>
                         </a>
                     </li>
                     <li class="relative px-6 py-3">
@@ -410,8 +319,11 @@
                         </a>
                     </li>
                     <li class="relative px-6 py-3">
+                        <span
+                            class="absolute inset-y-0 left-0 w-1 bg-purple-600 rounded-tr-lg rounded-br-lg"
+                            aria-hidden="true"></span>
                         <a
-                            class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
+                            class="inline-flex items-center w-full text-sm font-semibold text-gray-800 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200 dark:text-gray-100"
                             href="tables.html">
                             <svg
                                 class="w-5 h-5"
@@ -527,6 +439,7 @@
                     </button>
                     <!-- Search input -->
                     <div class="flex justify-center flex-1 lg:mr-32">
+
                     </div>
                     <ul class="flex items-center flex-shrink-0 space-x-6">
                         <!-- Notifications menu -->
@@ -557,7 +470,8 @@
                                     x-transition:leave-end="opacity-0"
                                     @click.away="closeNotificationsMenu"
                                     @keydown.escape="closeNotificationsMenu"
-                                    class="absolute right-0 w-56 p-2 mt-2 space-y-2 text-gray-600 bg-white border border-gray-100 rounded-md shadow-md dark:text-gray-300 dark:border-gray-700 dark:bg-gray-700">
+                                    class="absolute right-0 w-56 p-2 mt-2 space-y-2 text-gray-600 bg-white border border-gray-100 rounded-md shadow-md dark:text-gray-300 dark:border-gray-700 dark:bg-gray-700"
+                                    aria-label="submenu">
                                     <li class="flex">
                                         <a
                                             class="inline-flex items-center justify-between w-full px-2 py-1 text-sm font-semibold transition-colors duration-150 rounded-md hover:bg-gray-100 hover:text-gray-800 dark:hover:bg-gray-800 dark:hover:text-gray-200"
@@ -635,7 +549,7 @@
                                     <li class="flex">
                                         <a
                                             class="inline-flex items-center w-full px-2 py-1 text-sm font-semibold transition-colors duration-150 rounded-md hover:bg-gray-100 hover:text-gray-800 dark:hover:bg-gray-800 dark:hover:text-gray-200"
-                                            href="{{ route('dangxuat') }}">
+                                            href="#">
                                             <svg
                                                 class="w-4 h-4 mr-3"
                                                 aria-hidden="true"
@@ -657,49 +571,383 @@
                     </ul>
                 </div>
             </header>
-            @yield('index')
-            @yield('donhangadmin')
-            @yield('sanphamadmin')
-            @yield('baocaonhaphang')
-            @yield('khuyenmai')
-            @yield('chitietnhaphang')
+            <main class="h-full pb-16 overflow-y-auto">
+                <div class="container grid px-6 mx-auto">
+                    <h2
+                        class="my-6 text-2xl font-semibold text-gray-700 dark:text-gray-200">
+                        Khuyến mãi
+                    </h2>
+
+                    <button id="openModal"
+                        style="background:#9933FF; margin-bottom:30px; height:40px; border-radius:10px; 
+                    box-shadow:1px 0px 2px 1px blue; border:none; padding:0 20px; cursor:pointer; font-size:16px; color: white;">
+                        Thêm khuyến mãi
+                    </button>
+
+                    <div id="modalOverlay"
+                        style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; 
+                      background:rgba(0,0,0,0.5); z-index:999;">
+                        <div
+                            style="position:fixed; top:50%; left:50%; transform:translate(-50%, -50%); 
+                      background:#fff; padding:20px; border-radius:12px; 
+                      box-shadow:0px 4px 10px rgba(0,0,0,0.3); width:500px; max-width:90%; z-index:1000;">
+
+                            <div style="font-size:18px; font-weight:bold; margin-bottom:15px; color:#333;">
+                                Thêm khuyến mãi mới
+                            </div>
+
+                            <div style="margin-bottom:20px; font-size:14px; color:#555;">
+                                <label>Nội dung khuyến mãi:</label><br>
+                                <input type="text"
+                                    style="width:100%; padding:8px; margin-top:5px; border-radius:6px; border:1px solid #ccc;"
+                                    class="themTenKM" required><br><br>
+                                <label>Phần trăm giảm:</label><br>
+                                <input type="number"
+                                    style="width:90%; padding:8px; margin-top:5px; border-radius:6px; border:1px solid #ccc;" placeholder="Nhập trong khoảng từ 1% đến 100%"
+                                    class="themPhanTramKM" required> %<br><br>
+                                <label>Cho đơn: </label><br>
+                                <input type="number"
+                                    style="width:90%; padding:8px; margin-top:5px; border-radius:6px; border:1px solid #ccc;" placeholder="Giá đơn hàng tối thiểu được nhận khuyến mãi"
+                                    class="themGiaDonKM" required> VND<br><br>
+                                <label>Thời gian bắt đầu:</label><br>
+                                <input type="date"
+                                    style="width:100%; padding:8px; margin-top:5px; border-radius:6px; border:1px solid #ccc;"
+                                    class="timeBD" required><br><br>
+                                <label>Thời gian kết thúc:</label><br>
+                                <input type="date"
+                                    style="width:100%; padding:8px; margin-top:5px; border-radius:6px; border:1px solid #ccc;"
+                                    class="timeKT" required><br><br>
+                                <label>Số lượng:</label><br>
+                                <input type="number"
+                                    style="width:100%; padding:8px; margin-top:5px; border-radius:6px; border:1px solid #ccc;"
+                                    class="themsoLuongKM" required>
+                            </div>
+                            <div id="tt_an" style="color:red;"></div>
+
+                            <div style="text-align:right;">
+                                <button id="closeModal"
+                                    style="background:red; color:white; border:none; padding:8px 16px; 
+                              border-radius:8px; cursor:pointer;">
+                                    Đóng
+                                </button>
+                                <button
+                                    class="luuKM"
+                                    type="submit"
+                                    style="background:blue; color:white; border:none; padding:8px 16px; 
+                              border-radius:8px; cursor:pointer; margin-left:10px;">
+                                    Lưu
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- With avatar -->
+                    <div class="w-full mb-8 overflow-hidden rounded-lg shadow-xs">
+                        <div class="w-full overflow-x-auto">
+                            <table class="w-full whitespace-no-wrap">
+                                <thead>
+                                    <tr style="background:#999900; color:white; text-align:center;"
+                                        class="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">
+                                        <th class="px-4 py-3">Nội dung khuyến mãi</th>
+                                        <th class="px-4 py-3">Thời gian bắt đầu</th>
+                                        <th class="px-4 py-3">&emsp;&nbsp;Thời gian kết thúc</th>
+                                        <th class="px-4 py-3">&nbsp;&nbsp;Sửa</th>
+                                        <th class="px-4 py-3">&nbsp;&nbsp;Xóa</th>
+                                    </tr>
+                                </thead>
+                                @foreach($dskm as $km)
+                                <tbody
+                                    class="bg-white divide-y dark:divide-gray-700 dark:bg-gray-800">
+                                    <tr class="text-gray-700 dark:text-gray-400">
+                                        <td class="px-4 py-3" style="border: 1px solid gray; background:#FF9966;">
+                                            <div class="flex items-center text-sm">
+
+                                                <div>
+                                                    <p class="font-semibold" style="color:black; word-wrap: break-word; white-space: normal;">{{$km->nd_khuyen_mai}}</p>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="px-4 py-3 text-sm" style="border: 1px solid gray;">
+                                            <div class="flex items-center text-sm">
+
+                                                <div>
+                                                    <p class="font-semibold">{{$km->ngay_bat_dau}}</p>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="px-4 py-3" style="border: 1px solid gray;">
+                                            <div class="flex items-center text-sm">
+
+                                                <div>
+                                                    <p class="font-semibold">{{$km->ngay_ket_thuc}}</p>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="px-4 py-3 text-sm" style="border: 1px solid gray;">
+                                            <Button style="background:green; color: white; width: 100px ; height: 30px; border-radius: 10px; border: 1px;
+                                " data-id="{{$km->ma_khuyen_mai}}" class="moBtnSua">Sửa</Button>
+
+                                            <!-- Hộp thoại khi nhấn nút sửa -->
+                                            <div class="anHienBtnSua" data-id="{{$km->ma_khuyen_mai}}"
+                                                style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; 
+                                          background:rgba(0,0,0,0.5); z-index:999;">
+                                                <div
+                                                    style="position:fixed; top:50%; left:50%; transform:translate(-50%, -50%); 
+                                          background:#fff; padding:20px; border-radius:12px; 
+                                          box-shadow:0px 4px 10px rgba(0,0,0,0.3); width:500px; max-width:90%; z-index:1000;">
+
+                                                    <div style="font-size:18px; font-weight:bold; margin-bottom:15px; color:#333;">
+                                                        Sửa khuyến mãi
+                                                    </div>
+                                                    <div style="margin-bottom:20px; font-size:14px; color:#555;">
+                                                        <label>Nội dung khuyến mãi:</label><br>
+                                                        <input type="text"
+                                                            style="width:100%; padding:8px; margin-top:5px; border-radius:6px; border:1px solid #ccc;"
+                                                            class="suaTenKM" required
+                                                            value="{{$km->nd_khuyen_mai}}"><br><br>
+                                                        <label>Phần trăm giảm:</label><br>
+                                                        <input type="number"
+                                                            style="width:90%; padding:8px; margin-top:5px; border-radius:6px; border:1px solid #ccc;" placeholder="Nhập trong khoảng từ 1% đến 100%"
+                                                            class="suaPhanTramKM" required
+                                                            value="{{$km->phan_tram_giam}}"> %<br><br>
+                                                        <label>Cho đơn: </label><br>
+                                                        <input type="number"
+                                                            style="width:90%; padding:8px; margin-top:5px; border-radius:6px; border:1px solid #ccc;" placeholder="Giá đơn hàng tối thiểu được nhận khuyến mãi"
+                                                            class="suaGiaDonKM" required
+                                                            value="{{$km->gia_don_hang}}"> VND<br><br>
+                                                        <label>Thời gian bắt đầu:</label><br>
+                                                        <input type="date"
+                                                            style="width:100%; padding:8px; margin-top:5px; border-radius:6px; border:1px solid #ccc;"
+                                                            class="suatimeBD" required
+                                                            value="{{$km->ngay_bat_dau}}"><br><br>
+
+                                                        <label>Thời gian kết thúc:</label><br>
+                                                        <input type="date"
+                                                            style="width:100%; padding:8px; margin-top:5px; border-radius:6px; border:1px solid #ccc;"
+                                                            class="suatimeKT" required
+                                                            value="{{$km->ngay_ket_thuc}}">
+                                                        <label>Số lượng:</label><br>
+                                                        <input type="number"
+                                                            style="width:100%; padding:8px; margin-top:5px; border-radius:6px; border:1px solid #ccc;"
+                                                            class="suasoluongKM" required
+                                                            value="{{$km->so_luong}}">
+                                                    </div>
+                                                    <div id="tt_an_sua" style="color:red;"></div>
+
+                                                    <div style="text-align:right;">
+                                                        <button class="dongBtnSua" data-id="{{$km->ma_khuyen_mai}}"
+                                                            style="background:red; color:white; border:none; padding:8px 16px; 
+                                                  border-radius:8px; cursor:pointer;">
+                                                            Đóng
+                                                        </button>
+                                                        <button data-id="{{$km->ma_khuyen_mai}}"
+                                                            class="luuBtnSua"
+                                                            type="submit"
+                                                            style="background:blue; color:white; border:none; padding:8px 16px; 
+                                                  border-radius:8px; cursor:pointer; margin-left:10px;">
+                                                            Lưu
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                                <!-- end hộp thoại -->
+                                        </td>
+                                        <td class="px-4 py-3 text-sm" style="border: 1px solid gray;">
+                                            <Button style="background:blue; color: white; width: 100px ; height: 30px; border-radius: 10px; border: 1px;
+                                " data-id="{{$km->ma_khuyen_mai}}" class="btnXoaKM">Xóa</Button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                                @endforeach
+                            </table>
+                        </div>
+                        <div
+                            class="grid px-4 py-3 text-xs font-semibold tracking-wide text-gray-500 uppercase border-t dark:border-gray-700 bg-gray-50 sm:grid-cols-9 dark:text-gray-400 dark:bg-gray-800">
+                        </div>
+                    </div>
+                </div>
+            </main>
         </div>
     </div>
 
     <script>
-        function setActiveMenu() {
-            const currentUrl = window.location.href;
+        document.addEventListener("DOMContentLoaded", function() {
+            const openModal = document.getElementById('openModal');
+            const closeModal = document.getElementById('closeModal');
+            const modalOverlay = document.getElementById('modalOverlay');
 
-            document.querySelectorAll('.menu-item').forEach(li => {
-                const link = li.querySelector('a');
-                const highlight = li.querySelector('.highlight');
+            // khai bao bien form them khuyen mai
+            const themTenKM = document.querySelector('.themTenKM');
+            const themPhanTramKM = document.querySelector('.themPhanTramKM');
+            const themGiaDonKM = document.querySelector('.themGiaDonKM');
+            const timeBD = document.querySelector('.timeBD');
+            const timeKT = document.querySelector('.timeKT');
+            const themsoLuongKM = document.querySelector('.themsoLuongKM');
+            const tt_an = document.getElementById('tt_an');
+            const luuKM = document.querySelector('.luuKM');
 
-                if (link && highlight) {
-                    if (currentUrl === link.href || currentUrl.includes(link.getAttribute('href'))) {
-                        highlight.classList.remove('hidden');
-                        highlight.classList.add('active');
-                    } else {
-                        highlight.classList.add('hidden');
-                        highlight.classList.remove('active');
-                    }
+            // khai bao bien sua khuyen mai
+            const dongBtnSua = document.querySelectorAll('.dongBtnSua');
+            const moBtnSua = document.querySelectorAll('.moBtnSua');
+            const luuBtnSua = document.querySelectorAll('.luuBtnSua');
+
+            // khai báo biến xóa khuyến mãi
+            const btnXoaKM = document.querySelectorAll('.btnXoaKM');
+
+
+            // đóng form thêm khuyến mãi
+            openModal.addEventListener('click', () => {
+                modalOverlay.style.display = 'block';
+            });
+
+            closeModal.addEventListener('click', () => {
+                modalOverlay.style.display = 'none';
+            });
+
+            window.addEventListener('click', (e) => {
+                if (e.target === modalOverlay) {
+                    modalOverlay.style.display = 'none';
                 }
             });
-        }
 
-        setActiveMenu();
-
-        document.querySelectorAll('.menu-item').forEach(li => {
-            li.addEventListener('click', function() {
-                document.querySelectorAll('.highlight').forEach(span => {
-                    span.classList.add('hidden');
-                    span.classList.remove('active');
+            //Đóng form sua khuyen mai      
+            moBtnSua.forEach(btn => {
+                btn.addEventListener("click", function() {
+                    const id = btn.getAttribute("data-id");
+                    const modal = document.querySelector(`.anHienBtnSua[data-id="${id}"]`);
+                    if (modal) modal.style.display = "block";
                 });
+            });
 
-                const highlight = this.querySelector('.highlight');
-                if (highlight) {
-                    highlight.classList.remove('hidden');
-                    highlight.classList.add('active');
+            dongBtnSua.forEach(btn => {
+                btn.addEventListener("click", function() {
+                    const id = btn.getAttribute("data-id");
+                    const modal = document.querySelector(`.anHienBtnSua[data-id="${id}"]`);
+                    if (modal) modal.style.display = "none";
+                });
+            });
+
+            // xu ly su kien khi nhan them khuyen mai moi
+            luuKM.addEventListener('click', function() {
+                modalOverlay.style.display = 'none';
+                // lấy value sau khi nhập
+                const valTenKM = themTenKM.value.trim();
+                const valPhanTramKM = themPhanTramKM.value.trim();
+                const valGiaDonKM = themGiaDonKM.value.trim();
+                const valTimeBD = timeBD.value.trim();
+                const valTimeKT = timeKT.value.trim();
+                const valSoLuongKM = themsoLuongKM.value.trim();
+                if (valTenKM === "" || valPhanTramKM === "" || valGiaDonKM === "" || valTimeBD === "" || valTimeKT === "" || valSoLuongKM === "") {
+                    tt_an.innerHTML = "BẠN PHẢI NHẬP ĐẦY ĐỦ THÔNG TIN!!!";
+                    return; // dừng lại, không gửi fetch
                 }
+                fetch("/khuyenmai/themkm", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                            "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').getAttribute("content")
+                        },
+                        body: JSON.stringify({
+                            nd_km: valTenKM,
+                            phan_tram: valPhanTramKM,
+                            gia_don: valGiaDonKM,
+                            tg_bd: valTimeBD,
+                            tg_kt: valTimeKT,
+                            so_luong: valSoLuongKM
+                        })
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log("Thêm khuyến mãi thành công:", data);
+                    })
+                    .catch(error => {
+                        console.error("Thêm Khuyến mãi thất bại:", error);
+
+                    });
+                window.location.href = window.location.href;
+                alert("Bạn đã thêm khuyến mãi thành công");
+            });
+
+            // --- LƯU SAU KHI SỬA ---
+            luuBtnSua.forEach(btn => {
+                btn.addEventListener("click", function() {
+                    const id = btn.getAttribute("data-id");
+                    const modal = document.querySelector(`.anHienBtnSua[data-id="${id}"]`);
+
+                    if (!modal) return;
+
+                    // Lấy dữ liệu từ form sửa
+                    const valTenKM = modal.querySelector('.suaTenKM').value.trim();
+                    const valPhanTramKM = modal.querySelector('.suaPhanTramKM').value.trim();
+                    const valGiaDonKM = modal.querySelector('.suaGiaDonKM').value.trim();
+                    const valTimeBD = modal.querySelector('.suatimeBD').value.trim();
+                    const valTimeKT = modal.querySelector('.suatimeKT').value.trim();
+                    const valSoLuongKM = modal.querySelector('.suasoluongKM').value.trim();
+
+                    const thongBaoErr = modal.querySelector('#tt_an_sua');
+
+                    // Kiểm tra rỗng
+                    if (!valTenKM || !valPhanTramKM || !valGiaDonKM || !valTimeBD || !valTimeKT || !valSoLuongKM) {
+                        thongBaoErr.innerHTML = "Vui lòng nhập đầy đủ thông tin!";
+                        return;
+                    }
+
+                    // Gửi API sửa
+                    fetch("/khuyenmai/suakm", {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json",
+                                "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').getAttribute("content")
+                            },
+                            body: JSON.stringify({
+                                id_sua: id,
+                                nd_km: valTenKM,
+                                phan_tram: valPhanTramKM,
+                                gia_don: valGiaDonKM,
+                                tg_bd: valTimeBD,
+                                tg_kt: valTimeKT,
+                                so_luong: valSoLuongKM
+                            })
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            console.log("Sửa thành công:", data);
+                        })
+                        .catch(error => {
+                            console.error("Lỗi sửa KM:", error);
+                        });
+
+                    alert("Cập nhật khuyến mãi thành công!");
+                    window.location.reload();
+                });
+            });
+
+            // xu ly su kien xoa khuyen mai theo ma_khuyen_mai
+            btnXoaKM.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const id = btn.getAttribute("data-id");
+
+                    fetch("/khuyenmai/xoakm", {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json",
+                                "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').getAttribute("content")
+                            },
+                            body: JSON.stringify({
+                                id_xoa: id
+                            })
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            console.log("Gửi đi thành công:", data);
+                        })
+                        .catch(error => {
+                            console.error("Gửi đi thất bại:", error);
+
+                        });
+
+                    window.location.href = window.location.href;
+                    alert("Bạn đã xóa khuyến mãi thành công");
+                });
             });
         });
     </script>

@@ -21,6 +21,7 @@ class SanPham extends Model
         'so_luong_sp',
         'mo_ta_san_pham',
         'ma_the_loai',
+        'status',
     ];
 
     public function file()
@@ -31,5 +32,20 @@ class SanPham extends Model
     public function giohang()
     {
         return $this->hasMany(GioHang::class, 'ma_san_pham', 'ma_san_pham');
+    }
+
+    public function theloaisp()
+    {
+        return $this->belongsTo(TheLoai::class, 'ma_the_loai', 'ma_the_loai');
+    }
+
+    public function reviews()
+    {
+        return $this->hasMany(Review::class, 'ma_san_pham', 'ma_san_pham');
+    }
+
+    public function yeuthich()
+    {
+        return $this->hasMany(YeuThich::class, 'ma_san_pham', 'ma_san_pham');
     }
 }

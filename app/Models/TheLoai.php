@@ -20,4 +20,9 @@ class TheLoai extends Model
     {
         return $this->belongsTo(DanhMuc::class, 'ma_danh_muc', 'ma_danh_muc');
     }
+
+    public function sanphams()
+    {
+        return $this->hasMany(SanPham::class, 'ma_the_loai', 'ma_the_loai');
+    }
 }

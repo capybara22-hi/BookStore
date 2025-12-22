@@ -22,133 +22,52 @@
                       background:#fff; padding:20px; border-radius:12px; 
                       box-shadow:0px 4px 10px rgba(0,0,0,0.3); width:500px; max-width:90%; z-index:1000;">
 
-            <!-- With avatar -->
-            <div class="w-full mb-8 overflow-hidden rounded-lg shadow-xs">
-              <div class="w-full overflow-x-auto">
-                <table class="w-full whitespace-no-wrap">
-                  <thead>
-                    <tr style = "background:#999900; color:white; text-align:center;"
-                      class="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800"
-                    >
-                      <th class="px-4 py-3">Nội dung khuyến mãi</th>
-                      <th class="px-4 py-3">Thời gian bắt đầu</th>
-                      <th class="px-4 py-3">&emsp;&nbsp;Thời gian kết thúc</th>
-                      <th class="px-4 py-3">&nbsp;&nbsp;Sửa</th>
-                      <th class="px-4 py-3">&nbsp;&nbsp;Xóa</th>
-                    </tr>
-                  </thead>
-                  @foreach($dskm as $km)
-                  <tbody
-                    class="bg-white divide-y dark:divide-gray-700 dark:bg-gray-800" 
-                  >                 
-                            <tr class="text-gray-700 dark:text-gray-400" >
-                            <td class="px-4 py-3" style="border: 1px solid gray; background:#FF9966;">
-                                <div class="flex items-center text-sm">
-                                
-                                <div>
-                                    <p class="font-semibold" style="color:black; word-wrap: break-word; white-space: normal;">{{$km->nd_khuyen_mai}}</p>
-                                </div>
-                                </div>
-                            </td>
-                            <td class="px-4 py-3 text-sm" style="border: 1px solid gray;">
-                                <div class="flex items-center text-sm">
-                                
-                                <div>
-                                    <p class="font-semibold">{{$km->ngay_bat_dau}}</p>
-                                </div>
-                                </div>
-                            </td>
-                            <td class="px-4 py-3" style="border: 1px solid gray;">
-                                <div class="flex items-center text-sm">
-                                
-                                <div>
-                                    <p class="font-semibold">{{$km->ngay_ket_thuc}}</p>
-                                </div>
-                                </div>
-                            </td>
-                            <td class="px-4 py-3 text-sm" style="border: 1px solid gray;">
-                                <Button style="background:green; color: white; width: 100px ; height: 30px; border-radius: 10px; border: 1px;
-                                " data-id="{{$km->ma_khuyen_mai}}" class="moBtnSua">Sửa</Button>
-                                
-                                <!-- Hộp thoại khi nhấn nút sửa -->
-                                <div class="anHienBtnSua" data-id="{{$km->ma_khuyen_mai}}"
-                                  style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; 
-                                          background:rgba(0,0,0,0.5); z-index:999;">
-                                  <div 
-                                    style="position:fixed; top:50%; left:50%; transform:translate(-50%, -50%); 
-                                          background:#fff; padding:20px; border-radius:12px; 
-                                          box-shadow:0px 4px 10px rgba(0,0,0,0.3); width:500px; max-width:90%; z-index:1000;">
-                                  
-                                    <div style="font-size:18px; font-weight:bold; margin-bottom:15px; color:#333;">
-                                      Sửa khuyến mãi
-                                    </div>
-                                    <div style="margin-bottom:20px; font-size:14px; color:#555;">
-                                    <label>Nội dung khuyến mãi:</label><br>
-                                    <input type="text" 
-                                          style="width:100%; padding:8px; margin-top:5px; border-radius:6px; border:1px solid #ccc;"
-                                          class="suaTenKM" required
-                                          value = "{{$km->nd_khuyen_mai}}"
-                                          ><br><br>
-                                    <label>Phần trăm giảm:</label><br>
-                                    <input type="number" 
-                                          style="width:90%; padding:8px; margin-top:5px; border-radius:6px; border:1px solid #ccc;" placeholder = "Nhập trong khoảng từ 1% đến 100%"
-                                          class="themPhanTramKM" required
-                                          value = "{{$km->phan_tram_giam}}"
-                                          > %<br><br>
-                                    <label>Cho đơn: </label><br>
-                                    <input type="number" 
-                                          style="width:90%; padding:8px; margin-top:5px; border-radius:6px; border:1px solid #ccc;"  placeholder = "Giá đơn hàng tối thiểu được nhận khuyến mãi"
-                                          class= "suaGiaDonKM" required
-                                          value = "{{$km->gia_don_hang}}"
-                                          > VND<br><br>
-                                    <label>Thời gian bắt đầu:</label><br>
-                                    <input type="date" 
-                                          style="width:100%; padding:8px; margin-top:5px; border-radius:6px; border:1px solid #ccc;"
-                                          class="suatimeBD" required
-                                          value = "{{$km->ngay_bat_dau}}"
-                                          ><br><br>
-                                    
-                                    <label>Thời gian kết thúc:</label><br>
-                                    <input type="date" 
-                                          style="width:100%; padding:8px; margin-top:5px; border-radius:6px; border:1px solid #ccc;"
-                                          class="suatimeKT" required
-                                          value = "{{$km->ngay_ket_thuc}}"
-                                          >
-                                  </div>
-                                  <div id="tt_an_sua" style="color:red;"></div>
-                          
-                                  <div style="text-align:right;">
-                                    <button class="dongBtnSua" data-id="{{$km->ma_khuyen_mai}}"
-                                            style="background:red; color:white; border:none; padding:8px 16px; 
-                                                  border-radius:8px; cursor:pointer;">
-                                      Đóng
-                                    </button>
-                                    <button data-id="{{$km->ma_khuyen_mai}}"
-                                            class="luuBtnSua"
-                                            type="submit"
-                                            style="background:blue; color:white; border:none; padding:8px 16px; 
-                                                  border-radius:8px; cursor:pointer; margin-left:10px;">
-                                      Lưu
-                                    </button>
-                                  </div>
-                                </div>
-                            </td>
-                            <td class="px-4 py-3 text-sm" style="border: 1px solid gray;">
-                                <Button style="background:blue; color: white; width: 100px ; height: 30px; border-radius: 10px; border: 1px;
-                                ">Xóa</Button>
-                            </td>
-                            </tr>
-                  </tbody>
-                  @endforeach
-                </table>
-              </div>
-              <div
-                class="grid px-4 py-3 text-xs font-semibold tracking-wide text-gray-500 uppercase border-t dark:border-gray-700 bg-gray-50 sm:grid-cols-9 dark:text-gray-400 dark:bg-gray-800"
-              >
-              </div>
-            </div>           
-          </div>
-        </main>
+        <div style="font-size:18px; font-weight:bold; margin-bottom:15px; color:#333;">
+          Thêm khuyến mãi mới
+        </div>
+
+        <div style="margin-bottom:20px; font-size:14px; color:#555;">
+          <label>Nội dung khuyến mãi:</label><br>
+          <input type="text"
+            style="width:100%; padding:8px; margin-top:5px; border-radius:6px; border:1px solid #ccc;"
+            class="themTenKM" required><br><br>
+          <label>Phần trăm giảm:</label><br>
+          <input type="number"
+            style="width:90%; padding:8px; margin-top:5px; border-radius:6px; border:1px solid #ccc;" placeholder="Nhập trong khoảng từ 1% đến 100%"
+            class="themPhanTramKM" required> %<br><br>
+          <label>Cho đơn: </label><br>
+          <input type="number"
+            style="width:90%; padding:8px; margin-top:5px; border-radius:6px; border:1px solid #ccc;" placeholder="Giá đơn hàng tối thiểu được nhận khuyến mãi"
+            class="themGiaDonKM" required> VND<br><br>
+          <label>Thời gian bắt đầu:</label><br>
+          <input type="date"
+            style="width:100%; padding:8px; margin-top:5px; border-radius:6px; border:1px solid #ccc;"
+            class="timeBD" required><br><br>
+          <label>Thời gian kết thúc:</label><br>
+          <input type="date"
+            style="width:100%; padding:8px; margin-top:5px; border-radius:6px; border:1px solid #ccc;"
+            class="timeKT" required><br><br>
+          <label>Số lượng:</label><br>
+          <input type="number"
+            style="width:100%; padding:8px; margin-top:5px; border-radius:6px; border:1px solid #ccc;"
+            class="themsoLuongKM" required>
+        </div>
+        <div id="tt_an" style="color:red;"></div>
+
+        <div style="text-align:right;">
+          <button id="closeModal"
+            style="background:red; color:white; border:none; padding:8px 16px; 
+                              border-radius:8px; cursor:pointer;">
+            Đóng
+          </button>
+          <button
+            class="luuKM"
+            type="submit"
+            style="background:blue; color:white; border:none; padding:8px 16px; 
+                              border-radius:8px; cursor:pointer; margin-left:10px;">
+            Lưu
+          </button>
+        </div>
       </div>
     </div>
 
@@ -157,7 +76,7 @@
       <div class="w-full overflow-x-auto">
         <table class="w-full whitespace-no-wrap">
           <thead>
-            <tr
+            <tr style="background:#999900; color:white; text-align:center;"
               class="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">
               <th class="px-4 py-3">Nội dung khuyến mãi</th>
               <th class="px-4 py-3">Thời gian bắt đầu</th>
@@ -170,15 +89,15 @@
           <tbody
             class="bg-white divide-y dark:divide-gray-700 dark:bg-gray-800">
             <tr class="text-gray-700 dark:text-gray-400">
-              <td class="px-4 py-3">
+              <td class="px-4 py-3" style="border: 1px solid gray; background:#FF9966;">
                 <div class="flex items-center text-sm">
 
                   <div>
-                    <p class="font-semibold" style="color:green;">{{$km->nd_khuyen_mai}}</p>
+                    <p class="font-semibold" style="color:black; word-wrap: break-word; white-space: normal;">{{$km->nd_khuyen_mai}}</p>
                   </div>
                 </div>
               </td>
-              <td class="px-4 py-3 text-sm">
+              <td class="px-4 py-3 text-sm" style="border: 1px solid gray;">
                 <div class="flex items-center text-sm">
 
                   <div>
@@ -186,7 +105,7 @@
                   </div>
                 </div>
               </td>
-              <td class="px-4 py-3">
+              <td class="px-4 py-3" style="border: 1px solid gray;">
                 <div class="flex items-center text-sm">
 
                   <div>
@@ -194,9 +113,10 @@
                   </div>
                 </div>
               </td>
-              <td class="px-4 py-3 text-sm">
+              <td class="px-4 py-3 text-sm" style="border: 1px solid gray;">
                 <Button style="background:green; color: white; width: 100px ; height: 30px; border-radius: 10px; border: 1px;
                                 " data-id="{{$km->ma_khuyen_mai}}" class="moBtnSua">Sửa</Button>
+
                 <!-- Hộp thoại khi nhấn nút sửa -->
                 <div class="anHienBtnSua" data-id="{{$km->ma_khuyen_mai}}"
                   style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; 
@@ -218,7 +138,7 @@
                       <label>Phần trăm giảm:</label><br>
                       <input type="number"
                         style="width:90%; padding:8px; margin-top:5px; border-radius:6px; border:1px solid #ccc;" placeholder="Nhập trong khoảng từ 1% đến 100%"
-                        class="themPhanTramKM" required
+                        class="suaPhanTramKM" required
                         value="{{$km->phan_tram_giam}}"> %<br><br>
                       <label>Cho đơn: </label><br>
                       <input type="number"
@@ -235,7 +155,12 @@
                       <input type="date"
                         style="width:100%; padding:8px; margin-top:5px; border-radius:6px; border:1px solid #ccc;"
                         class="suatimeKT" required
-                        value="{{$km->ngay_ket_thuc}}">
+                        value="{{$km->ngay_ket_thuc}}"><br><br>
+                      <label>Số lượng:</label><br>
+                      <input type="number"
+                        style="width:100%; padding:8px; margin-top:5px; border-radius:6px; border:1px solid #ccc;"
+                        class="suasoluongKM" required
+                        value="{{$km->so_luong}}">
                     </div>
                     <div id="tt_an_sua" style="color:red;"></div>
 
@@ -254,10 +179,11 @@
                       </button>
                     </div>
                   </div>
+                  <!-- end hộp thoại -->
               </td>
-              <td class="px-4 py-3 text-sm">
+              <td class="px-4 py-3 text-sm" style="border: 1px solid gray;">
                 <Button style="background:blue; color: white; width: 100px ; height: 30px; border-radius: 10px; border: 1px;
-                                ">Xóa</Button>
+                                " data-id="{{$km->ma_khuyen_mai}}" class="btnXoaKM">Xóa</Button>
               </td>
             </tr>
           </tbody>
@@ -270,7 +196,6 @@
     </div>
   </div>
 </main>
-
 <script>
   document.addEventListener("DOMContentLoaded", function() {
     const openModal = document.getElementById('openModal');
@@ -283,12 +208,17 @@
     const themGiaDonKM = document.querySelector('.themGiaDonKM');
     const timeBD = document.querySelector('.timeBD');
     const timeKT = document.querySelector('.timeKT');
+    const themsoLuongKM = document.querySelector('.themsoLuongKM');
     const tt_an = document.getElementById('tt_an');
     const luuKM = document.querySelector('.luuKM');
 
     // khai bao bien sua khuyen mai
     const dongBtnSua = document.querySelectorAll('.dongBtnSua');
     const moBtnSua = document.querySelectorAll('.moBtnSua');
+    const luuBtnSua = document.querySelectorAll('.luuBtnSua');
+
+    // khai báo biến xóa khuyến mãi
+    const btnXoaKM = document.querySelectorAll('.btnXoaKM');
 
 
     // đóng form thêm khuyến mãi
@@ -332,7 +262,8 @@
       const valGiaDonKM = themGiaDonKM.value.trim();
       const valTimeBD = timeBD.value.trim();
       const valTimeKT = timeKT.value.trim();
-      if (valTenKM === "" || valPhanTramKM === "" || valGiaDonKM === "" || valTimeBD === "" || valTimeKT === "") {
+      const valSoLuongKM = themsoLuongKM.value.trim();
+      if (valTenKM === "" || valPhanTramKM === "" || valGiaDonKM === "" || valTimeBD === "" || valTimeKT === "" || valSoLuongKM === "") {
         tt_an.innerHTML = "BẠN PHẢI NHẬP ĐẦY ĐỦ THÔNG TIN!!!";
         return; // dừng lại, không gửi fetch
       }
@@ -347,7 +278,8 @@
             phan_tram: valPhanTramKM,
             gia_don: valGiaDonKM,
             tg_bd: valTimeBD,
-            tg_kt: valTimeKT
+            tg_kt: valTimeKT,
+            so_luong: valSoLuongKM
           })
         })
         .then(response => response.json())
@@ -362,6 +294,88 @@
       alert("Bạn đã thêm khuyến mãi thành công");
     });
 
+    // --- LƯU SAU KHI SỬA ---
+    luuBtnSua.forEach(btn => {
+      btn.addEventListener("click", function() {
+        const id = btn.getAttribute("data-id");
+        const modal = document.querySelector(`.anHienBtnSua[data-id="${id}"]`);
+
+        if (!modal) return;
+
+        // Lấy dữ liệu từ form sửa
+        const valTenKM = modal.querySelector('.suaTenKM').value.trim();
+        const valPhanTramKM = modal.querySelector('.suaPhanTramKM').value.trim();
+        const valGiaDonKM = modal.querySelector('.suaGiaDonKM').value.trim();
+        const valTimeBD = modal.querySelector('.suatimeBD').value.trim();
+        const valTimeKT = modal.querySelector('.suatimeKT').value.trim();
+        const valSoLuongKM = modal.querySelector('.suasoluongKM').value.trim();
+
+        const thongBaoErr = modal.querySelector('#tt_an_sua');
+
+        // Kiểm tra rỗng
+        if (!valTenKM || !valPhanTramKM || !valGiaDonKM || !valTimeBD || !valTimeKT || !valSoLuongKM) {
+          thongBaoErr.innerHTML = "Vui lòng nhập đầy đủ thông tin!";
+          return;
+        }
+
+        // Gửi API sửa
+        fetch("/khuyenmai/suakm", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').getAttribute("content")
+            },
+            body: JSON.stringify({
+              id_sua: id,
+              nd_km: valTenKM,
+              phan_tram: valPhanTramKM,
+              gia_don: valGiaDonKM,
+              tg_bd: valTimeBD,
+              tg_kt: valTimeKT,
+              so_luong: valSoLuongKM
+            })
+          })
+          .then(response => response.json())
+          .then(data => {
+            console.log("Sửa thành công:", data);
+          })
+          .catch(error => {
+            console.error("Lỗi sửa KM:", error);
+          });
+
+        alert("Cập nhật khuyến mãi thành công!");
+        window.location.reload();
+      });
+    });
+
+    // xu ly su kien xoa khuyen mai theo ma_khuyen_mai
+    btnXoaKM.forEach(btn => {
+      btn.addEventListener('click', function() {
+        const id = btn.getAttribute("data-id");
+
+        fetch("/khuyenmai/xoakm", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').getAttribute("content")
+            },
+            body: JSON.stringify({
+              id_xoa: id
+            })
+          })
+          .then(response => response.json())
+          .then(data => {
+            console.log("Gửi đi thành công:", data);
+          })
+          .catch(error => {
+            console.error("Gửi đi thất bại:", error);
+
+          });
+
+        window.location.href = window.location.href;
+        alert("Bạn đã xóa khuyến mãi thành công");
+      });
+    });
   });
 </script>
 @endsection

@@ -14,6 +14,7 @@ class GioHang extends Model
     public $timestamps = false;
 
     protected $fillable = [
+        'ma_nguoi_dung',
         'ma_san_pham',
         'ten_sp',
         'gia_sp',

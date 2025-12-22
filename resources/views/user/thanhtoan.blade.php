@@ -1,3 +1,12 @@
+@if(session()->has('don_hang'))
+<script>
+  alert("{{ session('don_hang') }}");
+</script>
+@elseif(session()->has('errorDC'))
+<script>
+  alert("{{ session('errorDC') }}");
+</script>
+@endif
 <!DOCTYPE html>
 <html lang="en">
 
@@ -278,6 +287,10 @@
                     <span>Vận chuyển</span>
                     <span class = "van_chuyen">{{ number_format(session('phi_vc'))}} VND</span>
                   </div>
+                  <div class="order-shipping d-flex justify-content-between">
+                    <span>Giảm giá</span>
+                    <span class = "giam_gia">{{ number_format($tien_giam)}} VND</span>
+                  </div>
                   <div class="order-total d-flex justify-content-between">
                     <span>Thành tiền</span>
                     <span class = "thanh_tien">{{ number_format(session('thanh_tien'))}} VND</span>
@@ -508,9 +521,11 @@
       .then(data => {
         console.log("Cập nhật thành công:", data);
 
+        alert("Bạn đã đặt hàng thành công");
+
         // gán lại sự kiện click để chuyển trang
         this.onclick = function() {
-          window.location.href = "/taikhoan"; // đường dẫn đến trang xem đơn hàng
+          window.location.href = "/user/user/taikhoan"; // đường dẫn đến trang xem đơn hàng
         };
 
         // chặn quay lại trang trước

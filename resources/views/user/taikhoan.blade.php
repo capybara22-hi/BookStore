@@ -1,1003 +1,748 @@
+@if(session()->has('successBYT'))
+<script>
+  alert("{{ session('successBYT') }}");
+</script>
+@elseif(session()->has('success'))
+<script>
+  alert("{{ session('success') }}");
+</script>
+@elseif(session()->has('successDG'))
+<script>
+  alert("{{ session('successDG') }}");
+</script>
+@elseif(session()->has('successXDG'))
+<script>
+  alert("{{ session('successXDG') }}");
+</script>
+@elseif(session()->has('successTDC'))
+<script>
+    alert("{{ session('successTDC') }}");
+</script>
+
+@endif
 @extends('components.homeLayout')
 
 @section('taikhoan')
-<main class="main">
+  <main class="main">
 
-  <!-- Page Title -->
-  <div class="page-title light-background">
-    <div class="container d-lg-flex justify-content-between align-items-center">
-      <h1 class="mb-2 mb-lg-0">Account</h1>
-      <nav class="breadcrumbs">
-        <ol>
-          <li><a href="index.html">Home</a></li>
-          <li class="current">Account</li>
-        </ol>
-      </nav>
-    </div>
-  </div><!-- End Page Title -->
-
-  <!-- Account Section -->
-  <section id="account" class="account section">
-
-    <div class="container" data-aos="fade-up" data-aos-delay="100">
-
-      <!-- Mobile Menu Toggle -->
-      <div class="mobile-menu d-lg-none mb-4">
-        <button class="mobile-menu-toggle" type="button" data-bs-toggle="collapse" data-bs-target="#profileMenu">
-          <i class="bi bi-grid"></i>
-          <span>Menu</span>
-        </button>
+    <!-- Page Title -->
+    <div class="page-title light-background">
+      <div class="container d-lg-flex justify-content-between align-items-center">
+        <h1 class="mb-2 mb-lg-0">Tài khoản</h1>
+        <nav class="breadcrumbs">
+        </nav>
       </div>
+    </div><!-- End Page Title -->
 
-      <div class="row g-4">
-        <!-- Profile Menu -->
-        <div class="col-lg-3">
-          <div class="profile-menu collapse d-lg-block" id="profileMenu">
-            <!-- User Info -->
-            <div class="user-info" data-aos="fade-right">
-              <div class="user-avatar">
-                <img src="{{ asset('assets/img/person/person-f-1.webp') }}" alt="Profile" loading="lazy">
-                <span class="status-badge"><i class="bi bi-shield-check"></i></span>
-              </div>
-              <h4>Sarah Anderson</h4>
-              <div class="user-status">
-                <i class="bi bi-award"></i>
-                <span>Premium Member</span>
-              </div>
-            </div>
+    <!-- Account Section -->
+    <section id="account" class="account section">
 
-            <!-- Navigation Menu -->
-            <nav class="menu-nav">
-              <ul class="nav flex-column" role="tablist">
-                <li class="nav-item">
-                  <a class="nav-link active" data-bs-toggle="tab" href="#orders">
-                    <i class="bi bi-box-seam"></i>
-                    <span>My Orders</span>
-                    <span class="badge">3</span>
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" data-bs-toggle="tab" href="#wishlist">
-                    <i class="bi bi-heart"></i>
-                    <span>Wishlist</span>
-                    <span class="badge">12</span>
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" data-bs-toggle="tab" href="#wallet">
-                    <i class="bi bi-wallet2"></i>
-                    <span>Payment Methods</span>
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" data-bs-toggle="tab" href="#reviews">
-                    <i class="bi bi-star"></i>
-                    <span>My Reviews</span>
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" data-bs-toggle="tab" href="#addresses">
-                    <i class="bi bi-geo-alt"></i>
-                    <span>Addresses</span>
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" data-bs-toggle="tab" href="#settings">
-                    <i class="bi bi-gear"></i>
-                    <span>Account Settings</span>
-                  </a>
-                </li>
-              </ul>
+      <div class="container" data-aos="fade-up" data-aos-delay="100">
 
-              <div class="menu-footer">
-                <a href="#" class="help-link">
-                  <i class="bi bi-question-circle"></i>
-                  <span>Help Center</span>
-                </a>
-                <a href="#" class="logout-link">
-                  <i class="bi bi-box-arrow-right"></i>
-                  <span>Log Out</span>
-                </a>
-              </div>
-            </nav>
-          </div>
+        <!-- Mobile Menu Toggle -->
+        <div class="mobile-menu d-lg-none mb-4">
+          <button class="mobile-menu-toggle" type="button" data-bs-toggle="collapse" data-bs-target="#profileMenu">
+            <i class="bi bi-grid"></i>
+            <span>Menu</span>
+          </button>
         </div>
 
-        <!-- Content Area -->
-        <div class="col-lg-9">
-          <div class="content-area">
-            <div class="tab-content">
-              <!-- Orders Tab -->
-              <div class="tab-pane fade show active" id="orders">
-                <div class="section-header" data-aos="fade-up">
-                  <h2>My Orders</h2>
-                  <div class="header-actions">
-                    <div class="search-box">
-                      <i class="bi bi-search"></i>
-                      <input type="text" placeholder="Search orders...">
-                    </div>
-                    <div class="dropdown">
-                      <button class="filter-btn" data-bs-toggle="dropdown">
-                        <i class="bi bi-funnel"></i>
-                        <span>Filter</span>
-                      </button>
-                      <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="#">All Orders</a></li>
-                        <li><a class="dropdown-item" href="#">Processing</a></li>
-                        <li><a class="dropdown-item" href="#">Shipped</a></li>
-                        <li><a class="dropdown-item" href="#">Delivered</a></li>
-                        <li><a class="dropdown-item" href="#">Cancelled</a></li>
-                      </ul>
-                    </div>
-                  </div>
+        <div class="row g-4">
+          <!-- Profile Menu -->
+          <div class="col-lg-3">
+            <div class="profile-menu collapse d-lg-block" id="profileMenu">
+              <!-- User Info -->
+              <div class="user-info" data-aos="fade-right">
+                <div class="user-avatar">
+                  <img src="{{ asset('assets/img/person/person-f-1.webp') }}" alt="Profile" loading="lazy">
+                  <span class="status-badge"><i class="bi bi-award"></i></span>
                 </div>
-
-                <div class="orders-grid">
-                  <!-- Order Card 1 -->
-                  <div class="order-card" data-aos="fade-up" data-aos-delay="100">
-                    <div class="order-header">
-                      <div class="order-id">
-                        <span class="label">Order ID:</span>
-                        <span class="value">#ORD-2024-1278</span>
-                      </div>
-                      <div class="order-date">Feb 20, 2025</div>
-                    </div>
-                    <div class="order-content">
-                      <div class="product-grid">
-                        <img src="{{ asset('assets/img/product/product-1.webp') }}" alt="Product" loading="lazy">
-                        <img src="{{ asset('assets/img/product/product-2.webp') }}" alt="Product" loading="lazy">
-                        <img src="{{ asset('assets/img/product/product-3.webp') }}" alt="Product" loading="lazy">
-                      </div>
-                      <div class="order-info">
-                        <div class="info-row">
-                          <span>Status</span>
-                          <span class="status processing">Processing</span>
-                        </div>
-                        <div class="info-row">
-                          <span>Items</span>
-                          <span>3 items</span>
-                        </div>
-                        <div class="info-row">
-                          <span>Total</span>
-                          <span class="price">$789.99</span>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="order-footer">
-                      <button type="button" class="btn-track" data-bs-toggle="collapse" data-bs-target="#tracking1" aria-expanded="false">Track Order</button>
-                      <button type="button" class="btn-details" data-bs-toggle="collapse" data-bs-target="#details1" aria-expanded="false">View Details</button>
-                    </div>
-
-                    <!-- Order Tracking -->
-                    <div class="collapse tracking-info" id="tracking1">
-                      <div class="tracking-timeline">
-                        <div class="timeline-item completed">
-                          <div class="timeline-icon">
-                            <i class="bi bi-check-circle-fill"></i>
-                          </div>
-                          <div class="timeline-content">
-                            <h5>Order Confirmed</h5>
-                            <p>Your order has been received and confirmed</p>
-                            <span class="timeline-date">Feb 20, 2025 - 10:30 AM</span>
-                          </div>
-                        </div>
-
-                        <div class="timeline-item completed">
-                          <div class="timeline-icon">
-                            <i class="bi bi-check-circle-fill"></i>
-                          </div>
-                          <div class="timeline-content">
-                            <h5>Processing</h5>
-                            <p>Your order is being prepared for shipment</p>
-                            <span class="timeline-date">Feb 20, 2025 - 2:45 PM</span>
-                          </div>
-                        </div>
-
-                        <div class="timeline-item active">
-                          <div class="timeline-icon">
-                            <i class="bi bi-box-seam"></i>
-                          </div>
-                          <div class="timeline-content">
-                            <h5>Packaging</h5>
-                            <p>Your items are being packaged for shipping</p>
-                            <span class="timeline-date">Feb 20, 2025 - 4:15 PM</span>
-                          </div>
-                        </div>
-
-                        <div class="timeline-item">
-                          <div class="timeline-icon">
-                            <i class="bi bi-truck"></i>
-                          </div>
-                          <div class="timeline-content">
-                            <h5>In Transit</h5>
-                            <p>Expected to ship within 24 hours</p>
-                          </div>
-                        </div>
-
-                        <div class="timeline-item">
-                          <div class="timeline-icon">
-                            <i class="bi bi-house-door"></i>
-                          </div>
-                          <div class="timeline-content">
-                            <h5>Delivery</h5>
-                            <p>Estimated delivery: Feb 22, 2025</p>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-
-                    <!-- Order Details -->
-                    <div class="collapse order-details" id="details1">
-                      <div class="details-content">
-                        <div class="detail-section">
-                          <h5>Order Information</h5>
-                          <div class="info-grid">
-                            <div class="info-item">
-                              <span class="label">Payment Method</span>
-                              <span class="value">Credit Card (**** 4589)</span>
-                            </div>
-                            <div class="info-item">
-                              <span class="label">Shipping Method</span>
-                              <span class="value">Express Delivery (2-3 days)</span>
-                            </div>
-                          </div>
-                        </div>
-
-                        <div class="detail-section">
-                          <h5>Items (3)</h5>
-                          <div class="order-items">
-                            <div class="item">
-                              <img src="assets/img/product/product-1.webp" alt="Product" loading="lazy">
-                              <div class="item-info">
-                                <h6>Lorem ipsum dolor sit amet</h6>
-                                <div class="item-meta">
-                                  <span class="sku">SKU: PRD-001</span>
-                                  <span class="qty">Qty: 1</span>
-                                </div>
-                              </div>
-                              <div class="item-price">$899.99</div>
-                            </div>
-
-                            <div class="item">
-                              <img src="{{ asset('assets/img/product/product-2.webp') }}" alt="Product" loading="lazy">
-                              <div class="item-info">
-                                <h6>Consectetur adipiscing elit</h6>
-                                <div class="item-meta">
-                                  <span class="sku">SKU: PRD-002</span>
-                                  <span class="qty">Qty: 2</span>
-                                </div>
-                              </div>
-                              <div class="item-price">$599.95</div>
-                            </div>
-
-                            <div class="item">
-                              <img src="{{ asset('assets/img/product/product-3.webp') }}" alt="Product" loading="lazy">
-                              <div class="item-info">
-                                <h6>Sed do eiusmod tempor</h6>
-                                <div class="item-meta">
-                                  <span class="sku">SKU: PRD-003</span>
-                                  <span class="qty">Qty: 1</span>
-                                </div>
-                              </div>
-                              <div class="item-price">$129.99</div>
-                            </div>
-                          </div>
-                        </div>
-
-                        <div class="detail-section">
-                          <h5>Price Details</h5>
-                          <div class="price-breakdown">
-                            <div class="price-row">
-                              <span>Subtotal</span>
-                              <span>$1,929.93</span>
-                            </div>
-                            <div class="price-row">
-                              <span>Shipping</span>
-                              <span>$15.99</span>
-                            </div>
-                            <div class="price-row">
-                              <span>Tax</span>
-                              <span>$159.98</span>
-                            </div>
-                            <div class="price-row total">
-                              <span>Total</span>
-                              <span>$2,105.90</span>
-                            </div>
-                          </div>
-                        </div>
-
-                        <div class="detail-section">
-                          <h5>Shipping Address</h5>
-                          <div class="address-info">
-                            <p>Sarah Anderson<br>123 Main Street<br>Apt 4B<br>New York, NY 10001<br>United States</p>
-                            <p class="contact">+1 (555) 123-4567</p>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <!-- Order Card 2 -->
-                  <div class="order-card" data-aos="fade-up" data-aos-delay="200">
-                    <div class="order-header">
-                      <div class="order-id">
-                        <span class="label">Order ID:</span>
-                        <span class="value">#ORD-2024-1265</span>
-                      </div>
-                      <div class="order-date">Feb 15, 2025</div>
-                    </div>
-                    <div class="order-content">
-                      <div class="product-grid">
-                        <img src="{{ asset('assets/img/product/product-4.webp') }}" alt="Product" loading="lazy">
-                        <img src="{{ asset('assets/img/product/product-5.webp') }}" alt="Product" loading="lazy">
-                      </div>
-                      <div class="order-info">
-                        <div class="info-row">
-                          <span>Status</span>
-                          <span class="status shipped">Shipped</span>
-                        </div>
-                        <div class="info-row">
-                          <span>Items</span>
-                          <span>2 items</span>
-                        </div>
-                        <div class="info-row">
-                          <span>Total</span>
-                          <span class="price">$459.99</span>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="order-footer">
-                      <button type="button" class="btn-track" data-bs-toggle="collapse" data-bs-target="#tracking2" aria-expanded="false">Track Order</button>
-                      <button type="button" class="btn-details" data-bs-toggle="collapse" data-bs-target="#details2" aria-expanded="false">View Details</button>
-                    </div>
-
-                    <!-- Order Tracking -->
-                    <div class="collapse tracking-info" id="tracking2">
-                      <div class="tracking-timeline">
-                        <div class="timeline-item completed">
-                          <div class="timeline-icon">
-                            <i class="bi bi-check-circle-fill"></i>
-                          </div>
-                          <div class="timeline-content">
-                            <h5>Order Confirmed</h5>
-                            <p>Your order has been received and confirmed</p>
-                            <span class="timeline-date">Feb 15, 2025 - 9:15 AM</span>
-                          </div>
-                        </div>
-
-                        <div class="timeline-item completed">
-                          <div class="timeline-icon">
-                            <i class="bi bi-check-circle-fill"></i>
-                          </div>
-                          <div class="timeline-content">
-                            <h5>Processing</h5>
-                            <p>Your order is being prepared for shipment</p>
-                            <span class="timeline-date">Feb 15, 2025 - 11:30 AM</span>
-                          </div>
-                        </div>
-
-                        <div class="timeline-item completed">
-                          <div class="timeline-icon">
-                            <i class="bi bi-check-circle-fill"></i>
-                          </div>
-                          <div class="timeline-content">
-                            <h5>Packaging</h5>
-                            <p>Your items have been packaged for shipping</p>
-                            <span class="timeline-date">Feb 15, 2025 - 2:45 PM</span>
-                          </div>
-                        </div>
-
-                        <div class="timeline-item active">
-                          <div class="timeline-icon">
-                            <i class="bi bi-truck"></i>
-                          </div>
-                          <div class="timeline-content">
-                            <h5>In Transit</h5>
-                            <p>Package in transit with carrier</p>
-                            <span class="timeline-date">Feb 16, 2025 - 10:20 AM</span>
-                            <div class="shipping-info">
-                              <span>Tracking Number: </span>
-                              <span class="tracking-number">1Z999AA1234567890</span>
-                            </div>
-                          </div>
-                        </div>
-
-                        <div class="timeline-item">
-                          <div class="timeline-icon">
-                            <i class="bi bi-house-door"></i>
-                          </div>
-                          <div class="timeline-content">
-                            <h5>Delivery</h5>
-                            <p>Estimated delivery: Feb 18, 2025</p>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-
-                    <!-- Order Details -->
-                    <div class="collapse order-details" id="details2">
-                      <div class="details-content">
-                        <div class="detail-section">
-                          <h5>Order Information</h5>
-                          <div class="info-grid">
-                            <div class="info-item">
-                              <span class="label">Payment Method</span>
-                              <span class="value">Credit Card (**** 7821)</span>
-                            </div>
-                            <div class="info-item">
-                              <span class="label">Shipping Method</span>
-                              <span class="value">Standard Shipping (3-5 days)</span>
-                            </div>
-                          </div>
-                        </div>
-
-                        <div class="detail-section">
-                          <h5>Items (2)</h5>
-                          <div class="order-items">
-                            <div class="item">
-                              <img src="{{ asset('assets/img/product/product-4.webp') }}" alt="Product" loading="lazy">
-                              <div class="item-info">
-                                <h6>Ut enim ad minim veniam</h6>
-                                <div class="item-meta">
-                                  <span class="sku">SKU: PRD-004</span>
-                                  <span class="qty">Qty: 1</span>
-                                </div>
-                              </div>
-                              <div class="item-price">$299.99</div>
-                            </div>
-
-                            <div class="item">
-                              <img src="{{ asset('assets/img/product/product-5.webp') }}" alt="Product" loading="lazy">
-                              <div class="item-info">
-                                <h6>Quis nostrud exercitation</h6>
-                                <div class="item-meta">
-                                  <span class="sku">SKU: PRD-005</span>
-                                  <span class="qty">Qty: 1</span>
-                                </div>
-                              </div>
-                              <div class="item-price">$159.99</div>
-                            </div>
-                          </div>
-                        </div>
-
-                        <div class="detail-section">
-                          <h5>Price Details</h5>
-                          <div class="price-breakdown">
-                            <div class="price-row">
-                              <span>Subtotal</span>
-                              <span>$459.98</span>
-                            </div>
-                            <div class="price-row">
-                              <span>Shipping</span>
-                              <span>$9.99</span>
-                            </div>
-                            <div class="price-row">
-                              <span>Tax</span>
-                              <span>$38.02</span>
-                            </div>
-                            <div class="price-row total">
-                              <span>Total</span>
-                              <span>$459.99</span>
-                            </div>
-                          </div>
-                        </div>
-
-                        <div class="detail-section">
-                          <h5>Shipping Address</h5>
-                          <div class="address-info">
-                            <p>Sarah Anderson<br>123 Main Street<br>Apt 4B<br>New York, NY 10001<br>United States</p>
-                            <p class="contact">+1 (555) 123-4567</p>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <!-- Order Card 3 -->
-                  <div class="order-card" data-aos="fade-up" data-aos-delay="300">
-                    <div class="order-header">
-                      <div class="order-id">
-                        <span class="label">Order ID:</span>
-                        <span class="value">#ORD-2024-1252</span>
-                      </div>
-                      <div class="order-date">Feb 10, 2025</div>
-                    </div>
-                    <div class="order-content">
-                      <div class="product-grid">
-                        <img src="{{ asset('assets/img/product/product-6.webp') }}" alt="Product" loading="lazy">
-                      </div>
-                      <div class="order-info">
-                        <div class="info-row">
-                          <span>Status</span>
-                          <span class="status delivered">Delivered</span>
-                        </div>
-                        <div class="info-row">
-                          <span>Items</span>
-                          <span>1 item</span>
-                        </div>
-                        <div class="info-row">
-                          <span>Total</span>
-                          <span class="price">$129.99</span>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="order-footer">
-                      <button type="button" class="btn-review">Write Review</button>
-                      <button type="button" class="btn-details">View Details</button>
-                    </div>
-                  </div>
-
-                  <!-- Order Card 4 -->
-                  <div class="order-card" data-aos="fade-up" data-aos-delay="400">
-                    <div class="order-header">
-                      <div class="order-id">
-                        <span class="label">Order ID:</span>
-                        <span class="value">#ORD-2024-1245</span>
-                      </div>
-                      <div class="order-date">Feb 5, 2025</div>
-                    </div>
-                    <div class="order-content">
-                      <div class="product-grid">
-                        <img src="{{ asset('assets/img/product/product-7.webp') }}" alt="Product" loading="lazy">
-                        <img src="{{ asset('assets/img/product/product-8.webp') }}" alt="Product" loading="lazy">
-                        <img src="{{ asset('assets/img/product/product-9.webp') }}" alt="Product" loading="lazy">
-                        <span class="more-items">+2</span>
-                      </div>
-                      <div class="order-info">
-                        <div class="info-row">
-                          <span>Status</span>
-                          <span class="status cancelled">Cancelled</span>
-                        </div>
-                        <div class="info-row">
-                          <span>Items</span>
-                          <span>5 items</span>
-                        </div>
-                        <div class="info-row">
-                          <span>Total</span>
-                          <span class="price">$1,299.99</span>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="order-footer">
-                      <button type="button" class="btn-reorder">Reorder</button>
-                      <button type="button" class="btn-details">View Details</button>
-                    </div>
-                  </div>
-                </div>
-
-                <!-- Pagination -->
-                <div class="pagination-wrapper" data-aos="fade-up">
-                  <button type="button" class="btn-prev" disabled="">
-                    <i class="bi bi-chevron-left"></i>
-                  </button>
-                  <div class="page-numbers">
-                    <button type="button" class="active">1</button>
-                    <button type="button">2</button>
-                    <button type="button">3</button>
-                    <span>...</span>
-                    <button type="button">12</button>
-                  </div>
-                  <button type="button" class="btn-next">
-                    <i class="bi bi-chevron-right"></i>
-                  </button>
+                <h4>{{ $nguoi_dung->name}}</h4>
+                <div class="user-status">
+                  
                 </div>
               </div>
 
-              <!-- Wishlist Tab -->
-              <div class="tab-pane fade" id="wishlist">
-                <div class="section-header" data-aos="fade-up">
-                  <h2>My Wishlist</h2>
-                  <div class="header-actions">
-                    <button type="button" class="btn-add-all">Add All to Cart</button>
+              <!-- Navigation Menu -->
+              <nav class="menu-nav">
+                <ul class="nav flex-column" role="tablist">
+                  <li class="nav-item">
+                    <a class="nav-link active" data-bs-toggle="tab" href="#orders">
+                      <i class="bi bi-box-seam"></i>
+                      <span>Đơn hàng của tôi</span>
+                      <span class="badge">{{ count($don_hang)}}</span>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" data-bs-toggle="tab" href="#wishlist">
+                      <i class="bi bi-heart"></i>
+                      <span>Yêu thích</span>
+                      <span class="badge">{{ count($yeu_thich) }}</span>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" data-bs-toggle="tab" href="#reviews">
+                      <i class="bi bi-star"></i>
+                      <span>Đánh giá của tôi</span>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" data-bs-toggle="tab" href="#addresses">
+                      <i class="bi bi-geo-alt"></i>
+                      <span>Địa chỉ</span>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" data-bs-toggle="tab" href="#settings">
+                      <i class="bi bi-gear"></i>
+                      <span>Thiết lập tài khoản</span>
+                    </a>
+                  </li>
+                </ul>
+
+                <div class="menu-footer">
+                  <a href="{{ route('lienhe')}}" class="help-link">
+                    <i class="bi bi-question-circle"></i>
+                    <span>Hỗ trợ</span>
+                  </a>
+                  <a href="#" class="logout-link">
+                    <i class="bi bi-box-arrow-right"></i>
+                    <span>Đăng xuất</span>
+                  </a>
+                </div>
+              </nav>
+            </div>
+          </div>
+
+          <!-- Content Area -->
+          <div class="col-lg-9">
+            <div class="content-area">
+              <div class="tab-content">
+                <!-- Orders Tab -->
+                <div class="tab-pane fade show active" id="orders">
+                  <div class="section-header" data-aos="fade-up">
+                    <h2>Đơn hàng của tôi</h2>
+                    <div class="header-actions">
+                      <div class="search-box">
+                        <i class="bi bi-search"></i>
+                        <input type="text" id="searchOrderInput" placeholder="Tìm kiếm đơn hàng...">
+                      </div>
+                      <div class="dropdown">
+                        <button class="filter-btn" data-bs-toggle="dropdown">
+                          <i class="bi bi-funnel"></i>
+                          <span>Bộ lọc</span>
+                        </button>
+                        <ul class="dropdown-menu" id="orderFilterMenu">
+                            <li><a class="dropdown-item" href="#" data-status="all">Tất cả đơn hàng</a></li>
+                            <li><a class="dropdown-item" href="#" data-status="1">Chờ xác nhận</a></li>
+                            <li><a class="dropdown-item" href="#" data-status="2">Đang chuẩn bị hàng</a></li>
+                            <li><a class="dropdown-item" href="#" data-status="3">Đang giao hàng</a></li>
+                            <li><a class="dropdown-item" href="#" data-status="4">Đã giao hàng thành công</a></li>
+                            <li><a class="dropdown-item" href="#" data-status="5">Đơn hàng đã bị hủy</a></li>
+                            <li><a class="dropdown-item" href="#" data-status="6">Đơn hàng đã đánh giá</a></li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="orders-grid">
+                    <!-- Order Card 1 -->
+                    @foreach($don_hang as $dh)
+                    <div class="order-card" data-aos="fade-up" data-aos-delay="100"  data-status="{{ $dh->trang_thai_dh }}">
+                      <div class="order-header">
+                        <div class="order-id">
+                          <span class="label">Mã đơn hàng:</span>
+                          <span class="value">{{ $dh->ma_don_hang}}</span>
+                        </div>
+                        <div class="order-date"></div>
+                      </div>
+                      <div class="order-content">
+                        <div class="product-grid">
+                          @foreach($sanphamgiohang as $gh)
+                            @if($gh->ma_don_hang == $dh->ma_don_hang)
+                              @php
+                                  // Lấy file ảnh bìa của sản phẩm (bia_san_pham = 1)
+                                  $anhBia = $gh->sanpham->file->where('bia_san_pham', 1)->first();
+                              @endphp
+                              <img src="{{ asset($anhBia->duong_dan_luu) }}" alt="Product" loading="lazy">
+                            @endif
+                          @endforeach
+                          <!-- <img src="{{ asset('assets/img/product/product-2.webp') }}" alt="Product" loading="lazy">
+                          <img src="{{ asset('assets/img/product/product-3.webp') }}" alt="Product" loading="lazy"> -->
+                        </div>
+                        <div class="order-info">
+                          <div class="info-row">
+                            <span>Trạng thái</span>
+                            @switch($dh->trang_thai_dh)
+                                @case(1)
+                                  <span class="status processing">Đang chờ xác nhận đơn hàng</span>
+                                  @break
+                                @case(2)
+                                  <span class="status processing">Đang chuẩn bị hàng</span>
+                                  @break
+                                @case(3)
+                                  <span class="status shipped">Đang giao hàng</span>
+                                  @break
+                                @case(4)
+                                  <span class="status delivered">Đã giao hàng thành công</span>
+                                  @break
+                                @case(5)
+                                  <span class="status cancelled">Đơn hàng đã bị hủy</span>
+                                  @break
+                                @case(6)
+                                  <span class="status processing">Đơn hàng đã đánh giá</span>
+                                  @break
+                            @endswitch
+                            
+                          </div>
+                          <div class="info-row">
+                              <span>Sản phẩm</span>
+                              @php $soluong = 0; @endphp
+                              @foreach($sanphamgiohang as $gh)
+                                  @if($gh->ma_don_hang == $dh->ma_don_hang)
+                                      @php $soluong++; @endphp
+                                  @endif
+                              @endforeach
+                              <span>{{ $soluong }} sản phẩm</span>
+                          </div>
+                          <div class="info-row">
+                            <span>Thành tiền</span>
+                            <span class="price">{{ number_format( $dh->thanh_tien)}} VND</span>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="order-footer">
+                        <button type="button" 
+                            class="btn-order-action"
+                            data-dh="{{ $dh->ma_don_hang }}"
+                            data-status="{{ $dh->trang_thai_dh }}"
+                            {{ in_array($dh->trang_thai_dh, [5,6]) ? 'disabled' : '' }}
+                            style="
+                                {{ $dh->trang_thai_dh == 4 ? 'background-color: orange; color: white;' : '' }}
+                                {{ $dh->trang_thai_dh == 6 ? 'background-color: #898989; color: black;cursor: not-allowed;' : '' }}
+                                {{ $dh->trang_thai_dh == 5 ? 'background-color: red; color: white; cursor: not-allowed;' : '' }}
+                                {{ $dh->trang_thai_dh == 1 ? 'background-color: #000000ff; color: white; cursor: not-allowed;' : '' }}
+                                {{ $dh->trang_thai_dh == 2 ? 'background-color: #000000ff; color: white; cursor: not-allowed;' : '' }}
+                                {{ $dh->trang_thai_dh == 3 ? 'background-color: green; color: white; cursor: not-allowed;' : '' }}
+                                
+                            ">
+                            
+                            @if($dh->trang_thai_dh == 6)
+                                Đã đánh giá
+                            @elseif($dh->trang_thai_dh == 4)
+                                Đánh giá đơn hàng
+                            @elseif($dh->trang_thai_dh == 5)
+                                Đơn hàng bị hủy
+                            @elseif($dh->trang_thai_dh == 3)
+                                Đã nhận được hàng
+                            @else
+                                Theo dõi đơn hàng
+                            @endif
+                        </button>
+
+                        <button type="button" 
+                                class="btn-details" 
+                                data-bs-toggle="collapse" 
+                                data-bs-target="#details{{ $dh->ma_don_hang }}" 
+                                aria-expanded="false">
+                            Xem chi tiết
+                        </button>
+                      </div>
+
+                      <!-- Modal đánh giá -->
+                      @if($dh->trang_thai_dh >= 4)
+                      <div class="modal fade" id="evaluateModal{{ $dh->ma_don_hang }}" tabindex="-1" aria-labelledby="evaluateModalLabel{{ $dh->ma_don_hang }}" aria-hidden="true">
+                          <div class="modal-dialog modal-dialog-centered">
+                              <div class="modal-content">
+                                  <div class="modal-header">
+                                      <h5 class="modal-title" id="evaluateModalLabel{{ $dh->ma_don_hang }}">Đánh giá đơn hàng {{ $dh->ma_don_hang }}</h5>
+                                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                  </div>
+                                  <form action="{{ route('review.store') }}" method="POST">
+                                      @csrf
+                                      <div class="modal-body">
+                                          <input type="hidden" name="ma_don_hang" value="{{ $dh->ma_don_hang }}">
+                                          <div class="mb-3">
+                                              <label for="rating{{ $dh->ma_don_hang }}" class="form-label">Đánh giá sao:</label>
+                                              <select class="form-select" id="rating{{ $dh->ma_don_hang }}" name="rating">
+                                                  <option value="5">5 - Tuyệt vời</option>
+                                                  <option value="4">4 - Tốt</option>
+                                                  <option value="3">3 - Trung bình</option>
+                                                  <option value="2">2 - Kém</option>
+                                                  <option value="1">1 - Rất kém</option>
+                                              </select>
+                                          </div>
+                                          <div class="mb-3">
+                                              <label for="comment{{ $dh->ma_don_hang }}" class="form-label">Bình luận:</label>
+                                              <textarea class="form-control" id="comment{{ $dh->ma_don_hang }}" name="comment" rows="3"></textarea>
+                                          </div>
+                                      </div>
+                                      <div class="modal-footer">
+                                          <button type="submit" class="btn btn-primary">Gửi đánh giá</button>
+                                          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                                      </div>
+                                  </form>
+                              </div>
+                          </div>
+                      </div>
+                      @endif
+
+                      <!-- Order Tracking -->
+                      <div class="collapse tracking-info" id="tracking{{ $dh->ma_don_hang}}">
+                        <div class="tracking-timeline">
+                          <div class="timeline-item {{ $dh->trang_thai_dh >= 1 ? 'completed' : '' }}">
+                            <div class="timeline-icon">
+                              <i class="bi bi-check-circle-fill"></i>
+                            </div>
+                            <div class="timeline-content">
+                              <h5>Xác nhận đơn hàng</h5>
+                              <p>Đơn hàng của bạn đang trong quá trình chờ xác nhận</p>
+                            </div>
+                          </div>
+
+                          <div class="timeline-item {{ $dh->trang_thai_dh >= 2 ? 'completed' : '' }}">
+                            <div class="timeline-icon">
+                              <i class="bi bi-box-seam"></i>
+                            </div>
+                            <div class="timeline-content">
+                              <h5>Chuẩn bị hàng</h5>
+                              <p>Đơn hàng của bạn đang được chuẩn bị để gửi đi</p>
+                            </div>
+                          </div>
+
+
+                          <div class="timeline-item {{ $dh->trang_thai_dh >= 3 ? 'completed' : '' }}" >
+                            <div class="timeline-icon">
+                              <i class="bi bi-truck"></i>
+                            </div>
+                            <div class="timeline-content">
+                              <h5>Đang giao hàng</h5>
+                              <p>Đơn hàng đang được giao tới bạn</p>
+                            </div>
+                          </div>
+
+                          <div class="timeline-item {{ $dh->trang_thai_dh >= 4 ? 'completed' : '' }}">
+                            <div class="timeline-icon">
+                              <i class="bi bi-house-door"></i>
+                            </div>
+                            <div class="timeline-content">
+                              <h5>Nhận hàng thành công</h5>
+                            </div>
+                            <div style=' margin-top: 30px;'>
+                              @if($dh->trang_thai_dh < 3)
+                              <button class="btn-cancel-order"
+                                  data-dh="{{ $dh->ma_don_hang }}"
+                                  style="background:red; color:white; border-radius:10px; width:300px; height:40px;">
+                                  Hủy đơn hàng
+                              </button>
+                              @else
+                              <p style="color:red;">Đơn hàng đang được giao sẽ không được hủy</p>
+                              @endif
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <!-- Order Details -->
+                      <div class="collapse order-details" id="details{{ $dh->ma_don_hang}}">
+                        <div class="details-content">
+                          <div class="detail-section">
+                            <h5>Thông tin đơn hàng</h5>            
+                          </div>
+
+                          <div class="detail-section">
+                            <h5>Sản phẩm ({{$soluong}})</h5>
+                            <div class="order-items">
+                              @foreach($sanphamgiohang as $gh)
+                                  @if($gh->ma_don_hang == $dh->ma_don_hang)
+                                    @php
+                                        // Lấy file ảnh bìa của sản phẩm (bia_san_pham = 1)
+                                        $anhBia = $gh->sanpham->file->where('bia_san_pham', 1)->first();
+                                    @endphp
+                                      <div class="item">
+                                        <img src="{{ asset($anhBia->duong_dan_luu) }}" alt="Product" loading="lazy">
+                                        <div class="item-info">
+                                          <h6 class="product-name">{{ $gh->ten_sp }}</h6>
+                                          <div class="item-meta">
+                                            <span class="sku">Tac gia: {{ $gh->sanpham->tac_gia }}</span>
+                                            <span class="qty">SL: {{ $gh->so_luong_sp }}</span>
+                                          </div>
+                                        </div>
+                                        <div class="item-price">{{ number_format($gh->tong_tien)}} VND</div>
+                                      </div>
+                                  @endif
+                              @endforeach
+                              
+                            </div>
+                          </div>
+
+                          <div class="detail-section">
+                            <h5>Giá tiền chi tiết</h5>
+                            <div class="price-breakdown">
+                              <div class="price-row">
+                                <span>Thành tiền</span>
+                                <span>{{ number_format($dh->tien_hang)}} VND</span>
+                              </div>
+                              <div class="price-row">
+                                <span>Vận chuyển</span>
+                                <span>{{ number_format($dh->phi_van_chuyen)}} VND</span>
+                              </div>
+                              <div class="price-row">
+                                <span>Giảm giá</span>
+                                <span> - {{ number_format($dh->giam_gia)}} VND</span>
+                              </div>
+                              <div class="price-row total">
+                                <span>Thành tiền</span>
+                                <span>{{ number_format($dh->thanh_tien)}} VND</span>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div class="detail-section">
+                            <h5>Địa chỉ giao hàng</h5>
+                            <div class="address-info">
+                              @if($dh->dia_chi)
+                                <p>
+                                  {{ $dh->ten_nguoi_nhan }}<br>
+                                  {{ $dh->dia_chi }}<br>
+                                  {{ $dh->sdt }}
+                                </p>
+                              @else
+                                <p>Chưa có địa chỉ cho đơn hàng này</p>
+                              @endif
+                            </div>
+                          </div>
+
+                        </div>
+                      </div>
+                    </div>
+                    @endforeach
+                  </div>
+
+                </div>
+
+                <!-- Wishlist Tab -->
+                <div class="tab-pane fade" id="wishlist">
+                  <div class="section-header" data-aos="fade-up">
+                    <h2>Những cuốn sách yêu thích</h2>
+                  </div>
+
+                  <div class="wishlist-grid">
+                    <!-- Wishlist Item 1 -->
+                    @foreach($yeu_thich as $yt)
+                      <div class="wishlist-card" data-aos="fade-up" data-aos-delay="100">
+                          <div class="wishlist-image">
+                              <img src="{{ asset('assets/img/product/product-1.webp') }}" alt="Product" loading="lazy">
+                              
+                              <!-- Nút xóa khỏi yêu thích -->
+                              <form action="{{ route('yeuthich.toggle', $yt->ma_san_pham) }}" method="POST" style="display:inline">
+                                  @csrf
+                                  <button class="btn-remove" type="submit" aria-label="Remove from wishlist">
+                                      <i class="bi bi-trash"></i>
+                                  </button>
+                              </form>
+                          </div>
+
+                          <div class="wishlist-content">
+                              <h4>{{ $yt->sanpham->ten_san_pham }}</h4>
+
+                              {{-- Rating --}}
+                              @php
+                                  $avgRating = round($yt->sanpham->reviews->avg('rating'), 1);
+                                  $fullStars = floor($avgRating);
+                                  $halfStar = ($avgRating - $fullStars) >= 0.5 ? 1 : 0;
+                                  $emptyStars = 5 - $fullStars - $halfStar;
+                              @endphp
+
+                              <div class="product-meta">
+                                  <div class="rating">
+                                      @for($i=0; $i<$fullStars; $i++)
+                                          <i class="bi bi-star-fill"></i>
+                                      @endfor
+                                      @if($halfStar)
+                                          <i class="bi bi-star-half"></i>
+                                      @endif
+                                      @for($i=0; $i<$emptyStars; $i++)
+                                          <i class="bi bi-star"></i>
+                                      @endfor
+                                      <span>({{ $avgRating }})</span>
+                                  </div>
+
+                                  <div class="price">
+                                      <span class="current">{{ number_format($yt->sanpham->gia_tien_sp) }} VND</span>
+                                  </div>
+                              </div>
+
+                              <!-- Thêm vào giỏ hàng -->
+                              <form action="{{ route('themgiohang', ['id' => $yt->ma_san_pham]) }}" method="POST">
+                                  @csrf
+                                  <button type="submit" class="btn btn-primary btn-add-cart">
+                                      <i class="bi bi-bag-plus"></i> Thêm vào giỏ hàng
+                                  </button>
+                              </form>
+                          </div>
+                      </div>
+                    @endforeach
+
                   </div>
                 </div>
 
-                <div class="wishlist-grid">
-                  <!-- Wishlist Item 1 -->
-                  <div class="wishlist-card" data-aos="fade-up" data-aos-delay="100">
-                    <div class="wishlist-image">
-                      <img src="{{ asset('assets/img/product/product-1.webp') }}" alt="Product" loading="lazy">
-                      <button class="btn-remove" type="button" aria-label="Remove from wishlist">
-                        <i class="bi bi-trash"></i>
-                      </button>
-                      <div class="sale-badge">-20%</div>
-                    </div>
-                    <div class="wishlist-content">
-                      <h4>Lorem ipsum dolor sit amet</h4>
-                      <div class="product-meta">
-                        <div class="rating">
-                          <i class="bi bi-star-fill"></i>
-                          <i class="bi bi-star-fill"></i>
-                          <i class="bi bi-star-fill"></i>
-                          <i class="bi bi-star-fill"></i>
-                          <i class="bi bi-star-half"></i>
-                          <span>(4.5)</span>
-                        </div>
-                        <div class="price">
-                          <span class="current">$79.99</span>
-                          <span class="original">$99.99</span>
-                        </div>
+                <!-- Reviews Tab -->
+                <div class="tab-pane fade" id="reviews">
+                  <div class="section-header" data-aos="fade-up">
+                    <h2>Đánh giá đơn hàng</h2>
+                    <div class="header-actions">
+                      <div class="dropdown">
+                        <button class="filter-btn" data-bs-toggle="dropdown">
+                          <i class="bi bi-funnel"></i>
+                          <span>Sắp xếp</span>
+                        </button>
+                        <ul class="dropdown-menu" id="reviewFilterMenu">
+                            <li><a class="dropdown-item" href="#" data-filter="recent">Gần đây</a></li>
+                            <li><a class="dropdown-item" href="#" data-filter="high">Đánh giá cao - thấp</a></li>
+                            <li><a class="dropdown-item" href="#" data-filter="low">Đánh giá thấp - cao</a></li>
+                        </ul>
+
                       </div>
-                      <button type="button" class="btn-add-cart">Add to Cart</button>
                     </div>
                   </div>
 
-                  <!-- Wishlist Item 2 -->
-                  <div class="wishlist-card" data-aos="fade-up" data-aos-delay="200">
-                    <div class="wishlist-image">
-                      <img src="{{ asset('assets/img/product/product-2.webp') }}" alt="Product" loading="lazy">
-                      <button class="btn-remove" type="button" aria-label="Remove from wishlist">
-                        <i class="bi bi-trash"></i>
-                      </button>
-                    </div>
-                    <div class="wishlist-content">
-                      <h4>Consectetur adipiscing elit</h4>
-                      <div class="product-meta">
-                        <div class="rating">
-                          <i class="bi bi-star-fill"></i>
-                          <i class="bi bi-star-fill"></i>
-                          <i class="bi bi-star-fill"></i>
-                          <i class="bi bi-star-fill"></i>
-                          <i class="bi bi-star"></i>
-                          <span>(4.0)</span>
-                        </div>
-                        <div class="price">
-                          <span class="current">$149.99</span>
-                        </div>
-                      </div>
-                      <button type="button" class="btn-add-cart">Add to Cart</button>
-                    </div>
+                  <div class="reviews-grid">
+                      @foreach($reviews as $review)
+                          <div class="review-card"
+                              data-rating="{{ $review->rating }}"
+                              data-date="{{ $review->created_at->timestamp }}">
+                              <div class="review-header">
+                                  <img src="{{ asset('assets/img/product/product-1.webp') }}" alt="Product" class="product-image" loading="lazy">
+                                  <div class="review-meta">
+                                      <h4>{{ $review->sanpham->ten_san_pham }}</h4>
+                                      <div class="rating">
+                                          @for($i=1; $i<=5; $i++)
+                                              <i class="bi {{ $i <= $review->rating ? 'bi-star-fill' : 'bi-star' }}"></i>
+                                          @endfor
+                                          <span>({{ $review->rating }})</span>
+                                      </div>
+                                      <div class="review-date">Đánh giá vào: {{ $review->created_at->format('d M, Y') }}</div>
+                                  </div>
+                              </div>
+
+                              <div class="review-content">
+                                  <p>Nội dung đánh giá: {{ $review->comment }}</p>
+                              </div>
+
+                              <div class="review-footer" style="display:flex; gap:8px;">
+                                  <button class="btn-edit-review"
+                                          data-id="modal-{{ $review->ma_danh_gia }}"
+                                          {{ $review->edit_count >= 2 ? 'disabled' : '' }}>
+                                      Sửa
+                                  </button>
+
+                                  <form action="{{ route('review.destroy', $review->ma_danh_gia) }}" method="POST" style="display:inline">
+                                      @csrf
+                                      @method('DELETE')
+                                      <button type="submit" class="btn-delete" onclick="return confirm('Bạn có chắc muốn xóa review này?')">
+                                          Xóa
+                                      </button>
+                                  </form>
+                              </div>
+                          </div>
+
+                          <!-- Modal sửa review -->
+                          <div class="modal" id="modal-{{ $review->ma_danh_gia }}"
+                              style="display:none; position: fixed; z-index: 9999; inset: 0; background: rgba(0,0,0,0.4); align-items: center; justify-content: center;">
+                              
+                              <div class="modal-content"
+                                  style="background: #fff; width: 420px; border-radius: 14px; padding: 22px 24px; box-shadow: 0 20px 50px rgba(0,0,0,0.25); position: relative;">
+                                  
+                                  <span class="close-modal"
+                                        style="position: absolute; top: 12px; right: 14px; font-size: 26px; cursor: pointer; color: #888;">
+                                      &times;
+                                  </span>
+
+                                  <h4 style="text-align: center; margin-bottom: 18px; font-size: 20px; font-weight: 600;">
+                                      Sửa đánh giá
+                                  </h4>
+
+                                  <form method="POST" action="{{ route('review.update', $review->ma_danh_gia) }}">
+                                      @csrf
+
+                                      <label style="font-weight: 500; margin-bottom: 6px; display:block;">Đánh giá:</label>
+                                      <select name="rating" style="width: 100%; padding: 8px 10px; border-radius: 8px; border: 1px solid #ccc; margin-bottom: 14px;">
+                                          @for($i=1;$i<=5;$i++)
+                                              <option value="{{ $i }}" {{ $review->rating == $i ? 'selected' : '' }}>
+                                                  {{ $i }} sao
+                                              </option>
+                                          @endfor
+                                      </select>
+
+                                      <label style="font-weight: 500; margin-bottom: 6px; display:block;">Nội dung:</label>
+                                      <textarea name="comment" rows="4"
+                                                style="width: 100%; padding: 8px 10px; border-radius: 8px; border: 1px solid #ccc; margin-bottom: 18px; resize: none;">{{ $review->comment }}
+                                      </textarea>
+
+                                      <button type="submit"
+                                              style="width: 100%; background: orange; border: none; color: white; padding: 10px; border-radius: 8px; font-weight: 600; cursor: pointer;">
+                                          Cập nhật
+                                      </button>
+                                  </form>
+                              </div>
+                          </div>
+
+                      @endforeach
                   </div>
 
-                  <!-- Wishlist Item 3 -->
-                  <div class="wishlist-card" data-aos="fade-up" data-aos-delay="300">
-                    <div class="wishlist-image">
-                      <img src="{{ asset('assets/img/product/product-3.webp') }}" alt="Product" loading="lazy">
-                      <button class="btn-remove" type="button" aria-label="Remove from wishlist">
-                        <i class="bi bi-trash"></i>
-                      </button>
-                      <div class="out-of-stock-badge">Out of Stock</div>
-                    </div>
-                    <div class="wishlist-content">
-                      <h4>Sed do eiusmod tempor</h4>
-                      <div class="product-meta">
-                        <div class="rating">
-                          <i class="bi bi-star-fill"></i>
-                          <i class="bi bi-star-fill"></i>
-                          <i class="bi bi-star-fill"></i>
-                          <i class="bi bi-star-fill"></i>
-                          <i class="bi bi-star-fill"></i>
-                          <span>(5.0)</span>
-                        </div>
-                        <div class="price">
-                          <span class="current">$199.99</span>
-                        </div>
-                      </div>
-                      <button type="button" class="btn-notify">Notify When Available</button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Payment Methods Tab -->
-              <div class="tab-pane fade" id="wallet">
-                <div class="section-header" data-aos="fade-up">
-                  <h2>Payment Methods</h2>
-                  <div class="header-actions">
-                    <button type="button" class="btn-add-new">
-                      <i class="bi bi-plus-lg"></i>
-                      Add New Card
-                    </button>
-                  </div>
-                </div>
-
-                <div class="payment-cards-grid">
-                  <!-- Payment Card 1 -->
-                  <div class="payment-card default" data-aos="fade-up" data-aos-delay="100">
-                    <div class="card-header">
-                      <i class="bi bi-credit-card"></i>
-                      <div class="card-badges">
-                        <span class="default-badge">Default</span>
-                        <span class="card-type">Visa</span>
-                      </div>
-                    </div>
-                    <div class="card-body">
-                      <div class="card-number">•••• •••• •••• 4589</div>
-                      <div class="card-info">
-                        <span>Expires 09/2026</span>
-                      </div>
-                    </div>
-                    <div class="card-actions">
-                      <button type="button" class="btn-edit">
-                        <i class="bi bi-pencil"></i>
-                        Edit
-                      </button>
-                      <button type="button" class="btn-remove">
-                        <i class="bi bi-trash"></i>
-                        Remove
-                      </button>
-                    </div>
-                  </div>
-
-                  <!-- Payment Card 2 -->
-                  <div class="payment-card" data-aos="fade-up" data-aos-delay="200">
-                    <div class="card-header">
-                      <i class="bi bi-credit-card"></i>
-                      <div class="card-badges">
-                        <span class="card-type">Mastercard</span>
-                      </div>
-                    </div>
-                    <div class="card-body">
-                      <div class="card-number">•••• •••• •••• 7821</div>
-                      <div class="card-info">
-                        <span>Expires 05/2025</span>
-                      </div>
-                    </div>
-                    <div class="card-actions">
-                      <button type="button" class="btn-edit">
-                        <i class="bi bi-pencil"></i>
-                        Edit
-                      </button>
-                      <button type="button" class="btn-remove">
-                        <i class="bi bi-trash"></i>
-                        Remove
-                      </button>
-                      <button type="button" class="btn-make-default">Make Default</button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Reviews Tab -->
-              <div class="tab-pane fade" id="reviews">
-                <div class="section-header" data-aos="fade-up">
-                  <h2>My Reviews</h2>
-                  <div class="header-actions">
-                    <div class="dropdown">
-                      <button class="filter-btn" data-bs-toggle="dropdown">
-                        <i class="bi bi-funnel"></i>
-                        <span>Sort by: Recent</span>
-                      </button>
-                      <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="#">Recent</a></li>
-                        <li><a class="dropdown-item" href="#">Highest Rating</a></li>
-                        <li><a class="dropdown-item" href="#">Lowest Rating</a></li>
-                      </ul>
-                    </div>
-                  </div>
                 </div>
 
-                <div class="reviews-grid">
-                  <!-- Review Card 1 -->
-                  <div class="review-card" data-aos="fade-up" data-aos-delay="100">
-                    <div class="review-header">
-                      <img src="{{ asset('assets/img/product/product-1.webp') }}" alt="Product" class="product-image" loading="lazy">
-                      <div class="review-meta">
-                        <h4>Lorem ipsum dolor sit amet</h4>
-                        <div class="rating">
-                          <i class="bi bi-star-fill"></i>
-                          <i class="bi bi-star-fill"></i>
-                          <i class="bi bi-star-fill"></i>
-                          <i class="bi bi-star-fill"></i>
-                          <i class="bi bi-star-fill"></i>
-                          <span>(5.0)</span>
+                <!-- Addresses Tab -->
+                 
+                <div class="tab-pane fade" id="addresses">
+                  <div class="section-header" data-aos="fade-up">
+                    <h2>Địa chỉ của tôi</h2>
+                    <div class="header-actions">
+                      <!-- Button mở modal -->
+                      <button type="button" class="btn-add-new" data-bs-toggle="modal" data-bs-target="#addAddressModal">
+                        <i class="bi bi-plus-lg"></i> Thêm địa chỉ mới
+                      </button>
+                      <!-- Modal Thêm địa chỉ -->
+                      <div class="modal fade" id="addAddressModal" tabindex="-1" aria-labelledby="addAddressModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                          <div class="modal-content">
+                            <form action="{{ route('diachi.store') }}" method="POST">
+                              @csrf
+                              <div class="modal-header">
+                                <h5 class="modal-title" id="addAddressModalLabel">Thêm địa chỉ mới</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                              </div>
+                              <div class="modal-body">
+                                <div class="mb-3">
+                                  <label for="dia_chi" class="form-label">Địa chỉ</label>
+                                  <input type="text" class="form-control" id="dia_chi" name="dia_chi" required>
+                                </div>
+                                <div class="mb-3">
+                                  <label for="sdt" class="form-label">Số điện thoại</label>
+                                  <input type="text" class="form-control" id="sdt" name="sdt" required>
+                                </div>
+                                <div class="mb-3">
+                                  <label for="ten_nguoi_nhan" class="form-label">Tên người nhận</label>
+                                  <input type="text" class="form-control" id="ten_nguoi_nhan" name="ten_nguoi_nhan" required>
+                                </div>
+                              </div>
+                              <div class="modal-footer">
+                                <button type="submit" class="btn btn-primary">Thêm địa chỉ</button>
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                              </div>
+                            </form>
+                          </div>
                         </div>
-                        <div class="review-date">Reviewed on Feb 15, 2025</div>
                       </div>
-                    </div>
-                    <div class="review-content">
-                      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-                    </div>
-                    <div class="review-footer">
-                      <button type="button" class="btn-edit">Edit Review</button>
-                      <button type="button" class="btn-delete">Delete</button>
                     </div>
                   </div>
 
-                  <!-- Review Card 2 -->
-                  <div class="review-card" data-aos="fade-up" data-aos-delay="200">
-                    <div class="review-header">
-                      <img src="{{ asset('assets/img/product/product-2.webp') }}" alt="Product" class="product-image" loading="lazy">
-                      <div class="review-meta">
-                        <h4>Consectetur adipiscing elit</h4>
-                        <div class="rating">
-                          <i class="bi bi-star-fill"></i>
-                          <i class="bi bi-star-fill"></i>
-                          <i class="bi bi-star-fill"></i>
-                          <i class="bi bi-star-fill"></i>
-                          <i class="bi bi-star"></i>
-                          <span>(4.0)</span>
+                  <div class="addresses-grid">
+                    <!-- Address Card 1 -->
+                    @foreach($dia_chi as $dc)
+                    <div class="address-card default" data-aos="fade-up" data-aos-delay="100" data-id="{{ $dc->ma_dia_chi }}">
+                      <div class="card-header">
+                        <h4>Địa chỉ</h4>
+                      </div>
+                      <div class="card-body">
+                        <p class="address-text">{{ $dc->dia_chi }}</p>
+                        <div class="contact-info">
+                          <div><i class="bi bi-person"></i> {{ $dc->ten_nguoi_nhan }}</div>
+                          <div><i class="bi bi-telephone"></i>{{ $dc->sdt }}</div>
                         </div>
-                        <div class="review-date">Reviewed on Feb 10, 2025</div>
+                      </div>
+                      <div class="card-actions">
+                        <!-- <button type="button" class="btn-edit">
+                          <i class="bi bi-pencil"></i> Sửa
+                        </button> -->
+                        @if($dc->mac_dinh == 0)
+                        <button type="button" class="btn-remove" data-id="{{ $dc->ma_dia_chi }}">
+                            <i class="bi bi-trash"></i> Xóa
+                        </button>
+                        @endif
+                        
+                        @if($dc->mac_dinh == 1)
+                          <span class="text-default">Đang là mặc định</span>
+                        @else
+                          <button type="button" class="btn-make-default">Làm mặc định</button>
+                        @endif
                       </div>
                     </div>
-                    <div class="review-content">
-                      <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-                    </div>
-                    <div class="review-footer">
-                      <button type="button" class="btn-edit">Edit Review</button>
-                      <button type="button" class="btn-delete">Delete</button>
-                    </div>
-                  </div>
-                </div>
-              </div>
+                    @endforeach
 
-              <!-- Addresses Tab -->
-              <div class="tab-pane fade" id="addresses">
-                <div class="section-header" data-aos="fade-up">
-                  <h2>My Addresses</h2>
-                  <div class="header-actions">
-                    <button type="button" class="btn-add-new">
-                      <i class="bi bi-plus-lg"></i>
-                      Add New Address
-                    </button>
                   </div>
                 </div>
 
-                <div class="addresses-grid">
-                  <!-- Address Card 1 -->
-                  <div class="address-card default" data-aos="fade-up" data-aos-delay="100">
-                    <div class="card-header">
-                      <h4>Home</h4>
-                      <span class="default-badge">Default</span>
-                    </div>
-                    <div class="card-body">
-                      <p class="address-text">123 Main Street<br>Apt 4B<br>New York, NY 10001<br>United States</p>
-                      <div class="contact-info">
-                        <div><i class="bi bi-person"></i> Sarah Anderson</div>
-                        <div><i class="bi bi-telephone"></i> +1 (555) 123-4567</div>
-                      </div>
-                    </div>
-                    <div class="card-actions">
-                      <button type="button" class="btn-edit">
-                        <i class="bi bi-pencil"></i>
-                        Edit
-                      </button>
-                      <button type="button" class="btn-remove">
-                        <i class="bi bi-trash"></i>
-                        Remove
-                      </button>
-                    </div>
+                <!-- Settings Tab -->
+                <div class="tab-pane fade" id="settings">
+                  <div class="section-header" data-aos="fade-up">
+                    <h2>Thiết lập tài khoản</h2>
                   </div>
 
-                  <!-- Address Card 2 -->
-                  <div class="address-card" data-aos="fade-up" data-aos-delay="200">
-                    <div class="card-header">
-                      <h4>Office</h4>
+                  <div class="settings-content">
+                    <!-- Personal Information -->
+                    <div class="settings-section" data-aos="fade-up">
+                      <h3>Thông tin cá nhân</h3>
+                      <form class="php-email-form settings-form">
+                        <div class="row g-3">
+                          <div class="col-md-6">
+                            <label for="firstName" class="form-label">Họ tên</label>
+                            <input type="text" class="form-control" id="firstName" value="{{ $nguoi_dung-> name}}" required="">
+                          </div>
+                          
+                          <div class="col-md-6">
+                            <label for="email" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="email" value="{{ $nguoi_dung->email}}" required="">
+                          </div>
+                        </div>
+
+                        <div class="form-buttons">
+                          <button type="submit" class="btn-save">Lưu thay đổi</button>
+                        </div>
+
+                        <!-- <div class="loading">Loading</div>
+                        <div class="error-message"></div>
+                        <div class="sent-message">Your changes have been saved successfully!</div> -->
+                      </form>
                     </div>
-                    <div class="card-body">
-                      <p class="address-text">456 Business Ave<br>Suite 200<br>San Francisco, CA 94107<br>United States</p>
-                      <div class="contact-info">
-                        <div><i class="bi bi-person"></i> Sarah Anderson</div>
-                        <div><i class="bi bi-telephone"></i> +1 (555) 987-6543</div>
-                      </div>
+
+                    <!-- Security Settings -->
+                    <div class="settings-section" data-aos="fade-up" data-aos-delay="200">
+                      <h3>Thay đổi mật khẩu</h3>
+                      <form class="php-email-form settings-form">
+                        <div class="row g-3">
+                          <div class="col-md-12">
+                            <label for="currentPassword" class="form-label">Mật khẩu hiện tại</label>
+                            <input type="password" class="form-control" id="currentPassword" required="">
+                          </div>
+                          <div class="col-md-6">
+                            <label for="newPassword" class="form-label">Mật khẩu mới</label>
+                            <input type="password" class="form-control" id="newPassword" required="">
+                          </div>
+                          <div class="col-md-6">
+                            <label for="confirmPassword" class="form-label">Nhập lại mật khẩu mới</label>
+                            <input type="password" class="form-control" id="confirmPassword" required="">
+                          </div>
+                        </div>
+
+                        <div class="form-buttons">
+                          <button type="submit" class="btn-save">Cập nhật mật khẩu mới</button>
+                        </div>
+
+                        <!-- <div class="loading">Loading</div>
+                        <div class="error-message"></div>
+                        <div class="sent-message">Your password has been updated successfully!</div> -->
+                      </form>
                     </div>
-                    <div class="card-actions">
-                      <button type="button" class="btn-edit">
-                        <i class="bi bi-pencil"></i>
-                        Edit
-                      </button>
-                      <button type="button" class="btn-remove">
-                        <i class="bi bi-trash"></i>
-                        Remove
-                      </button>
-                      <button type="button" class="btn-make-default">Make Default</button>
-                    </div>
-                  </div>
-                </div>
-              </div>
 
-              <!-- Settings Tab -->
-              <div class="tab-pane fade" id="settings">
-                <div class="section-header" data-aos="fade-up">
-                  <h2>Account Settings</h2>
-                </div>
-
-                <div class="settings-content">
-                  <!-- Personal Information -->
-                  <div class="settings-section" data-aos="fade-up">
-                    <h3>Personal Information</h3>
-                    <form class="php-email-form settings-form">
-                      <div class="row g-3">
-                        <div class="col-md-6">
-                          <label for="firstName" class="form-label">First Name</label>
-                          <input type="text" class="form-control" id="firstName" value="Sarah" required="">
-                        </div>
-                        <div class="col-md-6">
-                          <label for="lastName" class="form-label">Last Name</label>
-                          <input type="text" class="form-control" id="lastName" value="Anderson" required="">
-                        </div>
-                        <div class="col-md-6">
-                          <label for="email" class="form-label">Email</label>
-                          <input type="email" class="form-control" id="email" value="sarah@example.com" required="">
-                        </div>
-                        <div class="col-md-6">
-                          <label for="phone" class="form-label">Phone</label>
-                          <input type="tel" class="form-control" id="phone" value="+1 (555) 123-4567">
-                        </div>
+                    <!-- Delete Account -->
+                    <div class="settings-section danger-zone" data-aos="fade-up" data-aos-delay="300">
+                      <h3>Xóa tài khoản</h3>
+                      <div class="danger-zone-content">
+                        <p>Khi bạn xóa tài khoản, sẽ không thể khôi phục lại. Vui lòng chắc chắn.</p>
+                        <button type="button" class="btn-danger">Xóa tài khoản</button>
                       </div>
-
-                      <div class="form-buttons">
-                        <button type="submit" class="btn-save">Save Changes</button>
-                      </div>
-
-                      <div class="loading">Loading</div>
-                      <div class="error-message"></div>
-                      <div class="sent-message">Your changes have been saved successfully!</div>
-                    </form>
-                  </div>
-
-                  <!-- Email Preferences -->
-                  <div class="settings-section" data-aos="fade-up" data-aos-delay="100">
-                    <h3>Email Preferences</h3>
-                    <div class="preferences-list">
-                      <div class="preference-item">
-                        <div class="preference-info">
-                          <h4>Order Updates</h4>
-                          <p>Receive notifications about your order status</p>
-                        </div>
-                        <div class="form-check form-switch">
-                          <input class="form-check-input" type="checkbox" id="orderUpdates" checked="">
-                        </div>
-                      </div>
-
-                      <div class="preference-item">
-                        <div class="preference-info">
-                          <h4>Promotions</h4>
-                          <p>Receive emails about new promotions and deals</p>
-                        </div>
-                        <div class="form-check form-switch">
-                          <input class="form-check-input" type="checkbox" id="promotions">
-                        </div>
-                      </div>
-
-                      <div class="preference-item">
-                        <div class="preference-info">
-                          <h4>Newsletter</h4>
-                          <p>Subscribe to our weekly newsletter</p>
-                        </div>
-                        <div class="form-check form-switch">
-                          <input class="form-check-input" type="checkbox" id="newsletter" checked="">
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <!-- Security Settings -->
-                  <div class="settings-section" data-aos="fade-up" data-aos-delay="200">
-                    <h3>Security</h3>
-                    <form class="php-email-form settings-form">
-                      <div class="row g-3">
-                        <div class="col-md-12">
-                          <label for="currentPassword" class="form-label">Current Password</label>
-                          <input type="password" class="form-control" id="currentPassword" required="">
-                        </div>
-                        <div class="col-md-6">
-                          <label for="newPassword" class="form-label">New Password</label>
-                          <input type="password" class="form-control" id="newPassword" required="">
-                        </div>
-                        <div class="col-md-6">
-                          <label for="confirmPassword" class="form-label">Confirm Password</label>
-                          <input type="password" class="form-control" id="confirmPassword" required="">
-                        </div>
-                      </div>
-
-                      <div class="form-buttons">
-                        <button type="submit" class="btn-save">Update Password</button>
-                      </div>
-
-                      <div class="loading">Loading</div>
-                      <div class="error-message"></div>
-                      <div class="sent-message">Your password has been updated successfully!</div>
-                    </form>
-                  </div>
-
-                  <!-- Delete Account -->
-                  <div class="settings-section danger-zone" data-aos="fade-up" data-aos-delay="300">
-                    <h3>Delete Account</h3>
-                    <div class="danger-zone-content">
-                      <p>Once you delete your account, there is no going back. Please be certain.</p>
-                      <button type="button" class="btn-danger">Delete Account</button>
                     </div>
                   </div>
                 </div>
@@ -1005,11 +750,284 @@
             </div>
           </div>
         </div>
+
       </div>
 
-    </div>
+    </section><!-- /Account Section -->
 
-  </section><!-- /Account Section -->
+  </main>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
 
-</main>
+    // Mở modal
+    document.querySelectorAll(".btn-edit-review").forEach(btn => {
+        btn.addEventListener("click", function () {
+            let modalId = this.getAttribute("data-id");
+            let modal = document.getElementById(modalId);
+            if (modal) modal.style.display = "flex";
+        });
+    });
+
+    // Đóng modal khi bấm nút X
+    document.querySelectorAll(".close-modal").forEach(closeBtn => {
+        closeBtn.addEventListener("click", function () {
+            this.closest(".modal").style.display = "none";
+        });
+    });
+
+    // Đóng modal khi click ra ngoài
+    document.querySelectorAll(".modal").forEach(modal => {
+        modal.addEventListener("click", function (e) {
+            if (e.target === modal) modal.style.display = "none";
+        });
+    });
+
+  });
+  document.querySelectorAll('.btn-order-action').forEach(btn => {
+      btn.addEventListener('click', function () {
+
+          const status = parseInt(this.dataset.status);
+          const maDH = this.dataset.dh;
+
+          //  Đã hủy / đã đánh giá
+          if (status === 5 || status === 6) return;
+
+          //  Đánh giá
+          if (status === 4) {
+              const modalEl = document.getElementById(`evaluateModal${maDH}`);
+              if (modalEl) new bootstrap.Modal(modalEl).show();
+              return;
+          }
+
+          //  ĐÃ NHẬN ĐƯỢC HÀNG (status = 3)
+          if (status === 3) {
+              if (!confirm("Xác nhận bạn đã nhận được hàng?")) return;
+
+              fetch(`/user/don-hang/${maDH}/nhan-hang`, {
+                  method: 'POST',
+                  headers: {
+                      'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                  }
+              })
+              .then(res => res.json())
+              .then(data => {
+                  if (data.status === 'success') {
+                      alert("Cảm ơn bạn đã xác nhận nhận hàng!");
+                      location.reload();
+                  }
+              });
+              return;
+          }
+
+          //  Theo dõi đơn hàng (1–2)
+          const tracking = document.getElementById(`tracking${maDH}`);
+          if (tracking) {
+              new bootstrap.Collapse(tracking, { toggle: true });
+          }
+
+      });
+  });
+
+
+  document.querySelectorAll('.btn-cancel-order').forEach(btn => {
+      btn.addEventListener('click', function () {
+
+          const maDH = this.dataset.dh;
+
+          if (!confirm("Bạn có chắc muốn hủy đơn hàng?")) return;
+
+          fetch(`/user/don-hang/${maDH}/huy`, {
+              method: 'POST',
+              headers: {
+                  'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+              }
+          })
+          .then(res => res.json())
+          .then(data => {
+              if (data.status === 'success') {
+                  alert("Đơn hàng đã bị hủy");
+                  location.reload();
+              }
+          });
+      });
+  });
+
+  document.addEventListener("DOMContentLoaded", function () {
+
+      const searchInput = document.getElementById('searchOrderInput');
+      const orderCards = document.querySelectorAll('.order-card');
+
+      searchInput.addEventListener('input', function () {
+
+          // 🔎 Chuẩn hoá từ khoá (không phân biệt hoa/thường)
+          const keyword = this.value.toLowerCase().trim();
+
+          orderCards.forEach(card => {
+              const productNames = card.querySelectorAll('.product-name');
+              let matched = false;
+
+              productNames.forEach(nameEl => {
+
+                  // 🔎 Chuẩn hoá tên sản phẩm
+                  const productName = nameEl.innerText.toLowerCase();
+
+                  if (productName.includes(keyword)) {
+                      matched = true;
+                  }
+              });
+
+              // Hiện / ẩn đơn hàng
+              card.style.display = (matched || keyword === '') ? 'block' : 'none';
+          });
+      });
+
+  });
+
+  document.addEventListener("DOMContentLoaded", function () {
+
+    const filterItems = document.querySelectorAll('#orderFilterMenu .dropdown-item');
+    const orderCards = document.querySelectorAll('.order-card');
+
+    filterItems.forEach(item => {
+        item.addEventListener('click', function (e) {
+            e.preventDefault();
+
+            const filterStatus = this.dataset.status;
+
+            orderCards.forEach(card => {
+                const orderStatus = card.dataset.status;
+
+                if (filterStatus === 'all' || orderStatus === filterStatus) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        });
+    });
+
+  });
+
+  document.addEventListener("DOMContentLoaded", function () {
+
+    const reviewContainer = document.querySelector('.reviews-grid');
+    const filterItems = document.querySelectorAll('#reviewFilterMenu .dropdown-item');
+
+    filterItems.forEach(item => {
+        item.addEventListener('click', function (e) {
+            e.preventDefault();
+
+            const filterType = this.dataset.filter;
+            const reviews = Array.from(reviewContainer.querySelectorAll('.review-card'));
+
+            let sortedReviews;
+
+            if (filterType === 'recent') {
+                // 🕒 Gần đây nhất
+                sortedReviews = reviews.sort((a, b) =>
+                    b.dataset.date - a.dataset.date
+                );
+            }
+
+            if (filterType === 'high') {
+                // ⭐ Cao → thấp
+                sortedReviews = reviews.sort((a, b) =>
+                    b.dataset.rating - a.dataset.rating
+                );
+            }
+
+            if (filterType === 'low') {
+                // ⭐ Thấp → cao
+                sortedReviews = reviews.sort((a, b) =>
+                    a.dataset.rating - b.dataset.rating
+                );
+            }
+
+            // Render lại
+            reviewContainer.innerHTML = '';
+            sortedReviews.forEach(card => reviewContainer.appendChild(card));
+        });
+    });
+
+  });
+
+// Xử lý nút set địa chỉ mặc định
+  document.addEventListener("DOMContentLoaded", function() {
+    document.querySelectorAll('.btn-make-default').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const card = this.closest('.address-card');
+            const maDC = card.dataset.id;
+
+            if (!confirm("Bạn có chắc muốn đặt địa chỉ này làm mặc định?")) return;
+
+            fetch(`/user/dia-chi/${maDC}/mac-dinh`, {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    // Cập nhật UI
+                    document.querySelectorAll('.address-card').forEach(c => {
+                        const btnDefault = c.querySelector('.btn-make-default');
+                        const textDefault = c.querySelector('.text-default');
+
+                        if (c.dataset.id == maDC) {
+                            if(btnDefault) btnDefault.style.display = 'none';
+                            if(textDefault) textDefault.style.display = 'inline';
+                            else {
+                                const span = document.createElement('span');
+                                span.classList.add('text-default');
+                                span.innerText = 'Đang là mặc định';
+                                c.querySelector('.card-actions').appendChild(span);
+                            }
+                        } else {
+                            if(btnDefault) btnDefault.style.display = 'inline';
+                            if(textDefault) textDefault.style.display = 'none';
+                        }
+                    });
+                }
+
+                if (data.status === 'success') {
+                    // Load lại trang
+                    location.reload();
+                }
+            });
+        });
+    });
+  });
+
+// Xử lý nút xóa địa chỉ
+  document.addEventListener("DOMContentLoaded", function() {
+      document.querySelectorAll('.btn-remove').forEach(btn => {
+          btn.addEventListener('click', function() {
+              const maDC = this.dataset.id;
+
+              if (!confirm("Bạn có chắc muốn xóa địa chỉ này?")) return;
+
+              fetch(`/user/dia-chi/${maDC}/xoa`, {
+                  method: 'POST',
+                  headers: {
+                      'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                      'Content-Type': 'application/json'
+                  }
+              })
+              .then(res => res.json())
+              .then(data => {
+                  if (data.status === 'success') {
+                      alert(data.message);
+                      // Xóa thẻ địa chỉ khỏi DOM
+                      this.closest('.address-card').remove();
+                  } else {
+                      alert(data.message);
+                  }
+              });
+          });
+      });
+  });
+</script>
+
 @endsection
