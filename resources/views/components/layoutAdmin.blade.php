@@ -167,7 +167,7 @@
                             aria-hidden="true"></span>
                         <a
                             class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
-                            href="modals.html">
+                            href="{{ route('doanhthu') }}">
                             <svg
                                 class="w-5 h-5"
                                 aria-hidden="true"
@@ -597,6 +597,7 @@
             @yield('baocaonhaphang')
             @yield('khuyenmai')
             @yield('chitietnhaphang')
+            @yield('doanhthu')
         </div>
     </div>
 

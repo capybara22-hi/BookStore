@@ -19,6 +19,7 @@ use App\Http\Controllers\YeuThichController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\DiaChiController;
 use App\Http\Controllers\ChatbotController;
+use App\Http\Controllers\DoanhthuController;
 use App\Models\DonHang;
 use App\Models\KhuyenMai;
 use App\Models\User;
@@ -106,6 +107,8 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::patch('/sanphamadmin/{ma_san_pham}/toggle-status', [SanPhamAdminController::class, 'toggleStatus'])->name('sanpham.toggle-status');
 
     Route::put('/sanphamadmin', [SanPhamAdminController::class, 'update'])->name('sanpham.update');
+
+    Route::get('/doanhthu', [DoanhthuController::class, 'index'])->name('doanhthu');
 });
 
 
@@ -125,6 +128,7 @@ Route::middleware(['auth', 'customer'])->group(function () {
         Route::get('/thanhtoan', [ThanhToanController::class, 'show'])->name('thanhtoan');
         Route::post('/yeu-thich/{id}', [YeuThichController::class, 'toggle'])->name('yeuthich.toggle')->middleware('auth');
         Route::get('/user/user/taikhoan', [TaiKhoanController::class, 'index'])->name('taikhoan');
+        Route::get('/giohang/dathang', [GioHangController::class, 'dathang'])->name('dathang');
         // Edit review (AJAX)
         Route::get('/review/{id}/edit', [ReviewController::class, 'edit'])->name('review.edit');
 
