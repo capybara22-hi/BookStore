@@ -47,17 +47,17 @@
 
     <div class="w-full mb-8 overflow-hidden rounded-lg shadow-xs">
       <div class="w-full overflow-x-auto">
-        <table class="w-full whitespace-no-wrap">
+        <table class="w-full">
           <thead>
             <tr
               class="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">
-              <th class="px-4 py-3">Mã sản phẩm</th>
-              <th class="px-4 py-3">Tên sản phẩm</th>
-              <th class="px-4 py-3">Tác giả</th>
-              <th class="px-4 py-3">Giá tiền</th>
-              <th class="px-4 py-3">Số lượng</th>
-              <th class="px-4 py-3">Mô tả</th>
-              <th class="px-4 py-3">Thao tác</th>
+              <th class="px-4 py-3" style="width: 10%">Mã SP</th>
+              <th class="px-4 py-3" style="width: 20%">Tên sản phẩm</th>
+              <th class="px-4 py-3" style="width: 15%">Tác giả</th>
+              <th class="px-4 py-3" style="width: 12%">Giá tiền</th>
+              <th class="px-4 py-3 text-center" style="width: 8%">SL</th>
+              <th class="px-4 py-3" style="width: 25%">Mô tả</th>
+              <th class="px-4 py-3 text-center" style="width: 10%">Thao tác</th>
             </tr>
           </thead>
           <tbody
@@ -65,36 +65,31 @@
             @foreach($san_pham as $sp)
             <tr class="text-gray-700 dark:text-gray-400">
               <td class="px-4 py-3">
-                <div class="flex items-center text-sm">
-
-                  <div>
-                    <p class="font-semibold">{{ $sp->code}}</p>
-                    <p class="text-xs text-gray-600 dark:text-gray-400">
-
-                    </p>
-                  </div>
+                <p class="text-sm font-semibold">{{ $sp->code}}</p>
+              </td>
+              <td class="px-4 py-3 text-sm">
+                <div class="max-w-xs">
+                  <p class="truncate" title="{{$sp->ten_san_pham}}">{{$sp->ten_san_pham}}</p>
+                </div>
+              </td>
+              <td class="px-4 py-3 text-xs">
+                <div class="max-w-xs">
+                  <p class="truncate" title="{{$sp->tac_gia}}">{{$sp->tac_gia}}</p>
                 </div>
               </td>
               <td class="px-4 py-3 text-sm">
-                {{$sp->ten_san_pham}}
+                {{ number_format($sp->gia_tien_sp, 0, ',', '.') }}đ
               </td>
-              <td class="px-4 py-3 text-xs">
-                <span
-                  class="px-2 py-1 font-semibold leading-tight text-green-700 bg-green-100 rounded-full dark:bg-green-700 dark:text-green-100">
-                  {{$sp->tac_gia}}
-                </span>
+              <td class="px-4 py-3 text-sm text-center">
+                {{$sp->so_luong_sp}}
               </td>
               <td class="px-4 py-3 text-sm">
-                <Button>{{ $sp->gia_tien_sp}}</Button>
-              </td>
-              <td class="px-4 py-3 text-sm">
-                <Button>{{$sp->so_luong_sp}}</Button>
-              </td>
-              <td class="px-4 py-3 text-sm">
-                <Button>{{$sp->mo_ta_san_pham}}</Button>
+                <div class="max-w-xs">
+                  <p class="line-clamp-2" title="{{$sp->mo_ta_san_pham}}">{{$sp->mo_ta_san_pham}}</p>
+                </div>
               </td>
               <td class="px-4 py-3">
-                <div class="flex items-center space-x-4 text-sm">
+                <div class="flex items-center justify-center space-x-2 text-sm">
                   <!-- Nút Chỉnh sửa -->
                   <button
                     onclick="openEditModal('{{ $sp->ma_san_pham }}', '{{ $sp->code }}', '{{ $sp->ten_san_pham }}', '{{ $sp->tac_gia }}', '{{ $sp->gia_tien_sp }}', '{{ $sp->so_luong_sp }}', '{{ $sp->mo_ta_san_pham }}')"

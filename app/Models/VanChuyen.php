@@ -12,4 +12,5 @@ class VanChuyen extends Model
     protected $table = 'van_chuyen';
     protected $primaryKey = 'ma_van_chuyen';
     public $timestamps = false;
+    protected $fillable = ['dv_van_chuyen', 'so_tien', 'mo_ta', 'dieu_kien'];
 }
