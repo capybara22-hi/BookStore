@@ -56,7 +56,4 @@ class DiaChiController extends Controller
 
         return response()->json(['status' => 'success', 'message' => 'Địa chỉ đã bị xóa']);
     }
-
-
-
 }

@@ -22,6 +22,8 @@ use App\Http\Controllers\Admin\VanChuyenController as AdminVanChuyenController;
 use App\Http\Controllers\Admin\ReviewController as AdminReviewController;
 use App\Http\Controllers\DiaChiController;
 use App\Http\Controllers\ChatbotController;
+use App\Http\Controllers\DoanhthuController;
+use App\Http\Controllers\ThanhToanVNPayController;
 use App\Models\DonHang;
 use App\Models\KhuyenMai;
 use App\Models\User;
@@ -79,6 +81,10 @@ Route::post('/luu-session', [GioHangController::class, 'luuSession']);
 
 Route::post('/luu-session1', [ThanhToanController::class, 'updateTrangThai'])->name('giohang.update1');
 
+// VNPay routes
+Route::post('/vnpay-payment', [ThanhToanVNPayController::class, 'vnpay_payment'])->name('vnpay.payment');
+Route::get('/vnpay-return', [ThanhToanVNPayController::class, 'vnpay_return'])->name('vnpay.return');
+
 // Phần quyền admin 
 Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/indexadmin', [IndexAdminController::class, 'index'])->name('indexadmin');
@@ -110,6 +116,7 @@ Route::middleware(['auth', 'admin'])->group(function () {
 
     Route::put('/sanphamadmin', [SanPhamAdminController::class, 'update'])->name('sanpham.update');
 
+    Route::get('/doanhthu', [DoanhthuController::class, 'index'])->name('doanhthu');
     // Admin: quản lý danh mục
     Route::post('/danhmuc/theloai', [AdminDanhMucController::class, 'storeTheLoai'])->name('danhmuc.theloai.store');
     // Thể loại: sửa / xóa / xem sản phẩm / gán sản phẩm
@@ -132,6 +139,7 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::post('/admin/reviews/{id}/reply', [AdminReviewController::class, 'reply'])->name('admin.reviews.reply');
     Route::post('/admin/reviews/{id}/toggle-hide', [AdminReviewController::class, 'toggleHide'])->name('admin.reviews.toggleHide');
     Route::delete('/admin/reviews/{id}', [AdminReviewController::class, 'destroy'])->name('admin.reviews.destroy');
+
 });
 
 
@@ -151,6 +159,7 @@ Route::middleware(['auth', 'customer'])->group(function () {
         Route::get('/thanhtoan', [ThanhToanController::class, 'show'])->name('thanhtoan');
         Route::post('/yeu-thich/{id}', [YeuThichController::class, 'toggle'])->name('yeuthich.toggle')->middleware('auth');
         Route::get('/user/user/taikhoan', [TaiKhoanController::class, 'index'])->name('taikhoan');
+        Route::get('/giohang/dathang', [GioHangController::class, 'dathang'])->name('dathang');
         // Edit review (AJAX)
         Route::get('/review/{id}/edit', [ReviewController::class, 'edit'])->name('review.edit');
 
@@ -171,5 +180,8 @@ Route::middleware(['auth', 'customer'])->group(function () {
 
         Route::post('/dia-chi/{id}/xoa', [DiaChiController::class, 'destroy'])->name('diachi.destroy');
         Route::post('/chatbot', [ChatbotController::class, 'chat']);
+
+
+        Route::post('/user/thanhtoan', [ThanhToanVNPayController::class, 'vnpay_payment'])->name('thanhtoanvnpay');
     });
 });

@@ -188,7 +188,8 @@
   @yield('taikhoan')
   @yield('sanpham')
   @yield('chitietsanpham')
-
+  @yield('thanhtoan')
+  @yield('dathang')
   <!-- <footer id="footer" class="footer dark-background">
     <div class="footer-bottom">
       <div class="container">
@@ -366,26 +367,27 @@
   <!-- Main JS File -->
   <script src="{{ asset('assets/js/main.js') }}"></script>
 
-@php $messengerUrl = env('MESSENGER_URL', 'https://m.me/892734690595449'); @endphp
-@if(request()->routeIs('home'))
+  @php $messengerUrl = env('MESSENGER_URL', 'https://m.me/892734690595449'); @endphp
+  @if(request()->routeIs('home'))
   <a id="messengerBtn" href="{{ $messengerUrl }}" target="_blank" rel="noopener" style="position:fixed; right:20px; top:80%; transform:translateY(-50%); width:56px; height:56px; border-radius:50%; background:#0084ff; display:flex; align-items:center; justify-content:center; box-shadow:0 6px 18px rgba(0,0,0,0.15); z-index:99999;">
     <i class="bi bi-messenger" style="color:#fff; font-size:24px;"></i>
   </a>
   <script>
-    (function(){
+    (function() {
       var btn = document.getElementById('messengerBtn');
-      if(!btn) return;
-      btn.addEventListener('click', function(e){
+      if (!btn) return;
+      btn.addEventListener('click', function(e) {
         e.preventDefault();
         var url = this.href;
-        var w = 600, h = 700;
-        var left = (screen.width/2) - (w/2);
-        var top = (screen.height/2) - (h/2);
-        window.open(url, 'messenger_popup', 'toolbar=0,location=0,status=0,menubar=0,scrollbars=1,resizable=1,width='+w+',height='+h+',top='+top+',left='+left);
+        var w = 600,
+          h = 700;
+        var left = (screen.width / 2) - (w / 2);
+        var top = (screen.height / 2) - (h / 2);
+        window.open(url, 'messenger_popup', 'toolbar=0,location=0,status=0,menubar=0,scrollbars=1,resizable=1,width=' + w + ',height=' + h + ',top=' + top + ',left=' + left);
       });
     })();
   </script>
-@endif
+  @endif
 
 </body>
 
