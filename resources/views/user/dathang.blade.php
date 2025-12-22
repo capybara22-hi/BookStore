@@ -580,6 +580,42 @@ $total += $spgh->tong_tien;
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
+        // Hàm lưu thông tin vào session
+        function saveToSession() {
+            const shippingMethod = document.querySelector('input[name="shipping"]:checked');
+            if (!shippingMethod) return;
+
+            const maVc = shippingMethod.value;
+            const phiVc = parseInt(shippingMethod.dataset.fee) || 0;
+            const tienHang = parseInt(document.querySelector('.tong-tien-hang').textContent.replace(/[^\d]/g, '')) || 0;
+            const giamGia = parseInt(document.querySelector('.giam-gia').textContent.replace(/[^\d]/g, '')) || 0;
+            const thanhTien = tienHang + phiVc - giamGia;
+
+            // Gọi API lưu session
+            fetch('/luu-session', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                    },
+                    body: JSON.stringify({
+                        ma_vc: maVc,
+                        phi_vc: phiVc,
+                        tien_hang: tienHang,
+                        tien_giam: giamGia,
+                        thanh_tien: thanhTien,
+                        ma_khuyen_mai: '{{ $ma_khuyen_mai ?? "" }}'
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Session saved:', data);
+                })
+                .catch(error => {
+                    console.error('Error saving session:', error);
+                });
+        }
+
         // Cập nhật phí vận chuyển khi chọn
         document.querySelectorAll('.shipping-option').forEach(radio => {
             radio.addEventListener('change', function() {
@@ -587,6 +623,7 @@ $total += $spgh->tong_tien;
                 document.querySelector('.phi-van-chuyen').textContent =
                     new Intl.NumberFormat('vi-VN').format(fee) + ' VNĐ';
                 updateTotal();
+                saveToSession(); // Lưu vào session mỗi khi thay đổi
             });
         });
 
@@ -607,17 +644,46 @@ $total += $spgh->tong_tien;
                 return;
             }
 
-            // Lưu thông tin vào session trước
-            // TODO: Gọi API lưu session
+            const btnDatHang = this;
+            btnDatHang.disabled = true;
+            btnDatHang.innerHTML = '<i class="bi bi-hourglass-split"></i> Đang xử lý...';
 
             if (paymentMethod === 'online') {
                 // Chuyển đến trang thanh toán online
                 window.location.href = "{{ route('thanhtoan') }}";
             } else {
                 // Thanh toán COD - tạo đơn hàng
-                // TODO: Gọi API tạo đơn hàng
-                alert('Đơn hàng của bạn đã được đặt thành công!');
-                // window.location.href = "{{ route('taikhoan') }}"; // Chuyển đến trang đơn hàng
+                fetch('/luu-session1', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                        },
+                        body: JSON.stringify({
+                            trang_thai: 1 // Trạng thái đã mua
+                        })
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.successTDH) {
+                            alert('Đơn hàng của bạn đã được đặt thành công!');
+                            window.location.href = "{{ route('taikhoan') }}";
+                        } else if (data.errorDC) {
+                            alert(data.errorDC);
+                            btnDatHang.disabled = false;
+                            btnDatHang.innerHTML = '<i class="bi bi-check-circle"></i> Đặt hàng';
+                        } else {
+                            alert('Có lỗi xảy ra: ' + (data.error || 'Vui lòng thử lại'));
+                            btnDatHang.disabled = false;
+                            btnDatHang.innerHTML = '<i class="bi bi-check-circle"></i> Đặt hàng';
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        alert('Có lỗi xảy ra khi đặt hàng. Vui lòng thử lại!');
+                        btnDatHang.disabled = false;
+                        btnDatHang.innerHTML = '<i class="bi bi-check-circle"></i> Đặt hàng';
+                    });
             }
         });
 

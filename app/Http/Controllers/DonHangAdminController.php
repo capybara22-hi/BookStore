@@ -8,7 +8,8 @@ use App\Models\DonHang;
 
 class DonHangAdminController extends Controller
 {
-    public function index(){
+    public function index()
+    {
         $nguoi_dung = User::all();
         $don_hang = DonHang::all();
 
