@@ -17,6 +17,7 @@ class Review extends Model
         'ma_don_hang',
         'rating',
         'comment',
+        'danh_gia',
         'edit_count'
     ];
 

@@ -18,6 +18,7 @@ use App\Http\Controllers\NhapHangController;
 use App\Http\Controllers\SanPhamAdminController;
 use App\Http\Controllers\YeuThichController;
 use App\Http\Controllers\ReviewController;
+use App\Http\Controllers\Admin\ReviewController as AdminReviewController;
 use App\Http\Controllers\DiaChiController;
 use App\Http\Controllers\ChatbotController;
 use App\Models\DonHang;
@@ -118,6 +119,12 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::post('/danhmuc/theloai/{id}/sanpham', [AdminDanhMucController::class, 'assignSanPham'])->name('danhmuc.theloai.sanpham.assign');
 
     Route::resource('/danhmuc', AdminDanhMucController::class);
+    // Admin: quản lý đánh giá
+    Route::get('/admin/reviews', [AdminReviewController::class, 'index'])->name('admin.reviews.index');
+    Route::post('/admin/reviews/{id}/mark-replied', [AdminReviewController::class, 'markReplied'])->name('admin.reviews.markReplied');
+    Route::post('/admin/reviews/{id}/reply', [AdminReviewController::class, 'reply'])->name('admin.reviews.reply');
+    Route::post('/admin/reviews/{id}/toggle-hide', [AdminReviewController::class, 'toggleHide'])->name('admin.reviews.toggleHide');
+    Route::delete('/admin/reviews/{id}', [AdminReviewController::class, 'destroy'])->name('admin.reviews.destroy');
 });
 
 
