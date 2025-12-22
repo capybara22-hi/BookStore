@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\DanhMucController;
 use App\Http\Controllers\TheLoaiController;
+use App\Http\Controllers\Admin\DanhMucController as AdminDanhMucController;
 use App\Http\Controllers\SanPhamController;
 use App\Http\Controllers\GioHangController;
 use App\Http\Controllers\ThanhToanController;
@@ -106,6 +107,17 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::patch('/sanphamadmin/{ma_san_pham}/toggle-status', [SanPhamAdminController::class, 'toggleStatus'])->name('sanpham.toggle-status');
 
     Route::put('/sanphamadmin', [SanPhamAdminController::class, 'update'])->name('sanpham.update');
+
+    // Admin: quản lý danh mục
+    Route::post('/danhmuc/theloai', [AdminDanhMucController::class, 'storeTheLoai'])->name('danhmuc.theloai.store');
+    // Thể loại: sửa / xóa / xem sản phẩm / gán sản phẩm
+    Route::get('/danhmuc/theloai/{id}/edit', [AdminDanhMucController::class, 'editTheLoai'])->name('danhmuc.theloai.edit');
+    Route::put('/danhmuc/theloai/{id}', [AdminDanhMucController::class, 'updateTheLoai'])->name('danhmuc.theloai.update');
+    Route::delete('/danhmuc/theloai/{id}', [AdminDanhMucController::class, 'destroyTheLoai'])->name('danhmuc.theloai.destroy');
+    Route::get('/danhmuc/theloai/{id}/sanpham', [AdminDanhMucController::class, 'showSanPham'])->name('danhmuc.theloai.sanpham');
+    Route::post('/danhmuc/theloai/{id}/sanpham', [AdminDanhMucController::class, 'assignSanPham'])->name('danhmuc.theloai.sanpham.assign');
+
+    Route::resource('/danhmuc', AdminDanhMucController::class);
 });
 
 
