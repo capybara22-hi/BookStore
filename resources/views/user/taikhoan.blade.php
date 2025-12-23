@@ -442,8 +442,8 @@
                   @foreach($yeu_thich as $yt)
                   <div class="wishlist-card" data-aos="fade-up" data-aos-delay="100">
                     <div class="wishlist-image">
-                      <img src="{{ asset('assets/img/product/product-1.webp') }}" alt="Product" loading="lazy">
-
+                      <img src="{{ asset($yt->sanpham->file->where('bia_san_pham', 1)->first()->duong_dan_luu ?? 'assets/img/no-image.jpg') }}" alt="Product" loading="lazy">
+                     
                       <!-- Nút xóa khỏi yêu thích -->
                       <form action="{{ route('yeuthich.toggle', $yt->ma_san_pham) }}" method="POST" style="display:inline">
                         @csrf
@@ -523,7 +523,7 @@
                     data-rating="{{ $review->rating }}"
                     data-date="{{ $review->created_at->timestamp }}">
                     <div class="review-header">
-                      <img src="{{ asset('assets/img/product/product-1.webp') }}" alt="Product" class="product-image" loading="lazy">
+                      <img src="{{ asset($review->sanpham->file->where('bia_san_pham', 1)->first()->duong_dan_luu ?? 'assets/img/no-image.jpg') }}" alt="Product" class="product-image" loading="lazy">
                       <div class="review-meta">
                         <h4>{{ $review->sanpham->ten_san_pham }}</h4>
                         <div class="rating">

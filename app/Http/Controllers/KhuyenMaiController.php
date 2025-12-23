@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\KhuyenMai;
+use Carbon\Carbon;
 
 class KhuyenMaiController extends Controller
 {
@@ -15,6 +16,26 @@ class KhuyenMaiController extends Controller
     public function themKM(Request $request){
         // Insert vao bang khuyen_mai
         $data = $request->json()->all(); // lay du lieu json
+        // Validate thời gian: kết thúc không sớm hơn bắt đầu
+        if (isset($data['tg_bd']) && isset($data['tg_kt'])) {
+            $bd = strtotime($data['tg_bd']);
+            $kt = strtotime($data['tg_kt']);
+            if ($kt < $bd) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Thời gian kết thúc không được sớm hơn thời gian bắt đầu.'
+                ], 422);
+            }
+        }
+        // Validate phần trăm giảm: phải là số trong khoảng 0-100
+        if (isset($data['phan_tram'])) {
+            if (!is_numeric($data['phan_tram']) || $data['phan_tram'] < 0 || $data['phan_tram'] > 100) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Phần trăm giảm phải là số từ 0 đến 100.'
+                ], 422);
+            }
+        }
         $khuyen_mai = KhuyenMai::create([
             'nd_khuyen_mai' => $data['nd_km'],
             'phan_tram_giam' => $data['phan_tram'],
@@ -51,6 +72,26 @@ class KhuyenMaiController extends Controller
         $km = KhuyenMai::findOrFail($data['id_sua']);
 
         // Cập nhật dữ liệu
+        // Validate thời gian: kết thúc không sớm hơn bắt đầu
+        if (isset($data['tg_bd']) && isset($data['tg_kt'])) {
+            $bd = strtotime($data['tg_bd']);
+            $kt = strtotime($data['tg_kt']);
+            if ($kt < $bd) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Thời gian kết thúc không được sớm hơn thời gian bắt đầu.'
+                ], 422);
+            }
+        }
+        // Validate phần trăm giảm: phải là số trong khoảng 0-100
+        if (isset($data['phan_tram'])) {
+            if (!is_numeric($data['phan_tram']) || $data['phan_tram'] < 0 || $data['phan_tram'] > 100) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Phần trăm giảm phải là số từ 0 đến 100.'
+                ], 422);
+            }
+        }
         $km->update([
             'nd_khuyen_mai' => $data['nd_km'],
             'phan_tram_giam' => $data['phan_tram'],

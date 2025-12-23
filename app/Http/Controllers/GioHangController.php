@@ -10,6 +10,7 @@ use App\Models\VanChuyen;
 use App\Models\KhuyenMai;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
 
 class GioHangController extends Controller
 {
@@ -23,8 +24,10 @@ class GioHangController extends Controller
 
         $sanpham = SanPham::with('file')->get();
 
+        $today = Carbon::today()->toDateString();
         $ds_khuyen_mai = KhuyenMai::whereNotNull('so_luong')
             ->where('so_luong', '>', 0)
+            ->whereDate('ngay_ket_thuc', '>=', $today)
             ->get();
 
         $ds_van_chuyen = VanChuyen::all();
@@ -118,8 +121,10 @@ class GioHangController extends Controller
             ->where('mac_dinh', 1)
             ->first();
 
+        $today = Carbon::today()->toDateString();
         $ds_khuyen_mai = KhuyenMai::whereNotNull('so_luong')
             ->where('so_luong', '>', 0)
+            ->whereDate('ngay_ket_thuc', '>=', $today)
             ->get();
 
         $ds_van_chuyen = VanChuyen::all();

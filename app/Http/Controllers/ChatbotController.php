@@ -111,6 +111,10 @@ class ChatbotController extends Controller
 
     private function askGemini(array $books, string $question): string
     {
+
+        if(str_contains($question, 'xin chào') || str_contains($question, 'chào bạn')){
+            return "Chào bạn! Mình là chatbot tư vấn sách. Bạn cần mình giúp gì không?";
+        }
         // Không có dữ liệu → không gọi AI
         if (empty($books)) {
             return "Mình chưa tìm được sách phù hợp với yêu cầu của bạn.";
@@ -121,7 +125,7 @@ class ChatbotController extends Controller
         $prompt .= "CHỈ sử dụng thông tin sau, KHÔNG được tự bịa:\n";
         $prompt .= json_encode($books, JSON_UNESCAPED_UNICODE);
         $prompt .= "\n\nCâu hỏi người dùng: {$question}\n";
-        $prompt .= "Hãy trả lời tự nhiên, dễ hiểu, bằng tiếng Việt. ";
+        $prompt .= "Hãy trả lời tự nhiên, dễ hiểu, bằng tiếng Việt từ thông tin sách đã cho, từ đó tìm và trả lời câu hỏi đúng nhất cho người dùng.\n";
         $prompt .= "Nếu có nhiều sách, hãy xuống dòng bằng <br>.";
 
         $response = Http::withOptions([ 'verify' => false, //chỉ dùng cho test local không dùng ssl
