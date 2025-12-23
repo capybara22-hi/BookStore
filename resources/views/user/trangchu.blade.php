@@ -34,7 +34,7 @@
             <div class="hero-visuals">
                 <div class="product-showcase" data-aos="fade-left" data-aos-delay="200">
                     <div class="product-card featured">
-                        <img src="{{ asset('assets/img/product/toithayhoavang.jpg') }}" alt="Featured Product" class="img-fluid">
+                        <img src="{{ asset('assets\img\person\toi-thay-hoa-vang-tren-co-xanh-1.jpg') }}" alt="Featured Product" class="img-fluid">
                         <div class="product-badge">Bán chạy nhất</div>
                         <div class="product-info">
                             <h4>Tôi thấy hoa vàng trên cỏ xanh</h4>
@@ -82,7 +82,7 @@
                 <div class="col-lg-6">
                     <div class="category-featured" data-aos="fade-right" data-aos-delay="200">
                         <div class="category-image" style="display: flex; justify-content: center; align-items: center;">
-                            <img src="{{ asset('assets/img/product/nhagiakim.jpg') }}" alt="Women's Collection" class="img-fluid" style="max-width: 300px; height: auto;">
+                            <img src="{{ asset('assets\img\person\cay-cam-ngot-cua-toi.webp') }}" alt="Women's Collection" class="img-fluid" style="max-width: 300px; height: auto;">
                         </div>
                         <div class="category-content">
                             <span class="category-tag">Đang thịnh hành</span>
@@ -101,7 +101,7 @@
                         <div class="col-xl-6">
                             <div class="category-card cat-men" data-aos="fade-up" data-aos-delay="300">
                                 <div class="category-image">
-                                    <img src="{{ asset('assets/img/product/vanhoc.jpg') }}" alt="Men's Fashion" class="img-fluid">
+                                    <img src="{{ asset('assets\img\person\Tinh-yeu-trong-van-hoc-Viet-Nam.jpg') }}" alt="Men's Fashion" class="img-fluid">
                                 </div>
                                 <div class="category-content">
                                     <h4>Văn học Việt Nam</h4>
@@ -114,7 +114,7 @@
                         <div class="col-xl-6">
                             <div class="category-card cat-kids" data-aos="fade-up" data-aos-delay="400">
                                 <div class="category-image">
-                                    <img src="{{ asset('assets/img/product/caycamngot.jpg') }}" alt="Kid's Fashion" class="img-fluid">
+                                    <img src="{{ asset('assets\img\person\hoang-tu-be-615311.jpg') }}" alt="Kid's Fashion" class="img-fluid">
                                 </div>
                                 <div class="category-content">
                                     <h4>Văn học nước ngoài</h4>
@@ -127,7 +127,7 @@
                         <div class="col-xl-6">
                             <div class="category-card cat-cosmetics" data-aos="fade-up" data-aos-delay="500">
                                 <div class="category-image">
-                                    <img src="{{ asset('assets/img/product/dacnhantam.jpg') }}" alt="Cosmetics" class="img-fluid">
+                                    <img src="{{ asset('assets\img\person\8-trang-8-9-1667829369397839092415.webp') }}" alt="Cosmetics" class="img-fluid">
                                 </div>
                                 <div class="category-content">
                                     <h4>Kinh tế và kỹ năng sống</h4>
@@ -140,7 +140,7 @@
                         <div class="col-xl-6">
                             <div class="category-card cat-accessories" data-aos="fade-up" data-aos-delay="600">
                                 <div class="category-image">
-                                    <img src="{{ asset('assets/img/product/khoahoccongnghe.jpg') }}" alt="Accessories" class="img-fluid">
+                                    <img src="{{ asset('assets\img\person\OIP.webp') }}" alt="Accessories" class="img-fluid">
                                 </div>
                                 <div class="category-content">
                                     <h4>Khoa học và công nghệ</h4>
@@ -176,7 +176,7 @@
                     <div class="product-item">
                         <div class="product-image">
                             <div class="product-badge">Giới hạn</div>
-                            <img src="{{ asset('assets/img/product/caycamngot.jpg') }}" alt="Product Image" class="img-fluid" loading="lazy">
+                            <img src="{{ asset('assets\img\person\cay-cam-ngot-cua-toi.webp') }}" alt="Product Image" class="img-fluid" loading="lazy">
                             <div class="product-actions">
                                 <button class="action-btn wishlist-btn">
                                     <i class="bi bi-heart"></i>
@@ -208,7 +208,7 @@
                     <div class="product-item">
                         <div class="product-image">
                             <div class="product-badge sale-badge">Giảm 25%</div>
-                            <img src="{{ asset('assets/img/product/dacnhantam.jpg') }}" alt="Product Image" class="img-fluid" loading="lazy">
+                            <img src="{{ asset('assets\img\person\OIP (1).webp') }}" alt="Product Image" class="img-fluid" loading="lazy">
                             <div class="product-actions">
                                 <button class="action-btn wishlist-btn">
                                     <i class="bi bi-heart"></i>
@@ -242,7 +242,7 @@
                 <div class="col-lg-3 col-md-6">
                     <div class="product-item">
                         <div class="product-image">
-                            <img src="{{ asset('assets/img/product/nhagiakim.jpg') }}" alt="Product Image" class="img-fluid" loading="lazy">
+                            <img src="{{ asset('assets\img\person\nhà giả kim.webp') }}" alt="Product Image" class="img-fluid" loading="lazy">
                             <div class="product-actions">
                                 <button class="action-btn wishlist-btn">
                                     <i class="bi bi-heart"></i>
@@ -274,7 +274,7 @@
                     <div class="product-item">
                         <div class="product-image">
                             <div class="product-badge trending-badge">Xu hướng</div>
-                            <img src="{{ asset('assets/img/product/khoahoccongnghe.jpg') }}" alt="Product Image" class="img-fluid" loading="lazy">
+                            <img src="{{ asset('assets\img\person\trí tuệ nhân tạo.webp') }}" alt="Product Image" class="img-fluid" loading="lazy">
                             <div class="product-actions">
                                 <button class="action-btn wishlist-btn active">
                                     <i class="bi bi-heart-fill"></i>
@@ -321,7 +321,7 @@
                         <div class="product-list">
                             <div class="product-card">
                                 <div class="product-image">
-                                    <img src="{{ asset('assets/img/product/demen.jpg') }}" alt="Premium Leather Tote" class="img-fluid">
+                                    <img src="{{ asset('assets\img\person\dế mèn.webp') }}" alt="Premium Leather Tote" class="img-fluid">
                                     <div class="product-badges">
                                         <span class="badge-new">New</span>
                                     </div>
@@ -344,7 +344,7 @@
 
                             <div class="product-card">
                                 <div class="product-image">
-                                    <img src="{{ asset('assets/img/product/toithayhoavang.jpg') }}" alt="Statement Earrings" class="img-fluid">
+                                    <img src="{{ asset('assets\img\person\toi-thay-hoa-vang-tren-co-xanh-1.jpg') }}" alt="Statement Earrings" class="img-fluid">
                                 </div>
                                 <div class="product-info">
                                     <h4 class="product-name">Tôi thấy hoa vàng trên cỏ xanh</h4>
@@ -364,7 +364,7 @@
 
                             <div class="product-card">
                                 <div class="product-image">
-                                    <img src="{{ asset('assets/img/product/caukhongnhobe.jpg') }}" alt="Organic Cotton Shirt" class="img-fluid">
+                                    <img src="{{ asset('assets\img\person\cậu không hề nhỏ bé.webp') }}" alt="Organic Cotton Shirt" class="img-fluid">
                                 </div>
                                 <div class="product-info">
                                     <h4 class="product-name">Cậu không hề nhỏ bé</h4>
@@ -393,7 +393,7 @@
                         <div class="product-list">
                             <div class="product-card">
                                 <div class="product-image">
-                                    <img src="{{ asset('assets/img/product/thoigiantuoidep.jpg') }}" alt="Slim Fit Denim" class="img-fluid">
+                                    <img src="{{ asset('assets\img\person\thời gian tươi đẹp.webp') }}" alt="Slim Fit Denim" class="img-fluid">
                                     <div class="product-badges">
                                         <span class="badge-sale">-15%</span>
                                     </div>
@@ -417,7 +417,7 @@
 
                             <div class="product-card">
                                 <div class="product-image">
-                                    <img src="{{ asset('assets/img/product/troixanh.jpg') }}" alt="Designer Handbag" class="img-fluid">
+                                    <img src="{{ asset('assets\img\person\trời xanh.jpg') }}" alt="Designer Handbag" class="img-fluid">
                                 </div>
                                 <div class="product-info">
                                     <h4 class="product-name">Trời xanh</h4>
@@ -437,7 +437,7 @@
 
                             <div class="product-card">
                                 <div class="product-image">
-                                    <img src="{{ asset('assets/img/product/tuoitre.jpg') }}" alt="Leather Crossbody" class="img-fluid">
+                                    <img src="{{ asset('assets\img\person\review-tuoi-tre-dang-gia-bao-nhieu-1.jpg') }}" alt="Leather Crossbody" class="img-fluid">
                                     <div class="product-badges">
                                         <span class="badge-hot">Hot</span>
                                     </div>
@@ -469,7 +469,7 @@
                         <div class="product-list">
                             <div class="product-card">
                                 <div class="product-image">
-                                    <img src="{{ asset('assets/img/product/harryporter.jpg') }}" alt="Pleated Midi Skirt" class="img-fluid">
+                                    <img src="{{ asset('assets\img\person\harry.webp') }}" alt="Pleated Midi Skirt" class="img-fluid">
                                 </div>
                                 <div class="product-info">
                                     <h4 class="product-name">Harry portter</h4>
@@ -489,7 +489,7 @@
 
                             <div class="product-card">
                                 <div class="product-image">
-                                    <img src="{{ asset('assets/img/product/dacnhantam.jpg') }}" alt="Geometric Earrings" class="img-fluid">
+                                    <img src="{{ asset('assets\img\person\OIP (1).webp') }}" alt="Geometric Earrings" class="img-fluid">
                                     <div class="product-badges">
                                         <span class="badge-limited">Giới hạn</span>
                                     </div>
@@ -512,7 +512,7 @@
 
                             <div class="product-card">
                                 <div class="product-image">
-                                    <img src="{{ asset('assets/img/product/nhagiakim.jpg') }}" alt="Structured Satchel" class="img-fluid">
+                                    <img src="{{ asset('assets\img\person\nhà giả kim.webp') }}" alt="Structured Satchel" class="img-fluid">
                                 </div>
                                 <div class="product-info">
                                     <h4 class="product-name">Nhà giả kim</h4>
@@ -588,7 +588,7 @@
                 <div class="col-lg-3 col-md-6" data-aos="zoom-in" data-aos-delay="100">
                     <div class="product-showcase">
                         <div class="product-image">
-                            <img src="{{ asset('assets/img/product/dacnhantam.jpg') }}" alt="Featured Product" class="img-fluid">
+                            <img src="{{ asset('assets\img\person\OIP (1).webp') }}" alt="Featured Product" class="img-fluid">
                             <div class="discount-badge">-45%</div>
                         </div>
                         <div class="product-details">
@@ -612,7 +612,7 @@
                 <div class="col-lg-3 col-md-6" data-aos="zoom-in" data-aos-delay="150">
                     <div class="product-showcase">
                         <div class="product-image">
-                            <img src="{{ asset('assets/img/product/caycamngot.jpg') }}" alt="Featured Product" class="img-fluid">
+                            <img src="{{ asset('assets\img\person\cay-cam-ngot-cua-toi.webp') }}" alt="Featured Product" class="img-fluid">
                             <div class="discount-badge">-60%</div>
                         </div>
                         <div class="product-details">
@@ -636,7 +636,7 @@
                 <div class="col-lg-3 col-md-6" data-aos="zoom-in" data-aos-delay="200">
                     <div class="product-showcase">
                         <div class="product-image">
-                            <img src="{{ asset('assets/img/product/harryporter.jpg') }}" alt="Featured Product" class="img-fluid">
+                            <img src="{{ asset('assets\img\person\harry.webp') }}" alt="Featured Product" class="img-fluid">
                             <div class="discount-badge">-35%</div>
                         </div>
                         <div class="product-details">
@@ -660,7 +660,7 @@
                 <div class="col-lg-3 col-md-6" data-aos="zoom-in" data-aos-delay="250">
                     <div class="product-showcase">
                         <div class="product-image">
-                            <img src="{{ asset('assets/img/product/khoahoccongnghe.jpg') }}" alt="Featured Product" class="img-fluid">
+                            <img src="{{ asset('assets\img\person\trí tuệ nhân tạo.webp') }}" alt="Featured Product" class="img-fluid">
                             <div class="discount-badge">-55%</div>
                         </div>
                         <div class="product-details">
