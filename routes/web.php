@@ -24,12 +24,14 @@ use App\Http\Controllers\DiaChiController;
 use App\Http\Controllers\ChatbotController;
 use App\Http\Controllers\DoanhthuController;
 use App\Http\Controllers\ThanhToanVNPayController;
+use App\Mail\DonHangMail;
 use App\Models\DonHang;
 use App\Models\KhuyenMai;
 use App\Models\User;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 
 /*
 |--------------------------------------------------------------------------
@@ -138,6 +140,8 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::post('/admin/reviews/{id}/reply', [AdminReviewController::class, 'reply'])->name('admin.reviews.reply');
     Route::post('/admin/reviews/{id}/toggle-hide', [AdminReviewController::class, 'toggleHide'])->name('admin.reviews.toggleHide');
     Route::delete('/admin/reviews/{id}', [AdminReviewController::class, 'destroy'])->name('admin.reviews.destroy');
+
+    Route::get('/admin/doanhthu', [DoanhthuController::class, 'index'])->name('doanhthu');
 });
 
 
@@ -179,7 +183,21 @@ Route::middleware(['auth', 'customer'])->group(function () {
         Route::post('/dia-chi/{id}/xoa', [DiaChiController::class, 'destroy'])->name('diachi.destroy');
         Route::post('/chatbot', [ChatbotController::class, 'chat']);
 
-
         Route::post('/user/thanhtoan', [ThanhToanVNPayController::class, 'vnpay_payment'])->name('thanhtoanvnpay');
     });
+});
+
+// test email
+Route::get('/test-email', function () {
+    $order = (object)[
+        'id' => "MH001",
+        'customer' => "Nguyen Viet Tuan"
+    ];
+
+    $items = [
+        (object)['product_name' => 'Sách Toán', 'quantity' => 2, 'price' => 100000],
+        (object)['product_name' => 'Sách Văn', 'quantity' => 1, 'price' => 300000],
+    ];
+
+    Mail::to('hi@gmail.com')->send(new DonHangMail($order, $items));
 });

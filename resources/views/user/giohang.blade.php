@@ -182,8 +182,7 @@
             </div>
 
 
-            <div class="summary-item shipping-item">
-              <div class="summary-item shipping-item">
+            <!-- <div class="summary-item shipping-item">
                 <span class="summary-label">Vận chuyển</span>
                   <div class="shipping-options">
 

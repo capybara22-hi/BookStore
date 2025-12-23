@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Notifications\ResetPassword as CustomResetPassword;
 use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -56,4 +57,8 @@ class User extends Authenticatable implements CanResetPasswordContract
         return $this->hasMany(DiaChi::class, 'ma_nguoi_dung', 'ma_nguoi_dung');
     }
 
+    public function sendPasswordResetNotification($token)
+    {
+        $this->notify(new CustomResetPassword($token));
+    }
 }
