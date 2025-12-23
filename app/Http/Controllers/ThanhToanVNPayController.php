@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\DonHangMail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\GioHang;
@@ -9,6 +10,8 @@ use App\Models\DonHang;
 use App\Models\VanChuyen;
 use App\Models\DiaChi;
 use App\Models\KhuyenMai;
+use App\Models\User;
+use Illuminate\Support\Facades\Mail;
 
 class ThanhToanVNPayController extends Controller
 {
@@ -16,7 +19,8 @@ class ThanhToanVNPayController extends Controller
     {
         // Tạo đơn hàng trước khi chuyển sang VNPay
         $ma_nguoi_dung = Auth::id();
-        $gioHang = GioHang::where('ma_nguoi_dung', $ma_nguoi_dung)
+        $gioHang = GioHang::with('sanpham')
+            ->where('ma_nguoi_dung', $ma_nguoi_dung)
             ->where('trang_thai_mua', 0)
             ->get();
 
@@ -32,7 +36,7 @@ class ThanhToanVNPayController extends Controller
         $tien_giam = session('tien_giam', 0);
         $ma_khuyen_mai = session('ma_khuyen_mai');
 
-        if (!$ma_vc || !$phi_vc || !$thanh_tien || !$tien_hang) {
+        if (!$ma_vc || $phi_vc === null || $thanh_tien === null || !$tien_hang) {
             return response()->json(['error' => 'Thiếu thông tin đơn hàng'], 400);
         }
 
@@ -83,6 +87,7 @@ class ThanhToanVNPayController extends Controller
         $vnp_IpAddr = $_SERVER['REMOTE_ADDR'];
         // $startTime = date("YmdHis");
         // $expire = date('YmdHis', strtotime('+15 minutes', strtotime($startTime)));
+
 
         $inputData = array(
             "vnp_Version" => "2.1.0",
@@ -144,6 +149,8 @@ class ThanhToanVNPayController extends Controller
 
     public function vnpay_return(Request $request)
     {
+        $ma_nguoi_dung = Auth::id();
+        $email = User::find($ma_nguoi_dung);
         // Xử lý kết quả trả về từ VNPay
         $vnp_ResponseCode = $request->input('vnp_ResponseCode');
         $ma_don_hang = $request->input('vnp_TxnRef');
@@ -205,6 +212,9 @@ class ThanhToanVNPayController extends Controller
                 KhuyenMai::where('ma_khuyen_mai', $don_hang->ma_khuyen_mai)
                     ->decrement('so_luong', 1);
             }
+
+            Mail::to($email)->send(new DonHangMail($don_hang, $gioHang));
+
 
             session()->flash('don_hang', 'Thanh toán thành công! Đơn hàng #' . $ma_don_hang);
         } else {

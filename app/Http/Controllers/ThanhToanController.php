@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\DonHangMail;
 use Illuminate\Http\Request;
 use App\Models\GioHang;
 use App\Models\ThanhToan;
@@ -12,6 +13,7 @@ use App\Models\DiaChi;
 use App\Models\KhuyenMai;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 
 class ThanhToanController extends Controller
 {
@@ -45,6 +47,7 @@ class ThanhToanController extends Controller
     {
 
         $ma_nguoi_dung = Auth::id(); // lấy user đang đăng nhập
+        $email = User::find($ma_nguoi_dung);
         $gioHang = GioHang::where('ma_nguoi_dung', $ma_nguoi_dung)->get();
 
         if (!$gioHang) {
@@ -72,7 +75,7 @@ class ThanhToanController extends Controller
                 ->decrement('so_luong', 1);
         }
 
-        if (!$ma_vc || !$phi_vc || !$thanh_tien || !$tien_hang) {
+        if (!$ma_vc || $phi_vc === null || $thanh_tien === null || !$tien_hang) {
             return response()->json(['error' => 'Thiếu dữ liệu session'], 400);
         }
 
@@ -116,6 +119,9 @@ class ThanhToanController extends Controller
                 $gh->save();
             }
         }
+
+        Mail::to($email)->send(new DonHangMail($don_hang, $gioHang));
+
         return response()->json([
             'successTDH' => true,
             'trang_thai_mua' => $request->trang_thai,
