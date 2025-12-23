@@ -15,16 +15,16 @@
         <table class="w-full whitespace-no-wrap">
           <thead>
             <tr class="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase bg-gray-50">
-              <th class="px-4 py-3">Chọn</th>
-              <th class="px-4 py-3">Mã</th>
-              <th class="px-4 py-3">Tên sản phẩm</th>
-              <th class="px-4 py-3">Thể loại hiện tại</th>
+              <th class="px-4 py-3" style="border:1px solid #151414ff; background-color: #856cbeff; color: white;">Chọn</th>
+              <th class="px-4 py-3" style="border:1px solid #151414ff; background-color: #856cbeff; color: white;">Mã</th>
+              <th class="px-4 py-3" style="border:1px solid #151414ff; background-color: #856cbeff; color: white;">Tên sản phẩm</th>
+              <th class="px-4 py-3" style="border:1px solid #151414ff; background-color: #856cbeff; color: white;">Thể loại hiện tại</th>
             </tr>
           </thead>
           <tbody class="bg-white divide-y">
             @foreach($products as $p)
             <tr class="text-gray-700">
-              <td class="px-4 py-3">
+              <td class="px-4 py-3" style='border:1px solid #151414ff;'>
                 @php
                 // Nếu sản phẩm có ma_the_loai khác và không phải 1 thì disable
                 $hasOther = $p->ma_the_loai && $p->ma_the_loai != $theloai->ma_the_loai && $p->ma_the_loai != 1;
@@ -33,11 +33,11 @@
                   @if($p->ma_the_loai == $theloai->ma_the_loai) checked @endif
                   @if($hasOther) disabled title="Sản phẩm đã có thể loại khác: {{ optional($p->theloaisp)->ten_the_loai }}" @endif />
               </td>
-              <td class="px-4 py-3">{{ $p->ma_san_pham }}</td>
-              <td class="px-4 py-3">
+              <td class="px-4 py-3" style='border:1px solid #151414ff;'>{{ $p->ma_san_pham }}</td>
+              <td class="px-4 py-3" style='border:1px solid #151414ff;'>
                 {{ $p->ten_san_pham }}
               </td>
-              <td class="px-4 py-3">{{ optional($p->theloaisp)->ten_the_loai }}</td>
+              <td class="px-4 py-3" style='border:1px solid #151414ff;'>{{ optional($p->theloaisp)->ten_the_loai }}</td>
             </tr>
             @endforeach
           </tbody>

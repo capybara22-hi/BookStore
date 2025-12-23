@@ -213,7 +213,9 @@
                       @endforeach
 
                   </div>
-              </div> -->
+              </div>
+            </div>
+            --}}
 
             <div class="summary-item discount-item">
               <span class="summary-label">Giảm giá</span>
@@ -267,14 +269,14 @@
         radio.disabled = true;
         radio.checked = false;
 
-        // 🔴 style inline
+        // style inline
         label.style.color = "red";
         label.style.opacity = "0.6";
         label.style.cursor = "not-allowed";
       } else {
         radio.disabled = false;
 
-        // 🔵 reset style
+        // reset style
         label.style.color = "";
         label.style.opacity = "";
         label.style.cursor = "";
@@ -312,7 +314,7 @@
       }
     });
 
-    // ❌ nếu KM đang áp bị mất điều kiện → reset UI
+    //  nếu KM đang áp bị mất điều kiện → reset UI
     if (!hasValidSelected) {
       document.getElementById("selectedPromoText").style.display = "none";
       document.getElementById("btnOpenPromo").innerText = "Chọn khuyến mãi";
@@ -335,10 +337,11 @@
     // === LẤY CÁC PHẦN TỬ TRÊN GIAO DIỆN ===
     const cartItems = document.querySelectorAll(".cart-item"); // Danh sách tất cả sản phẩm trong giỏ hàng
     const totalItemsPriceEl = document.querySelector(".summary-item .summary-value"); // Tổng tiền hàng
-    const shippingRadios = document.querySelectorAll("input[name='shipping']"); // Các lựa chọn giao hàng
+    // shipping disabled: const shippingRadios = document.querySelectorAll("input[name='shipping']"); // Các lựa chọn giao hàng
     const grandTotalEl = document.querySelector(".summary-total .summary-value"); // Tổng cộng (sau thuế + ship)
 
     // === HÀM LẤY PHÍ VẬN CHUYỂN DỰA THEO LỰA CHỌN ===
+    /* shipping disabled
     const getShippingCost = () => {
       const selected = document.querySelector("input[name='shipping']:checked");
       if (!selected) return 0;
@@ -352,6 +355,7 @@
         dv_vc: dv_vc
       };
     };
+    */
 
     // === HÀM CẬP NHẬT TỔNG TIỀN GIỎ HÀNG ===
     const updateCartSummary = () => {
@@ -384,24 +388,17 @@
       document.getElementById("discountValue").textContent =
         `- ${discount.toLocaleString()} VND`;
 
-      // 2. Vận chuyển vẫn theo tổng tiền hàng gốc
-      updateShippingOptions(totalItemsPrice);
-      const {
-        fee: shipping,
-        dv_vc
-      } = getShippingCost();
-
-      // ✅ 3. tổng cuối
+      // shipping logic disabled
+      // 2. Vận chuyển tắt → chỉ dùng tổng sau giảm
       const grandTotal = totalItemsPrice - discount;
 
-      grandTotalEl.textContent =
-        `${grandTotal.toLocaleString()} VND`;
+      grandTotalEl.textContent = `${grandTotal.toLocaleString()} VND`;
 
-      // lưu session
+      // lưu session (bỏ thông tin vận chuyển)
       const promoId = getSelectedPromoId();
       guiSessionDonHang(
-        dv_vc,
-        shipping,
+        null, // dv_vc
+        0,    // shipping
         grandTotal,
         totalItemsPrice,
         promoId,
@@ -449,10 +446,10 @@
       });
     });
 
-    // === GẮN SỰ KIỆN CHO LỰA CHỌN PHÍ GIAO HÀNG ===
-    shippingRadios.forEach(radio => {
-      radio.addEventListener("change", updateCartSummary);
-    });
+    // === shipping events disabled ===
+    // shippingRadios.forEach(radio => {
+    //   radio.addEventListener("change", updateCartSummary);
+    // });
 
     // ======================= XÓA SẢN PHẨM TRONG GIỎ HÀNG =======================
 

@@ -81,6 +81,8 @@
               <th class="px-4 py-3">Nội dung khuyến mãi</th>
               <th class="px-4 py-3">Thời gian bắt đầu</th>
               <th class="px-4 py-3">&emsp;&nbsp;Thời gian kết thúc</th>
+              <th class="px-4 py-3">Số lượng</th>
+              <th class="px-4 py-3">Ghi chú</th>
               <th class="px-4 py-3">&nbsp;&nbsp;Sửa</th>
               <th class="px-4 py-3">&nbsp;&nbsp;Xóa</th>
             </tr>
@@ -101,7 +103,7 @@
                 <div class="flex items-center text-sm">
 
                   <div>
-                    <p class="font-semibold">{{$km->ngay_bat_dau}}</p>
+                    <p class="font-semibold">{{ \Carbon\Carbon::parse($km->ngay_bat_dau)->format('d/m/Y') }}</p>
                   </div>
                 </div>
               </td>
@@ -109,8 +111,27 @@
                 <div class="flex items-center text-sm">
 
                   <div>
-                    <p class="font-semibold">{{$km->ngay_ket_thuc}}</p>
+                    <p class="font-semibold">{{ \Carbon\Carbon::parse($km->ngay_ket_thuc)->format('d/m/Y') }}</p>
                   </div>
+                </div>
+              </td>
+              <td class="px-4 py-3 text-sm" style="border: 1px solid gray; text-align:center;">
+                <div>
+                  <p class="font-semibold">{{ $km->so_luong }}</p>
+                </div>
+              </td>
+              <td class="px-4 py-3 text-sm" style="border: 1px solid gray; text-align:center;">
+                <?php
+                  $expired = \Carbon\Carbon::now()->gt(\Carbon\Carbon::parse($km->ngay_ket_thuc));
+                ?>
+                <div>
+                  <span class="km-status" data-enddate="{{$km->ngay_ket_thuc}}">
+                    @if($expired)
+                      <span style="color:red; font-weight:bold">Đã hết thời gian khuyến mãi</span>
+                    @else
+                      <span style="color:green">Đang áp dụng</span>
+                    @endif
+                  </span>
                 </div>
               </td>
               <td class="px-4 py-3 text-sm" style="border: 1px solid gray;">
@@ -226,6 +247,26 @@
       modalOverlay.style.display = 'block';
     });
 
+    // realtime check: cập nhật trạng thái khuyến mãi nếu đã qua ngày kết thúc
+    function updateKMStatus() {
+      const els = document.querySelectorAll('.km-status');
+      const now = new Date();
+      els.forEach(el => {
+        const end = el.getAttribute('data-enddate');
+        if (!end) return;
+        const endDate = new Date(end + 'T23:59:59');
+        if (now > endDate) {
+          el.innerHTML = '<span style="color:red; font-weight:bold">Đã hết thời gian khuyến mãi</span>';
+        } else {
+          el.innerHTML = '<span style="color:green">Đang áp dụng</span>';
+        }
+      });
+    }
+
+    // Chạy ngay và lặp mỗi 60s để cập nhật theo thời gian thực
+    updateKMStatus();
+    setInterval(updateKMStatus, 60000);
+
     closeModal.addEventListener('click', () => {
       modalOverlay.style.display = 'none';
     });
@@ -255,7 +296,6 @@
 
     // xu ly su kien khi nhan them khuyen mai moi
     luuKM.addEventListener('click', function() {
-      modalOverlay.style.display = 'none';
       // lấy value sau khi nhập
       const valTenKM = themTenKM.value.trim();
       const valPhanTramKM = themPhanTramKM.value.trim();
@@ -263,10 +303,28 @@
       const valTimeBD = timeBD.value.trim();
       const valTimeKT = timeKT.value.trim();
       const valSoLuongKM = themsoLuongKM.value.trim();
+
       if (valTenKM === "" || valPhanTramKM === "" || valGiaDonKM === "" || valTimeBD === "" || valTimeKT === "" || valSoLuongKM === "") {
         tt_an.innerHTML = "BẠN PHẢI NHẬP ĐẦY ĐỦ THÔNG TIN!!!";
         return; // dừng lại, không gửi fetch
       }
+
+      // Kiểm tra phần trăm giảm: phải là số trong khoảng 0-100
+      const phanTramNum = parseFloat(valPhanTramKM);
+      if (isNaN(phanTramNum) || phanTramNum < 0 || phanTramNum > 100) {
+        tt_an.innerHTML = "Phần trăm giảm phải là số từ 0 đến 100.";
+        return;
+      }
+
+      // Kiểm tra thời gian: thời gian kết thúc không được sớm hơn ngày bắt đầu
+      const bd = new Date(valTimeBD);
+      const kt = new Date(valTimeKT);
+      if (kt < bd) {
+        tt_an.innerHTML = "Thời gian kết thúc không được sớm hơn thời gian bắt đầu.";
+        return;
+      }
+
+      modalOverlay.style.display = 'none';
       fetch("/khuyenmai/themkm", {
           method: "POST",
           headers: {
@@ -288,8 +346,8 @@
         })
         .catch(error => {
           console.error("Thêm Khuyến mãi thất bại:", error);
-
         });
+
       window.location.href = window.location.href;
       alert("Bạn đã thêm khuyến mãi thành công");
     });
@@ -312,9 +370,25 @@
 
         const thongBaoErr = modal.querySelector('#tt_an_sua');
 
+
         // Kiểm tra rỗng
         if (!valTenKM || !valPhanTramKM || !valGiaDonKM || !valTimeBD || !valTimeKT || !valSoLuongKM) {
           thongBaoErr.innerHTML = "Vui lòng nhập đầy đủ thông tin!";
+          return;
+        }
+
+        // Kiểm tra phần trăm giảm: 0-100
+        const phanTramSua = parseFloat(valPhanTramKM);
+        if (isNaN(phanTramSua) || phanTramSua < 0 || phanTramSua > 100) {
+          thongBaoErr.innerHTML = "Phần trăm giảm phải là số từ 0 đến 100.";
+          return;
+        }
+
+        // Kiểm tra thời gian: kết thúc phải >= bắt đầu
+        const bd_sua = new Date(valTimeBD);
+        const kt_sua = new Date(valTimeKT);
+        if (kt_sua < bd_sua) {
+          thongBaoErr.innerHTML = "Thời gian kết thúc không được sớm hơn thời gian bắt đầu.";
           return;
         }
 

@@ -190,7 +190,7 @@
   @yield('chitietsanpham')
   @yield('thanhtoan')
   @yield('dathang')
-  <!-- <footer id="footer" class="footer dark-background">
+  <footer id="footer" class="footer dark-background">
     <div class="footer-bottom">
       <div class="container">
         <div class="row gy-3 align-items-center">
@@ -213,9 +213,9 @@
 
       </div>
     </div>
-  </footer> -->
+  </footer>
 
-  <footer id="footer" class="footer dark-background">
+  <!-- <footer id="footer" class="footer dark-background">
     <div class="footer-main">
       <div class="container">
         <div class="row gy-4">
@@ -314,11 +314,11 @@
               <p>© <span>Copyright</span> <strong class="sitename">NiceShop</strong>. All Rights Reserved.</p>
             </div>
             <div class="credits mt-1">
-              <!-- All the links in the footer should remain intact. -->
+               All the links in the footer should remain intact. -->
               <!-- You can delete the links only if you've purchased the pro version. -->
               <!-- Licensing information: https://bootstrapmade.com/license/ -->
               <!-- Purchase the pro version with working PHP/AJAX contact form: [buy-url] -->
-              Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
+              <!-- Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
             </div>
           </div>
 
@@ -346,7 +346,7 @@
 
       </div>
     </div>
-  </footer>
+  </footer> -->
 
 
   <!-- Scroll Top -->
