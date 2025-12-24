@@ -181,8 +181,8 @@
               </div>
             </div>
 
-
-            <!-- <div class="summary-item shipping-item">
+            <!-- 
+            <div class="summary-item shipping-item">
                 <span class="summary-label">Vận chuyển</span>
                   <div class="shipping-options">
 
@@ -215,7 +215,7 @@
                   </div>
               </div>
             </div>
-            --}}
+            --}} -->
 
             <div class="summary-item discount-item">
               <span class="summary-label">Giảm giá</span>
@@ -398,7 +398,7 @@
       const promoId = getSelectedPromoId();
       guiSessionDonHang(
         null, // dv_vc
-        0,    // shipping
+        0, // shipping
         grandTotal,
         totalItemsPrice,
         promoId,
@@ -416,8 +416,19 @@
 
       // Khi người dùng nhập số lượng trực tiếp
       quantityInput.addEventListener("input", () => {
-        // Đảm bảo số lượng không nhỏ hơn 1
-        if (quantityInput.value < 1) quantityInput.value = 1;
+        const max = parseInt(quantityInput.max) || 999;
+        const current = parseInt(quantityInput.value);
+
+        // Kiểm tra nếu nhỏ hơn 1
+        if (current < 1) {
+          quantityInput.value = 1;
+        }
+        // Kiểm tra nếu vượt quá số lượng trong kho
+        else if (current > max) {
+          quantityInput.value = max;
+          alert(`Số lượng không đủ! Hiện chỉ còn ${max} sản phẩm trong kho.`);
+        }
+
         updateCartSummary();
 
         const cartId = item.dataset.id;
@@ -428,7 +439,13 @@
       increaseBtn.addEventListener("click", () => {
         const current = parseInt(quantityInput.value);
         const max = parseInt(quantityInput.max) || 999;
-        if (current < max) quantityInput.value = current;
+
+        if (current < max) {
+          quantityInput.value = current + 1;
+        } else {
+          alert(`Số lượng không đủ! Hiện chỉ còn ${max} sản phẩm trong kho.`);
+        }
+
         updateCartSummary();
 
         const cartId = item.dataset.id;
@@ -438,7 +455,9 @@
       // Khi bấm nút giảm số lượng
       decreaseBtn.addEventListener("click", () => {
         const current = parseInt(quantityInput.value);
-        if (current > 1) quantityInput.value = current;
+        if (current > 1) {
+          quantityInput.value = current - 1;
+        }
         updateCartSummary();
 
         const cartId = item.dataset.id;

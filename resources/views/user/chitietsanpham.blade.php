@@ -92,10 +92,17 @@
 
             <div class="availability-status">
               <div class="stock-indicator">
+                @if($sanpham->so_luong_sp > 0)
                 <i class="bi bi-check-circle-fill"></i>
                 <span class="stock-text">Số lượng trong kho:</span>
+                @else
+                <i class="bi bi-x-circle-fill text-danger"></i>
+                <span class="stock-text text-danger">Hết hàng</span>
+                @endif
               </div>
-              <div class="quantity-left">{{ $sanpham->so_luong_sp }}</div>
+              <div class="quantity-left {{ $sanpham->so_luong_sp <= 0 ? 'text-danger' : '' }}">
+                {{ $sanpham->so_luong_sp > 0 ? $sanpham->so_luong_sp : 'Tạm thời hết hàng' }}
+              </div>
             </div>
 
             <div class="action-buttons" style="display:flex; gap:12px; margin-top:15px;">
@@ -108,11 +115,11 @@
                       <label class="control-label">Số lượng:</label>
                       <div class="quantity-input-group">
                         <div class="quantity-selector">
-                          <button class="quantity-btn decrease" type="button">
+                          <button class="quantity-btn decrease" type="button" {{ $sanpham->so_luong_sp <= 0 ? 'disabled' : '' }}>
                             <i class="bi bi-dash"></i>
                           </button>
-                          <input type="number" class="quantity-input" name="so_luong_sp" value="1" min="1" max="{{ $sanpham->so_luong_sp }}">
-                          <button class="quantity-btn increase" type="button">
+                          <input type="number" class="quantity-input" name="so_luong_sp" value="1" min="1" max="{{ $sanpham->so_luong_sp }}" {{ $sanpham->so_luong_sp <= 0 ? 'disabled' : '' }}>
+                          <button class="quantity-btn increase" type="button" {{ $sanpham->so_luong_sp <= 0 ? 'disabled' : '' }}>
                             <i class="bi bi-plus"></i>
                           </button>
                         </div>
@@ -120,17 +127,22 @@
                     </div>
 
                     <div class="action-buttons">
-                      @if($daCoTrongGio)
-                      <button type="button" class="btn" style="background: orange; color: white; cursor: default" disabled>
-                        <i class="bi bi-check-circle"></i>
-                        Đã có trong giỏ
-                      </button>
-                      @else
-                      <button class="btn primary-action" name="action" value="add" type="submit">
-                        <i class="bi bi-bag-plus"></i>
-                        Thêm vào giỏ hàng
-                      </button>
-                      @endif
+                      @if($sanpham->so_luong_sp <= 0)
+                        <button type="button" class="btn" style="background: #dc3545; color: white; cursor: not-allowed" disabled>
+                        <i class="bi bi-x-circle"></i>
+                        Hết hàng
+                        </button>
+                        @elseif($daCoTrongGio)
+                        <button type="button" class="btn" style="background: orange; color: white; cursor: default" disabled>
+                          <i class="bi bi-check-circle"></i>
+                          Đã có trong giỏ
+                        </button>
+                        @else
+                        <button class="btn primary-action" name="action" value="add" type="submit">
+                          <i class="bi bi-bag-plus"></i>
+                          Thêm vào giỏ hàng
+                        </button>
+                        @endif
                     </div>
                   </div>
                 </form>

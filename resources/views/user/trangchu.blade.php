@@ -177,6 +177,13 @@
                         <div class="product-image">
                             <div class="product-badge">Giới hạn</div>
                             <img src="{{ asset('assets\img\person\cay-cam-ngot-cua-toi.webp') }}" alt="Product Image" class="img-fluid" loading="lazy">
+                            {{-- Uncomment nếu sản phẩm hết hàng --}}
+                            {{-- <div class="out-of-stock-overlay">
+                              <div class="out-of-stock-badge">
+                                <i class="bi bi-x-circle"></i>
+                                <span>HẾT HÀNG</span>
+                              </div>
+                            </div> --}}
                             <div class="product-actions">
                                 <button class="action-btn wishlist-btn">
                                     <i class="bi bi-heart"></i>

@@ -188,7 +188,7 @@
               @foreach ($sanphams as $sp)
               @if($sp->status == 1)
               <div class="col-6 col-xl-3">
-                <div class="product-card" data-aos="zoom-in">
+                <div class="product-card {{ $sp->so_luong_sp <= 0 ? 'out-of-stock' : '' }}" data-aos="zoom-in">
                   <div class="product-image">
                     @foreach ($sp->file as $file)
                     @if ($loop->first) {{-- chỉ lấy ảnh đầu tiên --}}
@@ -197,43 +197,49 @@
                     @endif
                     @endforeach
 
+                    @if($sp->so_luong_sp <= 0)
+                      <div class="out-of-stock-overlay">
+                      <span class="out-of-stock-text">HẾT HÀNG</span>
+                  </div>
+                  @endif
 
+
+                </div>
+
+                <div class="product-details">
+                  <!-- <div class="product-category">Women's Fashion</div> -->
+                  <h4 class="product-title">
+                    <a href="{{ route('chitietsanpham', ['id' => $sp->ma_san_pham]) }}">{{ $sp->ten_san_pham }}</a>
+                  </h4>
+                  <div class="product-price">
+                    {{ number_format($sp->gia_tien_sp, 0, ',', '.') }}
+                  </div>
+                  @php
+                  $avg = round($sp->reviews->avg('rating'), 1);
+                  $count = $sp->reviews->count();
+                  @endphp
+
+                  <div class="product-rating">
+                    <i class="bi bi-star-fill"></i>
+                    {{ $avg > 0 ? $avg : '0.0' }}
+                    <span>({{ $count }})</span>
                   </div>
 
-                  <div class="product-details">
-                    <!-- <div class="product-category">Women's Fashion</div> -->
-                    <h4 class="product-title">
-                      <a href="{{ route('chitietsanpham', ['id' => $sp->ma_san_pham]) }}">{{ $sp->ten_san_pham }}</a>
-                    </h4>
-                    <div class="product-price">
-                      {{ number_format($sp->gia_tien_sp, 0, ',', '.') }}
-                    </div>
-                    @php
-                    $avg = round($sp->reviews->avg('rating'), 1);
-                    $count = $sp->reviews->count();
-                    @endphp
-
-                    <div class="product-rating">
-                      <i class="bi bi-star-fill"></i>
-                      {{ $avg > 0 ? $avg : '0.0' }}
-                      <span>({{ $count }})</span>
-                    </div>
-
-                  </div>
                 </div>
               </div>
-              @endif
-
-              @endforeach
-
             </div>
+            @endif
+
+            @endforeach
 
           </div>
 
-        </section><!-- /Category Product List Section -->
+      </div>
 
-        <!-- Category Pagination Section -->
-        <!-- <section id="category-pagination" class="category-pagination section">
+      </section><!-- /Category Product List Section -->
+
+      <!-- Category Pagination Section -->
+      <!-- <section id="category-pagination" class="category-pagination section">
 
           <div class="container">
             <nav class="d-flex justify-content-center" aria-label="Page navigation">
@@ -264,9 +270,9 @@
           </div>
 
         </section> -->
-        <!-- /Category Pagination Section -->
+      <!-- /Category Pagination Section -->
 
-      </div>
+    </div>
 
     </div>
     <!-- </div> -->
@@ -276,20 +282,20 @@
 <div id="chatbot-icon"><img src="{{ asset('assets/img/about/chatbot.jpg') }}" alt="" style="width: 60px; height: 60px; border-radius: 50%; border: 2px solid #4e73df;"></div>
 
 <div id="chatbot-box">
-    <p style="color: #ffffffff; background: #832a9eff; padding: 10px;">Xin chào, hãy nói cho tôi nội dung sách bạn muốn tìm và tôi sẽ giúp bạn tìm kiếm.</p>
-    <div id="chatbot-messages"></div>
-    <div id="chatbot-input">        
-        <input type="text" id="chatbot-text" placeholder="Nhập sách bạn muốn...">
-        <button onclick="sendMessage()">Gửi</button>
-    </div>
+  <p style="color: #ffffffff; background: #832a9eff; padding: 10px;">Xin chào, hãy nói cho tôi nội dung sách bạn muốn tìm và tôi sẽ giúp bạn tìm kiếm.</p>
+  <div id="chatbot-messages"></div>
+  <div id="chatbot-input">
+    <input type="text" id="chatbot-text" placeholder="Nhập sách bạn muốn...">
+    <button onclick="sendMessage()">Gửi</button>
+  </div>
 </div>
 <script>
-document.getElementById('chatbot-icon').onclick = function () {
+  document.getElementById('chatbot-icon').onclick = function() {
     let box = document.getElementById('chatbot-box');
     box.style.display = box.style.display === 'flex' ? 'none' : 'flex';
-};
+  };
 
-function sendMessage() {
+  function sendMessage() {
     let text = document.getElementById('chatbot-text').value;
     if (!text) return;
 
@@ -299,76 +305,136 @@ function sendMessage() {
     fetch('/user/chatbot', {
         method: 'POST',
         headers: {
-            'Content-Type': 'application/json',
-        'Accept': 'application/json',
-            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          'X-CSRF-TOKEN': '{{ csrf_token() }}'
         },
-        body: JSON.stringify({ query: text })
-    })
-    .then(res => {
-      if (!res.ok) throw new Error('Network response was not ok');
-      return res.json();
-    })
-    .then(data => {
-      messages.innerHTML += `<div><b>Chatbot:</b> ${data.reply}</div>`;
-    })
-    .catch(err => {
-      console.error(err);
-      messages.innerHTML += `<div><b>Chatbot:</b> Lỗi kết nối hoặc phản hồi không hợp lệ.</div>`;
-    });
+        body: JSON.stringify({
+          query: text
+        })
+      })
+      .then(res => {
+        if (!res.ok) throw new Error('Network response was not ok');
+        return res.json();
+      })
+      .then(data => {
+        messages.innerHTML += `<div><b>Chatbot:</b> ${data.reply}</div>`;
+      })
+      .catch(err => {
+        console.error(err);
+        messages.innerHTML += `<div><b>Chatbot:</b> Lỗi kết nối hoặc phản hồi không hợp lệ.</div>`;
+      });
 
     document.getElementById('chatbot-text').value = '';
-}
+  }
 </script>
 <style>
   #chatbot-icon {
-      position: fixed;
-      bottom: 150px;
-      right: 20px;
-      background: #4e73df;
-      color: white;
-      width: 60px;
-      height: 60px;
-      border-radius: 50%;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      cursor: pointer;
-      font-size: 30px;
-      z-index: 9999;
+    position: fixed;
+    bottom: 150px;
+    right: 20px;
+    background: #4e73df;
+    color: white;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    font-size: 30px;
+    z-index: 9999;
   }
+
   #chatbot-box {
-      position: fixed;
-      bottom: 220px;
-      right: 20px;
-      width: 320px;
-      height: 420px;
-      background: white;
-      border-radius: 10px;
-      border: 1px solid #ccc;
-      display: none;
-      flex-direction: column;
-      z-index: 9999;
+    position: fixed;
+    bottom: 220px;
+    right: 20px;
+    width: 320px;
+    height: 420px;
+    background: white;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    display: none;
+    flex-direction: column;
+    z-index: 9999;
   }
+
   #chatbot-messages {
-      flex: 1;
-      padding: 10px;
-      overflow-y: auto;
+    flex: 1;
+    padding: 10px;
+    overflow-y: auto;
   }
+
   #chatbot-input {
-      display: flex;
+    display: flex;
   }
+
   #chatbot-input input {
-      flex: 1;
-      padding: 10px;
-      border: none;
-      border-top: 1px solid #ccc;
+    flex: 1;
+    padding: 10px;
+    border: none;
+    border-top: 1px solid #ccc;
   }
+
   #chatbot-input button {
-      padding: 10px;
-      background: #4e73df;
-      color: white;
-      border: none;
+    padding: 10px;
+    background: #4e73df;
+    color: white;
+    border: none;
+  }
+
+  /* Out of Stock Styles */
+  .product-card.out-of-stock {
+    position: relative;
+  }
+
+  .product-card.out-of-stock .product-image {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .out-of-stock-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+  }
+
+  .out-of-stock-overlay::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: #fff;
+    transform: translateY(-50%) rotate(-15deg);
+  }
+
+  .out-of-stock-text {
+    background: rgba(255, 255, 255, 0.95);
+    color: #000;
+    padding: 8px 20px;
+    font-weight: bold;
+    font-size: 14px;
+    letter-spacing: 1px;
+    z-index: 11;
+    border: 2px solid #000;
+  }
+
+  .product-card.out-of-stock .product-image img {
+    filter: grayscale(100%);
+  }
+
+  .product-card.out-of-stock:hover {
+    cursor: not-allowed;
   }
 </style>
 @endsection

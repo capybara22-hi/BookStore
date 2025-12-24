@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\DonHang;
+use Illuminate\Support\Facades\DB;
 
 class DonHangAdminController extends Controller
 {
@@ -42,11 +43,32 @@ class DonHangAdminController extends Controller
     // Hủy đơn hàng: đặt trang_thai_dh = 5
     public function cancel($id)
     {
-        $donhang = DonHang::findOrFail($id);
-        $donhang->trang_thai_dh = 5;
-        $donhang->save();
+        try {
+            DB::beginTransaction();
 
-        return back()->with('success', 'Đơn hàng đã được hủy');
+            $donhang = DonHang::lockForUpdate()->findOrFail($id);
+
+            // Chỉ cho phép hủy nếu đơn hàng chưa giao hoặc đã hủy
+            if ($donhang->trang_thai_dh >= 4) {
+                return back()->with('error', 'Không thể hủy đơn hàng đã giao');
+            }
+
+            $donhang->trang_thai_dh = 5;
+            $donhang->save();
+
+            // Hoàn lại số lượng sản phẩm vào kho (dùng increment an toàn)
+            $items = \App\Models\GioHang::where('ma_don_hang', $donhang->ma_don_hang)->get();
+            foreach ($items as $item) {
+                \App\Models\SanPham::where('ma_san_pham', $item->ma_san_pham)
+                    ->increment('so_luong_sp', $item->so_luong_sp);
+            }
+
+            DB::commit();
+            return back()->with('success', 'Đơn hàng đã được hủy');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return back()->with('error', 'Hủy đơn hàng thất bại: ' . $e->getMessage());
+        }
     }
 
     // Hiển thị chi tiết đơn hàng (sử dụng bảng gio_hang cho các mục đơn)

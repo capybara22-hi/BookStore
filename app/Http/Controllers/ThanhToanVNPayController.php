@@ -10,8 +10,10 @@ use App\Models\DonHang;
 use App\Models\VanChuyen;
 use App\Models\DiaChi;
 use App\Models\KhuyenMai;
+use App\Models\SanPham;
 use App\Models\User;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\DB;
 
 class ThanhToanVNPayController extends Controller
 {
@@ -192,31 +194,62 @@ class ThanhToanVNPayController extends Controller
         }
 
         if ($vnp_ResponseCode == '00') {
-            // Thanh toán thành công - Cập nhật trạng thái
-            $don_hang->trang_thai_dh = 1; // Đã thanh toán
-            $don_hang->save();
+            // Thanh toán thành công - Sử dụng transaction
+            try {
+                DB::beginTransaction();
 
-            // Cập nhật giỏ hàng: đánh dấu đã mua
-            $gioHang = GioHang::where('ma_nguoi_dung', $don_hang->ma_nguoi_dung)
-                ->where('trang_thai_mua', 0)
-                ->get();
+                // Lấy giỏ hàng
+                $gioHang = GioHang::where('ma_nguoi_dung', $don_hang->ma_nguoi_dung)
+                    ->where('trang_thai_mua', 0)
+                    ->get();
 
-            foreach ($gioHang as $gh) {
-                $gh->trang_thai_mua = 1;
-                $gh->ma_don_hang = $ma_don_hang;
-                $gh->save();
+                // Kiểm tra và lock số lượng sản phẩm
+                foreach ($gioHang as $gh) {
+                    $sanPham = SanPham::where('ma_san_pham', $gh->ma_san_pham)
+                        ->lockForUpdate()
+                        ->first();
+
+                    if (!$sanPham || $sanPham->so_luong_sp < $gh->so_luong_sp) {
+                        DB::rollBack();
+                        // Hủy đơn hàng do không đủ hàng
+                        $don_hang->trang_thai_dh = 2; // Đã hủy
+                        $don_hang->save();
+                        session()->flash('errorDC', 'Sản phẩm "' . $gh->ten_sp . '" không đủ số lượng. Đơn hàng đã bị hủy.');
+                        return redirect()->route('taikhoan');
+                    }
+                }
+
+                // Cập nhật trạng thái đơn hàng
+                $don_hang->trang_thai_dh = 1; // Đã thanh toán
+                $don_hang->save();
+
+                // Cập nhật giỏ hàng và giảm số lượng
+                foreach ($gioHang as $gh) {
+                    $gh->trang_thai_mua = 1;
+                    $gh->ma_don_hang = $ma_don_hang;
+                    $gh->save();
+
+                    // Giảm số lượng sản phẩm (dùng decrement an toàn hơn)
+                    SanPham::where('ma_san_pham', $gh->ma_san_pham)
+                        ->decrement('so_luong_sp', $gh->so_luong_sp);
+                }
+
+                // Giảm số lượng khuyến mãi
+                if ($don_hang->ma_khuyen_mai) {
+                    KhuyenMai::where('ma_khuyen_mai', $don_hang->ma_khuyen_mai)
+                        ->decrement('so_luong', 1);
+                }
+
+                DB::commit();
+
+                Mail::to($email)->send(new DonHangMail($don_hang, $gioHang));
+                session()->flash('don_hang', 'Thanh toán thành công! Đơn hàng #' . $ma_don_hang);
+            } catch (\Exception $e) {
+                DB::rollBack();
+                $don_hang->trang_thai_dh = 2; // Đã hủy
+                $don_hang->save();
+                session()->flash('errorDC', 'Thanh toán thất bại: ' . $e->getMessage());
             }
-
-            // Giảm số lượng khuyến mãi
-            if ($don_hang->ma_khuyen_mai) {
-                KhuyenMai::where('ma_khuyen_mai', $don_hang->ma_khuyen_mai)
-                    ->decrement('so_luong', 1);
-            }
-
-            Mail::to($email)->send(new DonHangMail($don_hang, $gioHang));
-
-
-            session()->flash('don_hang', 'Thanh toán thành công! Đơn hàng #' . $ma_don_hang);
         } else {
             // Thanh toán thất bại - Cập nhật trạng thái hủy hoặc xóa đơn
             $don_hang->trang_thai_dh = 2; // 2 = Đã hủy

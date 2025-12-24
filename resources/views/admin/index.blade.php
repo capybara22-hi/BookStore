@@ -27,7 +27,7 @@
           </p>
           <p
             class="text-lg font-semibold text-gray-700 dark:text-gray-200">
-            {{ count($nguoi_dung)}}
+            {{ $nguoi_dung->where('role_id', '!=', 1)->count() }}
           </p>
         </div>
       </div>
@@ -164,7 +164,7 @@
               <th class="px-4 py-3">Người dùng</th>
               <th class="px-4 py-3">Email</th>
               <th class="px-4 py-3">Số điện thoại</th>
-              <th class="px-4 py-3">Chức vụ</th>
+              <th class="px-4 py-3">Ngày tạo</th>
             </tr>
           </thead>
           <tbody
@@ -200,7 +200,7 @@
                 </span>
               </td>
               <td class="px-4 py-3 text-sm">
-                6/10/2020
+                {{ $nd->created_at->format('d/m/Y') }}
               </td>
             </tr>
             @endforeach

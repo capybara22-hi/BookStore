@@ -11,9 +11,11 @@ use App\Models\VanChuyen;
 use App\Models\DonHang;
 use App\Models\DiaChi;
 use App\Models\KhuyenMai;
+use App\Models\SanPham;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\DB;
 
 class ThanhToanController extends Controller
 {
@@ -54,70 +56,102 @@ class ThanhToanController extends Controller
             return response()->json(['error' => 'Giỏ hàng không tồn tại'], 404);
         }
 
-        // Cập nhật số lượng và tổng tiền
-        foreach ($gioHang as $gh) {
-            if ($gh->trang_thai_mua == 0) {
-                $gh->trang_thai_mua = $request->trang_thai;
-                $gh->save();
+        // Sử dụng transaction để tránh race condition
+        try {
+            DB::beginTransaction();
+
+            // Kiểm tra và lock số lượng sản phẩm trước
+            foreach ($gioHang as $gh) {
+                if ($gh->trang_thai_mua == 0) {
+                    $sanPham = SanPham::where('ma_san_pham', $gh->ma_san_pham)
+                        ->lockForUpdate()
+                        ->first();
+
+                    if (!$sanPham || $sanPham->so_luong_sp < $gh->so_luong_sp) {
+                        DB::rollBack();
+                        return response()->json([
+                            'error' => 'Sản phẩm "' . $gh->ten_sp . '" không đủ số lượng trong kho. Còn lại: ' . ($sanPham ? $sanPham->so_luong_sp : 0)
+                        ], 400);
+                    }
+                }
             }
-        }
 
-        // Lấy dữ liệu từ session để tạo đơn hàng
-        $ma_vc = session('ma_vc');
-        $phi_vc = session('phi_vc');
-        $thanh_tien = session('thanh_tien');
-        $tien_hang = session('tien_hang');
-        $tien_giam = session('tien_giam');
-        $ma_khuyen_mai = session('ma_khuyen_mai');
-
-        if ($ma_khuyen_mai) {
-            KhuyenMai::where('ma_khuyen_mai', $ma_khuyen_mai)
-                ->decrement('so_luong', 1);
-        }
-
-        if (!$ma_vc || $phi_vc === null || $thanh_tien === null || !$tien_hang) {
-            return response()->json(['error' => 'Thiếu dữ liệu session'], 400);
-        }
-
-        $van_chuyen = VanChuyen::where("ma_van_chuyen", $ma_vc)->first();
-        if (!$van_chuyen) {
-            return response()->json(['error' => 'Không tìm thấy vận chuyển', 'ma_vc' => session('ma_vc')], 404);
-        }
-
-        // Lấy địa chỉ mặc định của user
-        $dia_chi = DiaChi::where('ma_nguoi_dung', $ma_nguoi_dung)
-            ->where('mac_dinh', 1)
-            ->first();
-
-        if (!$dia_chi) {
-            return response()->json(['errorDC' => 'Người dùng chưa có địa chỉ mặc định'], 400);
-        }
-
-        // Insert đơn hàng
-        $don_hang = DonHang::create([
-            'ma_nguoi_dung' => $ma_nguoi_dung,
-            'tien_hang' => $tien_hang,
-            'loai_van_chuyen' => $van_chuyen->dv_van_chuyen,
-            'ma_khuyen_mai' => $ma_khuyen_mai,
-            'giam_gia' => $tien_giam,
-            'phi_van_chuyen' => $phi_vc,
-            'thanh_tien' => $thanh_tien,
-            'dia_chi' => $dia_chi->dia_chi,
-            'ngay_dat_hang' => now(),
-            'sdt' => $dia_chi->sdt,
-            'ten_nguoi_nhan' => $dia_chi->ten_nguoi_nhan,
-            'trang_thai_dh' => 1 // COD = Đã đặt hàng (chờ giao)
-        ]);
-
-        // lấy mã đơn hàng vừa tạo 
-        $ma_don_hang = $don_hang->ma_don_hang;
-
-        // cap nhat mã đơn hàng trong giỏ hàng
-        foreach ($gioHang as $gh) {
-            if ($gh->ma_don_hang == 0) {
-                $gh->ma_don_hang = $ma_don_hang;
-                $gh->save();
+            // Cập nhật trạng thái giỏ hàng
+            foreach ($gioHang as $gh) {
+                if ($gh->trang_thai_mua == 0) {
+                    $gh->trang_thai_mua = $request->trang_thai;
+                    $gh->save();
+                }
             }
+
+            // Lấy dữ liệu từ session để tạo đơn hàng
+            $ma_vc = session('ma_vc');
+            $phi_vc = session('phi_vc');
+            $thanh_tien = session('thanh_tien');
+            $tien_hang = session('tien_hang');
+            $tien_giam = session('tien_giam');
+            $ma_khuyen_mai = session('ma_khuyen_mai');
+
+            if ($ma_khuyen_mai) {
+                KhuyenMai::where('ma_khuyen_mai', $ma_khuyen_mai)
+                    ->decrement('so_luong', 1);
+            }
+
+            if (!$ma_vc || $phi_vc === null || $thanh_tien === null || !$tien_hang) {
+                return response()->json(['error' => 'Thiếu dữ liệu session'], 400);
+            }
+
+            $van_chuyen = VanChuyen::where("ma_van_chuyen", $ma_vc)->first();
+            if (!$van_chuyen) {
+                return response()->json(['error' => 'Không tìm thấy vận chuyển', 'ma_vc' => session('ma_vc')], 404);
+            }
+
+            // Lấy địa chỉ mặc định của user
+            $dia_chi = DiaChi::where('ma_nguoi_dung', $ma_nguoi_dung)
+                ->where('mac_dinh', 1)
+                ->first();
+
+            if (!$dia_chi) {
+                return response()->json(['errorDC' => 'Người dùng chưa có địa chỉ mặc định'], 400);
+            }
+
+            // Insert đơn hàng
+            $don_hang = DonHang::create([
+                'ma_nguoi_dung' => $ma_nguoi_dung,
+                'tien_hang' => $tien_hang,
+                'loai_van_chuyen' => $van_chuyen->dv_van_chuyen,
+                'ma_khuyen_mai' => $ma_khuyen_mai,
+                'giam_gia' => $tien_giam,
+                'phi_van_chuyen' => $phi_vc,
+                'thanh_tien' => $thanh_tien,
+                'dia_chi' => $dia_chi->dia_chi,
+                'ngay_dat_hang' => now(),
+                'sdt' => $dia_chi->sdt,
+                'ten_nguoi_nhan' => $dia_chi->ten_nguoi_nhan,
+                'trang_thai_dh' => 1 // COD = Đã đặt hàng (chờ giao)
+            ]);
+
+            // lấy mã đơn hàng vừa tạo 
+            $ma_don_hang = $don_hang->ma_don_hang;
+
+            // cap nhat mã đơn hàng và giảm số lượng sản phẩm
+            foreach ($gioHang as $gh) {
+                if ($gh->ma_don_hang == 0) {
+                    $gh->ma_don_hang = $ma_don_hang;
+                    $gh->save();
+
+                    // Giảm số lượng sản phẩm trong kho (đã lock ở trên)
+                    SanPham::where('ma_san_pham', $gh->ma_san_pham)
+                        ->decrement('so_luong_sp', $gh->so_luong_sp);
+                }
+            }
+
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json([
+                'error' => 'Đặt hàng thất bại: ' . $e->getMessage()
+            ], 500);
         }
 
         Mail::to($email)->send(new DonHangMail($don_hang, $gioHang));

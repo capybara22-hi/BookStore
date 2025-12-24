@@ -15,14 +15,14 @@
                     <label class="block text-sm font-medium text-gray-700 dark:text-gray-400 mb-2">
                         Từ ngày
                     </label>
-                    <input type="date" name="start_date"
+                    <input type="date" name="start_date" value="{{ $startDate ?? '' }}"
                         class="block w-full text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input rounded-md">
                 </div>
                 <div>
                     <label class="block text-sm font-medium text-gray-700 dark:text-gray-400 mb-2">
                         Đến ngày
                     </label>
-                    <input type="date" name="end_date"
+                    <input type="date" name="end_date" value="{{ $endDate ?? '' }}"
                         class="block w-full text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input rounded-md">
                 </div>
                 <div>
@@ -31,10 +31,10 @@
                     </label>
                     <select name="status"
                         class="block w-full text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input rounded-md">
-                        <option value="">Tất cả</option>
-                        <option value="completed">Hoàn thành</option>
-                        <option value="pending">Đang xử lý</option>
-                        <option value="cancelled">Đã hủy</option>
+                        <option value="" {{ ($status ?? '') == '' ? 'selected' : '' }}>Tất cả</option>
+                        <option value="completed" {{ ($status ?? '') == 'completed' ? 'selected' : '' }}>Hoàn thành</option>
+                        <option value="pending" {{ ($status ?? '') == 'pending' ? 'selected' : '' }}>Đang xử lý</option>
+                        <option value="cancelled" {{ ($status ?? '') == 'cancelled' ? 'selected' : '' }}>Đã hủy</option>
                     </select>
                 </div>
                 <div class="flex items-end">
@@ -60,7 +60,7 @@
                         Tổng doanh thu
                     </p>
                     <p class="text-lg font-semibold text-gray-700 dark:text-gray-200">
-                        0 đ
+                        {{ number_format($tong_tien, 0, ',', '.') }} đ
                     </p>
                 </div>
             </div>
@@ -77,7 +77,7 @@
                         Tổng đơn hàng
                     </p>
                     <p class="text-lg font-semibold text-gray-700 dark:text-gray-200">
-                        0
+                        {{ $soDonHang }}
                     </p>
                 </div>
             </div>
@@ -94,7 +94,7 @@
                         Đơn hoàn thành
                     </p>
                     <p class="text-lg font-semibold text-gray-700 dark:text-gray-200">
-                        0
+                        {{ $soDonHoanThanh ?? 0 }}
                     </p>
                 </div>
             </div>
@@ -111,7 +111,7 @@
                         Giá trị TB/đơn
                     </p>
                     <p class="text-lg font-semibold text-gray-700 dark:text-gray-200">
-                        0 đ
+                        {{ number_format($giaTriTB ?? 0, 0, ',', '.') }} đ
                     </p>
                 </div>
             </div>
@@ -141,12 +141,61 @@
                         </tr>
                     </thead>
                     <tbody class="bg-white divide-y dark:divide-gray-700 dark:bg-gray-800">
-                        <!-- Dữ liệu sẽ được load ở đây -->
+                        @forelse($list_don_hang as $dh)
+                        <tr class="text-gray-700 dark:text-gray-400">
+                            <td class="px-4 py-3 text-sm">
+                                #{{ $dh->ma_don_hang }}
+                            </td>
+                            <td class="px-4 py-3 text-sm">
+                                {{ $dh->user->name ?? 'Khách' }}
+                            </td>
+                            <td class="px-4 py-3 text-sm">
+                                {{ \Carbon\Carbon::parse($dh->ngay_dat_hang)->format('d/m/Y H:i') }}
+                            </td>
+                            <td class="px-4 py-3 text-sm">
+                                {{ number_format($dh->thanh_tien, 0, ',', '.') }} đ
+                            </td>
+                            <td class="px-4 py-3 text-xs">
+                                @switch($dh->trang_thai_dh)
+                                @case(1)
+                                <span class="px-2 py-1 font-semibold leading-tight text-yellow-700 bg-yellow-100 rounded-full dark:bg-yellow-700 dark:text-yellow-100">
+                                    Chờ xác nhận
+                                </span>
+                                @break
+                                @case(2)
+                                <span class="px-2 py-1 font-semibold leading-tight text-blue-700 bg-blue-100 rounded-full dark:bg-blue-700 dark:text-blue-100">
+                                    Chuẩn bị
+                                </span>
+                                @break
+                                @case(3)
+                                <span class="px-2 py-1 font-semibold leading-tight text-orange-700 bg-orange-100 rounded-full dark:bg-orange-700 dark:text-orange-100">
+                                    Đang giao
+                                </span>
+                                @break
+                                @case(4)
+                                <span class="px-2 py-1 font-semibold leading-tight text-green-700 bg-green-100 rounded-full dark:bg-green-700 dark:text-green-100">
+                                    Hoàn thành
+                                </span>
+                                @break
+                                @case(5)
+                                <span class="px-2 py-1 font-semibold leading-tight text-red-700 bg-red-100 rounded-full dark:bg-red-700 dark:text-red-100">
+                                    Đã hủy
+                                </span>
+                                @break
+                                @default
+                                <span class="px-2 py-1 font-semibold leading-tight text-gray-700 bg-gray-100 rounded-full dark:bg-gray-700 dark:text-gray-100">
+                                    Không rõ
+                                </span>
+                                @endswitch
+                            </td>
+                        </tr>
+                        @empty
                         <tr>
                             <td colspan="5" class="px-4 py-8 text-sm text-center text-gray-500 dark:text-gray-400">
                                 Không có dữ liệu
                             </td>
                         </tr>
+                        @endforelse
                     </tbody>
                 </table>
             </div>
@@ -155,17 +204,27 @@
 </main>
 
 <script>
-    // Khởi tạo biểu đồ mẫu
+    // Khởi tạo biểu đồ với dữ liệu thực
     document.addEventListener('DOMContentLoaded', function() {
         const ctx = document.getElementById('revenueChart');
         if (ctx && typeof Chart !== 'undefined') {
+            // Dữ liệu từ server
+            const chartData = @json($doanhThuTheoNgay ?? []);
+
+            const labels = chartData.map(item => {
+                const date = new Date(item.ngay);
+                return date.toLocaleDateString('vi-VN');
+            });
+
+            const data = chartData.map(item => parseFloat(item.tong));
+
             new Chart(ctx, {
                 type: 'line',
                 data: {
-                    labels: [],
+                    labels: labels,
                     datasets: [{
                         label: 'Doanh thu (VNĐ)',
-                        data: [],
+                        data: data,
                         backgroundColor: 'rgba(124, 58, 237, 0.1)',
                         borderColor: 'rgba(124, 58, 237, 1)',
                         borderWidth: 2,

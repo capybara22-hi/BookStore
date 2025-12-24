@@ -190,7 +190,7 @@ Route::middleware(['auth', 'customer'])->group(function () {
 // test email
 Route::get('/test-email', function () {
     $order = (object)[
-        'id' => "MH001",
+        'ma_don_hang' => "MH001",
         'customer' => "Nguyen Viet Tuan"
     ];
 
@@ -199,5 +199,5 @@ Route::get('/test-email', function () {
         (object)['product_name' => 'Sách Văn', 'quantity' => 1, 'price' => 300000],
     ];
 
-    Mail::to('hi@gmail.com')->send(new DonHangMail($order, $items));
+    Mail::to('nguyenviettuan23122004@gmail.com')->send(new DonHangMail($order, $items));
 });
